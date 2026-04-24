@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canbebe — Create Account</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --purple-900: #1a0b2e;
+            --purple-700: #7b2fbe;
+            --purple-600: #8b45c0;
+            --purple-500: #9b5fc8;
+            --purple-300: #c49be0;
+            --purple-100: #f3eaff;
+            --purple-50: #faf8ff;
+            --text-dark: #1a0b2e;
+            --text-mid: #7a6d8a;
+            --text-light: #b0a0c0;
+            --white: #ffffff;
+            --grad-main: linear-gradient(135deg, #8b45c0 0%, #c49be0 100%);
+            --grad-text: linear-gradient(135deg, #7b2fbe, #c49be0);
+            --radius-card: 28px;
+            --radius-pill: 50px;
+            --err: #e05070;
+            --ok: #3cc890;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            font-family: 'Nunito', sans-serif;
+            background: var(--purple-50);
+            color: var(--text-dark);
+            -webkit-font-smoothing: antialiased
+        }
+
+        button {
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            border: none;
+            outline: none;
+            background: none
+        }
+
+        input {
+            font-family: 'Nunito', sans-serif;
+            outline: none
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column
+        }
+
+        /* ── NAV ── */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            height: 68px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(180, 140, 220, 0.15);
+            box-shadow: 0 2px 24px rgba(145, 90, 200, 0.06);
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo a img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--text-mid);
+            transition: .2s;
+        }
+
+        .nav-back:hover {
+            color: var(--purple-600);
+        }
+
+        /* ── STEPPER ── */
+        .stepper {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(180, 140, 220, 0.12);
+            padding: 0 40px;
+            animation: slideDown .5s .05s ease both;
+        }
+
+        .steps {
+            display: flex;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 18px 8px;
+            position: relative;
+            cursor: default;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 29px;
+            left: calc(50% + 18px);
+            right: calc(-50% + 18px);
+            height: 2px;
+            background: var(--purple-100);
+        }
+
+        .step.done:not(:last-child)::after {
+            background: var(--purple-600);
+        }
+
+        .step-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 800;
+            position: relative;
+            z-index: 1;
+            transition: .3s ease;
+        }
+
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #8b45c0, #c49be0);
+            color: white;
+            box-shadow: 0 4px 14px rgba(139, 69, 192, 0.4);
+        }
+
+        .step.done .step-circle {
+            background: var(--ok);
+            color: white;
+        }
+
+        .step.pending .step-circle {
+            background: var(--purple-100);
+            color: var(--text-light);
+        }
+
+        .step-label {
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 6px;
+            text-align: center;
+            transition: .3s;
+        }
+
+        .step.active .step-label {
+            color: var(--purple-600);
+            font-weight: 700;
+        }
+
+        .step.done .step-label {
+            color: var(--ok);
+        }
+
+        .step.pending .step-label {
+            color: var(--text-light);
+        }
+
+        /* ── MAIN ── */
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 40px 20px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            top: -80px;
+            left: -100px;
+            background: radial-gradient(circle, rgba(196, 155, 224, 0.2) 0%, transparent 70%);
+            animation: float 9s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            bottom: -60px;
+            right: -80px;
+            background: radial-gradient(circle, rgba(139, 69, 192, 0.15) 0%, transparent 70%);
+            animation: float 9s ease-in-out infinite;
+            animation-delay: -4s;
+        }
+
+        /* ── CARD ── */
+        .card {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 520px;
+            background: var(--white);
+            border-radius: var(--radius-card);
+            box-shadow: 0 16px 64px rgba(139, 69, 192, 0.13), 0 2px 12px rgba(139, 69, 192, 0.06);
+            overflow: hidden;
+            animation: fadeUp .6s .15s ease both;
+        }
+
+        .card-bar {
+            height: 5px;
+            background: linear-gradient(90deg, #8b45c0, #c49be0, #e8d5f5);
+        }
+
+        .card-body {
+            padding: 40px 44px 44px;
+        }
+
+        .card-ey {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--purple-500);
+            margin-bottom: 10px;
+        }
+
+        .card-h {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 30px;
+            font-weight: 500;
+            color: var(--text-dark);
+            line-height: 1.2;
+            margin-bottom: 6px;
+        }
+
+        .card-sub {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 28px;
+        }
+
+        /* perks */
+        .perks {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .perk {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .perk-1 {
+            background: rgba(155, 95, 200, 0.1);
+            color: var(--purple-600);
+        }
+
+        .perk-2 {
+            background: rgba(60, 200, 144, 0.1);
+            color: #1a8060;
+        }
+
+        .perk-3 {
+            background: rgba(139, 69, 192, 0.08);
+            color: var(--purple-700);
+        }
+
+        /* error */
+        .ferr {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 14px;
+            border-radius: 14px;
+            background: #fff0f4;
+            border: 1.5px solid #ffd0dc;
+            color: var(--err);
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .ferr.show {
+            display: flex;
+        }
+
+        /* fields */
+        .row-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .fl {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-mid);
+            margin-bottom: 6px;
+        }
+
+        .iw {
+            display: flex;
+            align-items: center;
+            background: var(--purple-100);
+            border: 2px solid transparent;
+            border-radius: 14px;
+            transition: .25s ease;
+        }
+
+        .iw:focus-within {
+            background: var(--white);
+            border-color: var(--purple-500);
+            box-shadow: 0 0 0 4px rgba(155, 95, 200, 0.1);
+        }
+
+        .iw svg {
+            flex-shrink: 0;
+            margin-left: 13px;
+            color: var(--text-light);
+            transition: color .2s;
+        }
+
+        .iw:focus-within svg {
+            color: var(--purple-600);
+        }
+
+        .iw input {
+            flex: 1;
+            padding: 13px 12px;
+            background: none;
+            border: none;
+            font-size: 14px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .iw input::placeholder {
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .eyebtn {
+            padding: 0 13px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            transition: color .2s;
+        }
+
+        .eyebtn:hover {
+            color: var(--purple-600);
+        }
+
+        /* strength */
+        .sbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: -8px 0 15px;
+            display: none;
+        }
+
+        .strack {
+            display: flex;
+            gap: 4px;
+            flex: 1;
+        }
+
+        .sseg {
+            height: 5px;
+            flex: 1;
+            border-radius: 99px;
+            background: var(--purple-100);
+            transition: background .3s;
+        }
+
+        .slbl {
+            font-size: 11px;
+            font-weight: 700;
+            min-width: 44px;
+        }
+
+        #ccheck {
+            padding: 0 13px;
+            color: var(--ok);
+            align-items: center;
+            display: none;
+        }
+
+        /* terms */
+        .terms {
+            font-size: 12px;
+            color: var(--text-mid);
+            margin-bottom: 22px;
+            line-height: 1.7;
+        }
+
+        .terms a {
+            color: var(--purple-600);
+            font-weight: 600;
+        }
+
+        /* submit */
+        .btn-p {
+            width: 100%;
+            padding: 16px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #8b45c0 0%, #b97dd8 50%, #c49be0 100%);
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all .35s ease;
+            box-shadow: 0 6px 22px rgba(139, 69, 192, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-p::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .14), transparent);
+            pointer-events: none;
+        }
+
+        .btn-p:hover {
+            background-position: 100% 50%;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(139, 69, 192, 0.5);
+        }
+
+        .btn-p:active {
+            transform: translateY(0);
+        }
+
+        .btn-p:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btext.hide {
+            display: none;
+        }
+
+        .spin {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255, 255, 255, .3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: doSpin .7s linear infinite;
+            display: none;
+        }
+
+        .spin.show {
+            display: inline-block;
+        }
+
+        .bot {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13.5px;
+            color: var(--text-mid);
+        }
+
+        .lnk2 {
+            color: var(--purple-600);
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: opacity .2s;
+            background: none;
+            border: none;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .lnk2:hover {
+            opacity: .7;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-14px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+
+        @keyframes doSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+
+        <!-- NAV -->
+        <nav class="nav">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="logo (2).svg" alt="Canbebe" style="height: 50px; width: auto;">
+                </a>
+            </div>
+            <a href="Login.html" class="nav-back">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="m15 18-6-6 6-6" />
+                </svg>
+                Back to sign in
+            </a>
+        </nav>
+
+        <!-- STEPPER -->
+        <div class="stepper">
+            <div class="steps">
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <span class="step-label">Account</span>
+                </div>
+                <div class="step pending">
+                    <div class="step-circle">2</div>
+                    <span class="step-label">Your role</span>
+                </div>
+                <div class="step pending">
+                    <div class="step-circle">3</div>
+                    <span class="step-label">Baby profile</span>
+                </div>
+                <div class="step pending">
+                    <div class="step-circle">4</div>
+                    <span class="step-label">Meet AI</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <main class="main">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+
+            <div class="card">
+                <div class="card-bar"></div>
+                <div class="card-body">
+
+                    <p class="card-ey">Step 1 of 4</p>
+                    <h1 class="card-h">Create your account </h1>
+                    <p class="card-sub">Join thousands of parents guided by AI</p>
+
+                    <!-- Perk pills -->
+                    <div class="perks">
+                        <div class="perk perk-1">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path
+                                    d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                            100% Free
+                        </div>
+                        <div class="perk perk-2">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            Secure & private
+                        </div>
+                        <div class="perk perk-3">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                            50K+ parents
+                        </div>
+                    </div>
+
+                    <div id="ferr" class="ferr">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        <span id="errTxt">Please fill in all fields.</span>
+                    </div>
+
+                    <!-- Name row -->
+                    <div class="row-2">
+                        <div class="field">
+                            <label class="fl">First name</label>
+                            <div class="iw">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                                <input type="text" id="fname" placeholder="Amira">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="fl">Last name</label>
+                            <div class="iw">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg>
+                                <input type="text" id="lname" placeholder="Benali">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="fl">Email address</label>
+                        <div class="iw">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect width="20" height="16" x="2" y="4" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            </svg>
+                            <input type="email" id="email" placeholder="you@example.com">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="fl">Password</label>
+                        <div class="iw">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect width="18" height="11" x="3" y="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" id="pass" placeholder="Min. 8 characters" oninput="updateStrength()">
+                            <button class="eyebtn" onclick="togglePass('pass')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="sbar" id="sbar">
+                        <div class="strack">
+                            <div class="sseg" id="s1"></div>
+                            <div class="sseg" id="s2"></div>
+                            <div class="sseg" id="s3"></div>
+                            <div class="sseg" id="s4"></div>
+                        </div>
+                        <span class="slbl" id="slbl"></span>
+                    </div>
+
+                    <div class="field">
+                        <label class="fl">Confirm password</label>
+                        <div class="iw">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect width="18" height="11" x="3" y="11" rx="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" id="confirm" placeholder="Repeat password" oninput="checkConfirm()">
+                            <span id="ccheck">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <p class="terms">By signing up you agree to our <a href="#">Terms of Service</a> and <a
+                            href="#">Privacy Policy</a>.</p>
+
+                    <button class="btn-p" id="sbtn" onclick="doSignup()">
+                        <span class="btext">Create Account & Continue →</span>
+                        <span class="spin" id="sp"></span>
+                    </button>
+
+                    <p class="bot">Already have an account? <button class="lnk2"
+                            onclick="location.href='Login.html'">Sign in</button></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- API Configuration -->
+    <script src="api-config.js"></script>
+
+    <script>
+        function togglePass(id) {
+            const i = document.getElementById(id);
+            i.type = i.type === 'password' ? 'text' : 'password'
+        }
+
+        function sleep(ms) {
+            return new Promise(r => setTimeout(r, ms))
+        }
+
+        function updateStrength() {
+            const p = document.getElementById('pass').value;
+            const bar = document.getElementById('sbar');
+            if (!p) { bar.style.display = 'none'; return }
+            bar.style.display = 'flex';
+            let s = 0;
+            if (p.length >= 8) s++;
+            if (/[A-Z]/.test(p)) s++;
+            if (/[0-9]/.test(p)) s++;
+            if (/[^a-zA-Z0-9]/.test(p)) s++;
+            const cols = ['', '#e05070', '#F0A030', '#8b45c0', '#3cc890'];
+            const labs = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('s' + i).style.background = i <= s ? cols[s] : 'var(--purple-100)';
+            }
+            const l = document.getElementById('slbl');
+            l.textContent = labs[s];
+            l.style.color = cols[s];
+            checkConfirm();
+        }
+
+        function checkConfirm() {
+            const p = document.getElementById('pass').value;
+            const c = document.getElementById('confirm').value;
+            const chk = document.getElementById('ccheck');
+            chk.style.display = (c && c === p) ? 'flex' : 'none';
+        }
+
+        async function doSignup() {
+            const fn = document.getElementById('fname').value;
+            const ln = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('pass').value;
+            const conf = document.getElementById('confirm').value;
+            const err = document.getElementById('ferr');
+            const et = document.getElementById('errTxt');
+            const btn = document.getElementById('sbtn');
+            const sp = document.getElementById('sp');
+
+            const show = (m) => {
+                et.textContent = m;
+                err.classList.add('show')
+            };
+
+            // Validation
+            if (!fn || !ln || !email || !pass) {
+                show('Please fill in all fields.');
+                return
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                show('Please enter a valid email address.');
+                return;
+            }
+
+            if (pass !== conf) {
+                show('Passwords do not match.');
+                return
+            }
+
+            if (pass.length < 8) {
+                show('Password must be at least 8 characters.');
+                return
+            }
+
+            err.classList.remove('show');
+            btn.disabled = true;
+            sp.classList.add('show');
+            btn.querySelector('.btext').classList.add('hide');
+
+            try {
+                // Call backend API
+                const response = await apiCall(API_ENDPOINTS.register, 'POST', {
+                    firstName: fn,
+                    lastName: ln,
+                    email: email,
+                    password: pass
+                });
+
+                if (response.success) {
+                    // Store user data and token
+                    sessionStorage.setItem('bm_token', response.token); // ← add this
+                    localStorage.setItem('user', JSON.stringify(response.user));
+                    sessionStorage.setItem('bm_user', JSON.stringify(response.user));
+                    sessionStorage.setItem('bm_needs_onboarding', '1');
+
+                    // Redirect to onboarding
+                    window.location.href = 'onboarding.html';
+                } else {
+                    throw new Error(response.message || 'Registration failed');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                show(error.message || 'Registration failed. Please try again.');
+                btn.disabled = false;
+                sp.classList.remove('show');
+                btn.querySelector('.btext').classList.remove('hide');
+            }
+        }
+
+        // Handle Enter key
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('confirm').addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') doSignup();
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+{
+    "nav": {
+        "products": "Produits",
+        "faq": "FAQ",
+        "contact": "Contact",
+        "login": "Connexion",
+        "signup": "S'inscrire"
+    },
+    "hero": {
+        "badge": "Soins maternels alimentés par l'IA",
+        "title": "Le voyage de votre bébé commence avec amour",
+        "subtitle": "Des produits doux et testés dermatologiquement et un compagnon IA intelligent guidant les mères à chaque étape précieuse.",
+        "exploreProducts": "Découvrir les produits",
+        "chatWithAI": "Discuter avec l'IA",
+        "stats": {
+            "happyMoms": "Mamans heureuses",
+            "naturalIngredients": "Ingrédients naturels",
+            "aiSupport": "Support IA"
+        },
+        "trustBadge": {
+            "title": "Testé dermatologiquement",
+            "subtitle": "Sûr pour les nouveau-nés"
+        }
+    },
+    "aiStrip": {
+        "title": "Votre <em>partenaire parental 24/7</em>",
+        "subtitle": "Guidage en temps réel alimenté par l'IA — des tétées nocturnes aux moments marquants.",
+        "features": {
+            "instantAnswers": "Réponses instantanées",
+            "personalizedTips": "Conseils personnalisés",
+            "alwaysAvailable": "Toujours disponible",
+            "expertBacked": "Approuvé par des experts"
+        },
+        "cta": "Essayer le guide IA gratuit"
+    },
+    "products": {
+        "eyebrow": "Conçu pour votre petit",
+        "title": "Nos <em>Collections</em>",
+        "subtitle": "Des produits doux et testés dermatologiquement fabriqués avec amour pour chaque étape du voyage de bébé.",
+        "filters": {
+            "all": "Tous",
+            "diapers": "Couches",
+            "skincare": "Soins de la peau",
+            "bath": "Bain",
+            "wipes": "Lingettes"
+        },
+        "badges": {
+            "new": "Nouveau",
+            "bestseller": "Bestseller"
+        },
+        "addToCart": "Ajouter au panier",
+        "quickView": "Aperçu rapide",
+        "viewAll": "Voir tous les produits"
+    },
+    "appPromo": {
+        "eyebrow": "Téléchargez notre application",
+        "title": "Tout ce dont vous avez besoin <em>en un seul endroit</em>",
+        "description": "Suivez les étapes de votre bébé, connectez-vous avec d'autres mamans, obtenez un support IA 24/7 et profitez d'offres exclusives à l'application.",
+        "features": {
+            "tracker": "Suivi des étapes de bébé",
+            "community": "Communauté et soutien des mamans",
+            "aiAssistant": "Assistant IA 24/7",
+            "offers": "Offres exclusives de l'application"
+        },
+        "badges": {
+            "appStore": "Télécharger sur",
+            "googlePlay": "DISPONIBLE SUR"
+        },
+        "note": "Gratuit à télécharger • Disponible sur iOS et Android"
+    },
+    "trust": {
+        "eyebrow": "Pourquoi les mères nous font confiance",
+        "title": "Des soins que vous pouvez <em>ressentir</em>",
+        "cards": {
+            "dermatologist": {
+                "title": "Testé dermatologiquement",
+                "description": "Chaque formule est testée cliniquement et approuvée même pour la peau la plus sensible des nouveau-nés."
+            },
+            "natural": {
+                "title": "98% d'ingrédients naturels",
+                "description": "Ingrédients d'origine végétale soigneusement sélectionnés, sans produits chimiques agressifs ni parfums artificiels."
+            },
+            "families": {
+                "title": "50 000+ familles heureuses",
+                "description": "Fait confiance par les mères à travers le pays pour des soins doux et fiables à chaque étape."
+            },
+            "support": {
+                "title": "Support IA 24/7",
+                "description": "Notre assistant intelligent répond à vos questions parentales à toute heure du jour ou de la nuit."
+            }
+        }
+    },
+    "faq": {
+        "eyebrow": "Des questions?",
+        "title": "Questions <em>fréquentes</em>",
+        "subtitle": "Tout ce que vous devez savoir sur les produits Canbebe et notre guide IA.",
+        "questions": {
+            "q1": {
+                "q": "Les produits Canbebe sont-ils sûrs pour les nouveau-nés?",
+                "a": "Oui — tous les produits Canbebe sont testés dermatologiquement, hypoallergéniques et formulés sans parabènes, sulfates ou parfums artificiels. Ils sont spécialement conçus pour la peau délicate des nouveau-nés et des bébés prématurés."
+            },
+            "q2": {
+                "q": "Comment fonctionne le guide IA Mama?",
+                "a": "Notre assistant IA est formé sur des milliers de ressources pédiatriques et de santé maternelle. Tapez simplement votre question dans le chat — qu'il s'agisse de calendriers d'alimentation, de routines de sommeil ou de recommandations de produits — et recevez des conseils personnalisés instantanément, 24 heures sur 24."
+            },
+            "q3": {
+                "q": "Quelle taille de couche dois-je choisir?",
+                "a": "Nous recommandons de choisir par poids: S (jusqu'à 5kg), M (5–9kg), L (9–14kg), XL (14kg+). Si votre bébé est entre deux tailles, prenez la taille supérieure — une couche légèrement plus grande est plus confortable et aide à prévenir les fuites. Notre assistant IA peut également vous aider à trouver l'ajustement parfait."
+            },
+            "q4": {
+                "q": "Offrez-vous la livraison gratuite?",
+                "a": "Oui! La livraison gratuite est disponible sur toutes les commandes de plus de 2500 DZD. Les commandes sont livrées dans les 2 à 5 jours ouvrables à l'échelle nationale. La livraison express le jour même est disponible dans certaines villes."
+            },
+            "q5": {
+                "q": "Puis-je retourner un produit si mon bébé a une réaction?",
+                "a": "Absolument. Le confort et la sécurité de votre bébé sont notre priorité absolue. Nous offrons une garantie de satisfaction complète de 30 jours. Si vous rencontrez des problèmes, contactez notre équipe d'assistance et nous organiserons un remboursement complet ou un échange — sans poser de questions."
+            },
+            "q6": {
+                "q": "Comment créer un compte?",
+                "a": "Cliquez sur « S'inscrire » dans la navigation supérieure, entrez votre nom, votre e-mail et votre mot de passe. Une fois inscrit, vous pouvez suivre les commandes, enregistrer vos produits préférés et accéder à votre historique de chat complet avec le guide IA Mama."
+            }
+        }
+    },
+    "contact": {
+        "eyebrow": "Contactez-nous",
+        "title": "Nous aimerions <em>vous entendre</em>",
+        "subtitle": "Que vous ayez une question sur nos produits, besoin d'aide avec votre commande, ou que vous vouliez simplement dire bonjour — notre équipe est là pour vous.",
+        "info": {
+            "email": "Email",
+            "phone": "Téléphone",
+            "location": "Emplacement",
+            "hours": "Heures de support",
+            "hoursValue": "Sam–Jeu, 9h – 18h"
+        },
+        "form": {
+            "title": "Envoyez-nous un message",
+            "firstName": "Prénom",
+            "lastName": "Nom",
+            "email": "Adresse email",
+            "subject": "Sujet",
+            "subjectPlaceholder": "Choisir un sujet…",
+            "subjectOptions": {
+                "order": "Question de commande",
+                "product": "Informations sur le produit",
+                "ai": "Commentaires sur le guide IA",
+                "returns": "Retours et échanges",
+                "other": "Autre"
+            },
+            "message": "Message",
+            "messagePlaceholder": "Comment pouvons-nous vous aider?",
+            "submit": "Envoyer le message",
+            "success": "Merci! Nous vous répondrons dans les 24 heures."
+        }
+    },
+    "footer": {
+        "tagline": "Des soins doux pour chaque petit voyage — soutenus par la nature et guidés par l'intelligence.",
+        "newsletter": {
+            "title": "Restez informé",
+            "description": "Recevez des conseils parentaux, des lancements de produits et des offres exclusives.",
+            "placeholder": "votre@email.com",
+            "note": "Pas de spam, désabonnement à tout moment."
+        },
+        "sections": {
+            "products": "Produits",
+            "company": "Entreprise",
+            "support": "Support"
+        },
+        "links": {
+            "diapers": "Couches",
+            "wipes": "Lingettes",
+            "skincare": "Soins de la peau",
+            "bath": "Bain",
+            "bundles": "Packs",
+            "about": "À propos",
+            "story": "Notre histoire",
+            "blog": "Blog",
+            "careers": "Carrières",
+            "press": "Presse",
+            "contactUs": "Contactez-nous",
+            "shipping": "Infos de livraison",
+            "returns": "Retours",
+            "trackOrder": "Suivre la commande"
+        },
+        "legal": {
+            "copyright": "© 2025 Canbebe. Tous droits réservés.",
+            "privacy": "Politique de confidentialité",
+            "terms": "Conditions d'utilisation",
+            "cookies": "Paramètres des cookies"
+        },
+        "badges": {
+            "secure": "🔒 Paiements sécurisés",
+            "eco": "🌿 Certifié écologique"
+        }
+    },
+    "fab": {
+        "label": "Discuter avec l'IA"
+    }
+}

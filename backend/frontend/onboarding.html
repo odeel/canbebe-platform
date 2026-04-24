@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BabyMind — Setup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="onboarding.css">
+</head>
+
+<body>
+    <div class="onboard-root">
+        <div class="onboard-card">
+            <div class="progress-row">
+                <div class="prog-dot active" id="pd0">1</div>
+                <div class="prog-spacer"></div>
+                <div class="prog-dot" id="pd1">2</div>
+                <div class="prog-spacer"></div>
+                <div class="prog-dot" id="pd2">3</div>
+                <div class="prog-spacer"></div>
+                <div class="prog-dot" id="pd3">4</div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="ob-progress" style="width:0%"></div>
+                </div>
+            </div>
+
+            <!-- Step 0: Role -->
+            <div id="ob-step0">
+                <div class="step-badge">Step 1 of 4</div>
+                <h2 class="onboard-title">Your role</h2>
+                <p class="onboard-sub">How do you relate to the baby?</p>
+                <div class="role-grid">
+                    <div class="role-card" id="role-mother" onclick="selectRole('mother')" style="--rc:#C4714A">
+                        <div class="role-icon" id="ri-mother"><svg width="22" height="22" viewBox="0 0 24 24"
+                                fill="none" stroke="#C4714A" stroke-width="2">
+                                <path
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                            </svg></div>
+                        <span class="role-label">Mother</span>
+                        <div class="role-check" style="background:#C4714A"><svg width="10" height="10"
+                                viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></div>
+                    </div>
+                    <div class="role-card" id="role-father" onclick="selectRole('father')" style="--rc:#7A9E7E">
+                        <div class="role-icon" id="ri-father"><svg width="22" height="22" viewBox="0 0 24 24"
+                                fill="none" stroke="#7A9E7E" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg></div>
+                        <span class="role-label">Father</span>
+                        <div class="role-check" style="background:#7A9E7E"><svg width="10" height="10"
+                                viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></div>
+                    </div>
+                    <div class="role-card" id="role-babysitter" onclick="selectRole('babysitter')" style="--rc:#9B7FB6">
+                        <div class="role-icon" id="ri-babysitter"><svg width="22" height="22" viewBox="0 0 24 24"
+                                fill="none" stroke="#9B7FB6" stroke-width="2">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                            </svg></div>
+                        <span class="role-label">Babysitter</span>
+                        <div class="role-check" style="background:#9B7FB6"><svg width="10" height="10"
+                                viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></div>
+                    </div>
+                    <div class="role-card" id="role-grandparent" onclick="selectRole('grandparent')"
+                        style="--rc:#5B8DB8">
+                        <div class="role-icon" id="ri-grandparent"><svg width="22" height="22" viewBox="0 0 24 24"
+                                fill="none" stroke="#5B8DB8" stroke-width="2">
+                                <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" />
+                                <path
+                                    d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4" />
+                                <path d="M12 3C9 3 6.5 5 5.4 7.4" />
+                            </svg></div>
+                        <span class="role-label">Grandparent</span>
+                        <div class="role-check" style="background:#5B8DB8"><svg width="10" height="10"
+                                viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></div>
+                    </div>
+                </div>
+                <div class="nav-row"><button class="btn-next" id="ob-next0" onclick="obNext(0)" disabled>Continue <svg
+                            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg></button></div>
+            </div>
+
+            <!-- Step 1: Experience -->
+            <div id="ob-step1" style="display:none">
+                <div class="step-badge">Step 2 of 4</div>
+                <h2 class="onboard-title">Your experience</h2>
+                <p class="onboard-sub">How familiar are you with newborns?</p>
+                <div class="exp-list">
+                    <div class="exp-card" id="exp-first" onclick="selectExp('first')">
+                        <div style="flex:1">
+                            <div class="exp-label">First baby</div>
+                            <div class="exp-sub">This is my first experience with a newborn</div>
+                        </div>
+                        <div class="radio">
+                            <div class="radio-dot"></div>
+                        </div>
+                    </div>
+                    <div class="exp-card" id="exp-some" onclick="selectExp('some')">
+                        <div style="flex:1">
+                            <div class="exp-label">Some experience</div>
+                            <div class="exp-sub">I have cared for babies before</div>
+                        </div>
+                        <div class="radio">
+                            <div class="radio-dot"></div>
+                        </div>
+                    </div>
+                    <div class="exp-card" id="exp-experienced" onclick="selectExp('experienced')">
+                        <div style="flex:1">
+                            <div class="exp-label">Experienced</div>
+                            <div class="exp-sub">I have raised multiple children</div>
+                        </div>
+                        <div class="radio">
+                            <div class="radio-dot"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-row">
+                    <button class="btn-back" onclick="obBack(1)"><svg width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg> Back</button>
+                    <button class="btn-next" id="ob-next1" onclick="obNext(1)" disabled>Continue <svg width="16"
+                            height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg></button>
+                </div>
+            </div>
+
+            <!-- Step 2: Baby profile -->
+            <div id="ob-step2" style="display:none">
+                <div class="step-badge">Step 3 of 4</div>
+                <h2 class="onboard-title">Baby's profile</h2>
+                <p class="onboard-sub">Tell us about your little one</p>
+                <div class="baby-form">
+                    <div class="gender-row">
+                        <button class="gender-btn" id="g-boy" onclick="selectGender('boy')">Boy</button>
+                        <button class="gender-btn" id="g-girl" onclick="selectGender('girl')">Girl</button>
+                        <button class="gender-btn" id="g-other" onclick="selectGender('other')">Other</button>
+                    </div>
+                    <div class="field">
+                        <span class="field-label-sm">Baby's name</span>
+                        <div class="input-wrap">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" />
+                                <path
+                                    d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4" />
+                            </svg>
+                            <input type="text" id="baby-name" placeholder="Little one's name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <span class="field-label-sm">Date of birth</span>
+                        <div class="input-wrap">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                                <line x1="16" x2="16" y1="2" y2="6" />
+                                <line x1="8" x2="8" y1="2" y2="6" />
+                                <line x1="3" x2="21" y1="10" y2="10" />
+                            </svg>
+                            <input type="date" id="baby-dob">
+                        </div>
+                    </div>
+                    <div class="two-col">
+                        <div class="field">
+                            <span class="field-label-sm">Weight (kg)</span>
+                            <div class="input-wrap">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                    <line x1="3" x2="21" y1="6" y2="6" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" />
+                                </svg>
+                                <input type="number" id="baby-weight" placeholder="3.5">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <span class="field-label-sm">Height (cm)</span>
+                            <div class="input-wrap">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4Z" />
+                                    <path d="m7.5 10.5 2 2" />
+                                    <path d="m10.5 7.5 2 2" />
+                                    <path d="m13.5 4.5 2 2" />
+                                    <path d="m4.5 13.5 2 2" />
+                                </svg>
+                                <input type="number" id="baby-height" placeholder="50">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-row">
+                    <button class="btn-back" onclick="obBack(2)"><svg width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg> Back</button>
+                    <button class="btn-next" onclick="obNext(2)">Continue <svg width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg></button>
+                </div>
+            </div>
+
+            <!-- Step 3: Done -->
+            <div id="ob-step3" style="display:none">
+                <div class="step-badge">Step 4 of 4</div>
+                <div class="done-section">
+                    <div class="done-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--terra)"
+                            stroke-width="2">
+                            <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" />
+                            <path
+                                d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4" />
+                            <path d="M12 3C9 3 6.5 5 5.4 7.4" />
+                        </svg>
+                    </div>
+                    <h3 class="done-title" id="done-title">Welcome!</h3>
+                    <p class="done-sub" id="done-sub">Your profile is set up. Your AI parenting assistant is ready to
+                        help you.</p>
+                    <div class="summary-box">
+                        <div class="sum-row"><span class="sum-label">Role</span><span class="sum-val"
+                                id="sum-role">—</span></div>
+                        <div class="sum-row"><span class="sum-label">Experience</span><span class="sum-val"
+                                id="sum-exp">—</span></div>
+                        <div class="sum-row"><span class="sum-label">Baby</span><span class="sum-val"
+                                id="sum-baby">—</span></div>
+                    </div>
+                </div>
+                <div class="nav-row">
+                    <button class="btn-back" onclick="obBack(3)"><svg width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m15 18-6-6 6-6" />
+                        </svg> Back</button>
+                    <button class="btn-next" onclick="finishOnboarding()">Go to Dashboard <svg width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14" />
+                            <path d="m12 5 7 7-7 7" />
+                        </svg></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('ALL SESSION KEYS:');
+        for (let i = 0; i < sessionStorage.length; i++) {
+            console.log(sessionStorage.key(i), '=', sessionStorage.getItem(sessionStorage.key(i)));
+        }
+        let obStep = 0;
+        let obData = { role: '', experience: '', babyName: '', babyDob: '', gender: '' };
+        let appUser = JSON.parse(sessionStorage.getItem('bm_user') || '{"name":"User","role":""}');
+
+        function selectRole(role) {
+            ['mother', 'father', 'babysitter', 'grandparent'].forEach(r => document.getElementById('role-' + r).classList.remove('selected'));
+            document.getElementById('role-' + role).classList.add('selected');
+            obData.role = role;
+            document.getElementById('ob-next0').disabled = false;
+        }
+        function selectExp(exp) {
+            ['first', 'some', 'experienced'].forEach(e => document.getElementById('exp-' + e).classList.remove('selected'));
+            document.getElementById('exp-' + exp).classList.add('selected');
+            obData.experience = exp;
+            document.getElementById('ob-next1').disabled = false;
+        }
+        function selectGender(g) {
+            ['boy', 'girl', 'other'].forEach(x => document.getElementById('g-' + x).classList.remove('selected'));
+            document.getElementById('g-' + g).classList.add('selected');
+            obData.gender = g;
+        }
+        function obNext(step) {
+            document.getElementById('ob-step' + step).style.display = 'none';
+            obStep = step + 1;
+            if (obStep === 3) {
+                const name = document.getElementById('baby-name').value || '—';
+                const dob = document.getElementById('baby-dob').value;
+                obData.babyName = name;
+                obData.babyDob = dob;
+                document.getElementById('sum-role').textContent = obData.role;
+                document.getElementById('sum-exp').textContent = obData.experience;
+                document.getElementById('sum-baby').textContent = name + (dob ? ' · Born ' + dob : '');
+                document.getElementById('done-title').textContent = 'Welcome, ' + (appUser.name?.split(' ')[0] || 'Parent') + '!';
+                document.getElementById('done-sub').textContent = 'Your profile is set up. Your AI parenting assistant is ready to help you with ' + (name !== '—' ? name : 'your baby') + '.';
+            }
+            document.getElementById('ob-step' + obStep).style.display = 'block';
+            updateProgress(obStep);
+        }
+        function obBack(step) {
+            document.getElementById('ob-step' + step).style.display = 'none';
+            obStep = step - 1;
+            document.getElementById('ob-step' + obStep).style.display = 'block';
+            updateProgress(obStep);
+        }
+        function updateProgress(step) {
+            const pct = (step / 3) * 100;
+            document.getElementById('ob-progress').style.width = pct + '%';
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById('pd' + i);
+                dot.classList.remove('active', 'done');
+                if (i < step) dot.classList.add('done');
+                else if (i === step) dot.classList.add('active');
+            }
+        }
+        async function finishOnboarding() {
+            const token = sessionStorage.getItem('bm_token');
+            if (!token) { alert('Not logged in'); return; }
+
+            const name = document.getElementById('baby-name').value.trim();
+            const dob = document.getElementById('baby-dob').value;
+            const weight = parseFloat(document.getElementById('baby-weight').value) || undefined;
+            const height = parseFloat(document.getElementById('baby-height').value) || undefined;
+            const gender = obData.gender === 'boy' ? 'male' : obData.gender === 'girl' ? 'female' : 'unknown';
+
+            // Only create baby if name + dob provided
+            if (name && dob) {
+                try {
+                    const res = await fetch('/api/baby', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ name, birthDate: dob, gender, weight, height }),
+                    });
+                    const data = await res.json();
+                    if (!res.ok) { alert('Could not save baby: ' + (data.error || 'Server error')); return; }
+                } catch (err) {
+                    alert('Network error: ' + err.message); return;
+                }
+            }
+
+            // Update role on user if changed
+            if (obData.role) {
+                try {
+                    await fetch('/api/auth/me/role', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ role: obData.role }),
+                    });
+                } catch { /* non-critical */ }
+            }
+
+            appUser.role = obData.role;
+            sessionStorage.setItem('bm_user', JSON.stringify(appUser));
+            sessionStorage.removeItem('bm_needs_onboarding');
+            location.href = 'app.html';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canbebe — Gentle Care for Every Journey</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ══ NAVBAR ══ -->
+    <header id="mainHeader">
+        <!-- ═══════════════════════════════════════════════════════════
+     CANBEBE NAVBAR - Reusable Component
+     Include this in all pages (landing, login, signup, etc.)
+═══════════════════════════════════════════════════════════ -->
+
+        <!-- ═══════════════════════════════════════════════════════════
+     CANBEBE NAVBAR - Reusable Component
+     Include this in all pages (landing, login, signup, etc.)
+═══════════════════════════════════════════════════════════ -->
+
+        <!-- ═══════════════════════════════════════════════════════════
+     CANBEBE NAVBAR - Reusable Component
+     Include this in all pages (landing, login, signup, etc.)
+═══════════════════════════════════════════════════════════ -->
+
+        <!-- ═══════════════════════════════════════════════════════════
+     CANBEBE NAVBAR - Reusable Component
+     Include this in all pages (landing, login, signup, etc.)
+═══════════════════════════════════════════════════════════ -->
+
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Canbebe — Gentle Care for Every Journey</title>
+            <link
+                href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700;800&display=swap"
+                rel="stylesheet">
+            <link rel="stylesheet" href="style-fixed.css">
+        </head>
+
+        <body>
+
+            <!-- ══ NAVBAR - FIXED LAYOUT ══ -->
+            <header id="mainHeader">
+                <!-- ══════════════════════════════════════════════════════════════════
+   UPDATED NAVIGATION FOR INDEX.HTML
+   Replace the existing <nav> section with this updated version
+══════════════════════════════════════════════════════════════════ -->
+
+                <nav>
+                    <!-- Logo at the beginning -->
+                    <div class="nav-logo">
+                        <a href="index.html">
+                            <img src="logo (2).svg" alt="Canbebe" style="height: 50px; width: auto;">
+                        </a>
+                    </div>
+
+                    <!-- Navigation links in the middle -->
+                    <ul class="nav-menu">
+                        <li><a href="product.html"><span data-i18n="nav.products">Products</span></a></li>
+                        <li><a href="offers.html"><span data-i18n="nav.offers">Offers</span></a></li>
+                        <li><a href="index.html#faq"><span data-i18n="nav.faq">FAQ</span></a></li>
+                        <li><a href="index.html#contact"><span data-i18n="nav.contact">Contact</span></a></li>
+                    </ul>
+
+                    <!-- Language selector, Login and Signup at the end -->
+                    <div class="nav-auth">
+                        <div class="lang-selector">
+                            <button class="lang-btn" id="current-lang" onclick="toggleLanguageDropdown()">
+                                English
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </button>
+                            <div class="lang-dropdown" id="lang-dropdown">
+                                <div class="lang-option active" data-lang="en"
+                                    onclick="setLanguage('en'); toggleLanguageDropdown();">
+                                    English
+                                </div>
+                                <div class="lang-option" data-lang="fr"
+                                    onclick="setLanguage('fr'); toggleLanguageDropdown();">
+                                    Français
+                                </div>
+                                <div class="lang-option" data-lang="ar"
+                                    onclick="setLanguage('ar'); toggleLanguageDropdown();">
+                                    العربية
+                                </div>
+                            </div>
+                        </div>
+                        <a href="login.html" class="nav-login" data-i18n="nav.login">Login</a>
+                        <a href="signup.html" class="nav-signup" data-i18n="nav.signup">Sign Up</a>
+                    </div>
+
+                    <!-- Mobile hamburger -->
+                    <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+                        <span></span><span></span><span></span>
+                    </button>
+                </nav>
+
+                <!-- Mobile drawer -->
+                <div class="mobile-drawer" id="mobileDrawer">
+                    <ul class="mobile-menu">
+                        <li><a href="product.html" class="mobile-link">Products</a></li>
+                        <li><a href="offers.html" class="mobile-link">Offers</a></li>
+                        <li><a href="index.html#faq" class="mobile-link">FAQ</a></li>
+                        <li><a href="index.html#contact" class="mobile-link">Contact</a></li>
+                    </ul>
+                    <div class="mobile-auth">
+                        <a href="login.html" class="nav-login">Login</a>
+                        <a href="signup.html" class="nav-signup">Sign Up</a>
+                    </div>
+                </div>
+
+                <script>
+                    // Language dropdown toggle
+                    function toggleLanguageDropdown() {
+                        const dropdown = document.getElementById('lang-dropdown');
+                        if (dropdown) {
+                            dropdown.classList.toggle('show');
+                        }
+                    }
+
+                    // Close dropdown when clicking outside
+                    document.addEventListener('click', (e) => {
+                        const langSelector = document.querySelector('.lang-selector');
+                        const dropdown = document.getElementById('lang-dropdown');
+
+                        if (dropdown && langSelector && !langSelector.contains(e.target)) {
+                            dropdown.classList.remove('show');
+                        }
+                    });
+                </script>
+
+                <!-- Mobile drawer -->
+                <div class="mobile-drawer" id="mobileDrawer">
+                    <ul class="mobile-menu">
+                        <li><a href="#products" class="mobile-link">Products</a></li>
+                        <li><a href="#faq" class="mobile-link">FAQ</a></li>
+                        <li><a href="#contact" class="mobile-link">Contact</a></li>
+                    </ul>
+                    <div class="mobile-auth">
+                        <a href="Login.html" class="nav-login">Login</a>
+                        <a href="signup.html" class="nav-signup">Sign Up</a>
+                    </div>
+                </div>
+            </header>
+
+
+            <!-- Mobile drawer -->
+            <div class="mobile-drawer" id="mobileDrawer">
+                <ul class="mobile-menu">
+                    <li><a href="#products" class="mobile-link">Products</a></li>
+                    <li><a href="#faq" class="mobile-link">FAQ</a></li>
+                    <li><a href="#contact" class="mobile-link">Contact</a></li>
+                </ul>
+                <div class="mobile-auth">
+                    <a href="Login.html" class="nav-login">Login</a>
+                    <a href="signup.html" class="nav-signup">Sign Up</a>
+                </div>
+            </div>
+    </header>
+
+    <!-- ══ HERO ══ -->
+    <main class="hero" id="home">
+        <div class="hero-left">
+            <div class="ellipse ellipse-1"></div>
+            <div class="ellipse ellipse-2"></div>
+            <div class="ellipse ellipse-3"></div>
+            <div class="hero-content">
+                <div class="hero-eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    <span>AI-Powered Maternal Care</span>
+                </div>
+                <h1 class="hero-title">
+                    Your baby's<br>
+                    <em>journey</em> starts<br>
+                    with love
+                </h1>
+                <p class="hero-subtitle">
+                    Gentle, dermatologist-tested products and an intelligent AI companion guiding mothers through every
+                    precious stage.
+                </p>
+                <div class="hero-actions">
+                    <a href="#products" class="hero-btn-primary">
+                        <span>Explore Products</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </a>
+                    <a href="#ai-assistant" class="hero-btn-secondary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                        <span>Chat with AI</span>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-num">50k+</span>
+                        <span class="stat-label">Happy Moms</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-num">98%</span>
+                        <span class="stat-label">Natural Ingredients</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat">
+                        <span class="stat-num">24/7</span>
+                        <span class="stat-label">AI Support</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <div class="hero-ring hero-ring-1"></div>
+            <div class="hero-ring hero-ring-2"></div>
+            <img src="f.png" alt="Happy baby" style="scale: 110%;">
+        </div>
+
+        <!-- Floating trust badge -->
+        <div class="hero-badge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b45c0" stroke-width="2"
+                stroke-linecap="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            <div>
+                <span class="badge-title">Dermatologist Tested</span>
+                <span class="badge-sub">Safe for newborns</span>
+            </div>
+        </div>
+        <!-- Add this right after the hero-badge div, before closing </main> -->
+
+    </main>
+
+
+
+    <!-- ══ AI ASSISTANT CTA STRIP ══ -->
+    <section class="ai-strip" id="ai-assistant">
+        <div class="ai-strip-inner">
+            <div class="ai-strip-left">
+                <div class="ai-icon-wrap">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"
+                        stroke-linecap="round">
+                        <circle cx="12" cy="12" r="3" fill="white" />
+                        <path
+                            d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24" />
+                    </svg>
+                    <div class="ai-pulse"></div>
+                </div>
+                <div class="ai-strip-text">
+                    <h3>Your <em>24/7 Parenting Partner</em></h3>
+                    <p>Real-time guidance powered by AI — from midnight feedings to milestone moments.</p>
+                </div>
+            </div>
+
+            <div class="ai-features-grid">
+                <div class="ai-feature-pill">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
+                    <span>Instant Answers</span>
+                </div>
+                <div class="ai-feature-pill">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87m-4-12a4 4 0 0 1 0 7.75" />
+                    </svg>
+                    <span>Personalized Tips</span>
+                </div>
+                <div class="ai-feature-pill">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span>Always Available</span>
+                </div>
+                <div class="ai-feature-pill">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                    <span>Expert-Backed</span>
+                </div>
+            </div>
+
+            <a href="#" class="ai-cta-btn">
+                Try AI Guide Free
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- ══ PRODUCTS SECTION ══ -->
+    <section class="products-section" id="products">
+
+        <div class="section-orb orb-1"></div>
+        <div class="section-orb orb-2"></div>
+
+        <div class="products-header">
+            <div class="eyebrow-wrap">
+                <span class="eyebrow-line"></span>
+                <p class="products-eyebrow">Crafted for your little one</p>
+                <span class="eyebrow-line"></span>
+            </div>
+            <h2 class="products-title">Our <em>Collections</em></h2>
+            <p class="products-subtitle">Gentle, dermatologist-tested products made with love for every stage of baby's
+                journey.</p>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="diapers">Diapers</button>
+            <button class="filter-tab" data-filter="skincare">Skincare</button>
+            <button class="filter-tab" data-filter="bath">Bath</button>
+            <button class="filter-tab" data-filter="wipes">Wipes</button>
+        </div>
+
+        <div class="carousel-outer">
+            <button class="carousel-arrow carousel-prev" aria-label="Previous">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6" />
+                </svg>
+            </button>
+
+            <div class="carousel-viewport">
+                <div class="carousel-track" id="carouselTrack">
+
+                    <!-- Card 1 -->
+                    <article class="product-card" data-category="diapers">
+                        <div class="card-image-wrap">
+                            <div class="card-img-placeholder">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                <p>Add image</p>
+                            </div>
+                            <div class="card-badge new">New</div>
+                            <div class="card-hover-overlay"><a href="#" class="card-quick-view">Quick View</a></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-top">
+                                <span class="card-category">Diapers</span>
+                                <div class="card-rating"><span class="stars">★★★★★</span><span
+                                        class="rating-count">(128)</span></div>
+                            </div>
+                            <h3 class="card-name">Ultra Soft Diapers</h3>
+                            <p class="card-desc">12-hour dryness with breathable layers for sensitive skin.</p>
+                            <div class="card-footer">
+                                <div class="card-sizes">
+                                    <span class="size active">S</span><span class="size">M</span><span
+                                        class="size">L</span><span class="size">XL</span>
+                                </div>
+                                <a href="#" class="card-btn"><span>Add to Cart</span><svg width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 2 -->
+                    <article class="product-card" data-category="wipes">
+                        <div class="card-image-wrap">
+                            <div class="card-img-placeholder">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                <p>Add image</p>
+                            </div>
+                            <div class="card-hover-overlay"><a href="#" class="card-quick-view">Quick View</a></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-top">
+                                <span class="card-category">Wipes</span>
+                                <div class="card-rating"><span class="stars">★★★★★</span><span
+                                        class="rating-count">(94)</span></div>
+                            </div>
+                            <h3 class="card-name">Pure Water Wipes</h3>
+                            <p class="card-desc">99% pure water, fragrance-free, hypoallergenic formula.</p>
+                            <div class="card-footer">
+                                <div class="card-sizes"><span class="size active">56 pcs</span><span class="size">112
+                                        pcs</span></div>
+                                <a href="#" class="card-btn"><span>Add to Cart</span><svg width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 3 — Featured -->
+                    <article class="product-card card-featured" data-category="skincare">
+                        <div class="card-image-wrap">
+                            <div class="card-img-placeholder">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                <p>Add image</p>
+                            </div>
+                            <div class="card-badge bestseller">Bestseller</div>
+                            <div class="card-hover-overlay"><a href="#" class="card-quick-view">Quick View</a></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-top">
+                                <span class="card-category">Skincare</span>
+                                <div class="card-rating"><span class="stars">★★★★★</span><span
+                                        class="rating-count">(312)</span></div>
+                            </div>
+                            <h3 class="card-name">Nourishing Baby Lotion</h3>
+                            <p class="card-desc">Deeply hydrating with shea butter and chamomile extract for velvety
+                                soft skin.</p>
+                            <div class="card-footer">
+                                <div class="card-sizes"><span class="size active">100ml</span><span
+                                        class="size">200ml</span></div>
+                                <a href="#" class="card-btn"><span>Add to Cart</span><svg width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 4 -->
+                    <article class="product-card" data-category="bath">
+                        <div class="card-image-wrap">
+                            <div class="card-img-placeholder">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                <p>Add image</p>
+                            </div>
+                            <div class="card-hover-overlay"><a href="#" class="card-quick-view">Quick View</a></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-top">
+                                <span class="card-category">Bath</span>
+                                <div class="card-rating"><span class="stars">★★★★☆</span><span
+                                        class="rating-count">(76)</span></div>
+                            </div>
+                            <h3 class="card-name">Gentle Bubble Bath</h3>
+                            <p class="card-desc">Tear-free formula with oat milk and lavender for a calming bedtime
+                                ritual.</p>
+                            <div class="card-footer">
+                                <div class="card-sizes"><span class="size active">250ml</span><span
+                                        class="size">500ml</span></div>
+                                <a href="#" class="card-btn"><span>Add to Cart</span><svg width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 5 -->
+                    <article class="product-card" data-category="diapers">
+                        <div class="card-image-wrap">
+                            <div class="card-img-placeholder">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                <p>Add image</p>
+                            </div>
+                            <div class="card-badge new">New</div>
+                            <div class="card-hover-overlay"><a href="#" class="card-quick-view">Quick View</a></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-top">
+                                <span class="card-category">Diapers</span>
+                                <div class="card-rating"><span class="stars">★★★★★</span><span
+                                        class="rating-count">(55)</span></div>
+                            </div>
+                            <h3 class="card-name">Night Guard Diapers</h3>
+                            <p class="card-desc">Extra-absorbent overnight protection for uninterrupted sleep.</p>
+                            <div class="card-footer">
+                                <div class="card-sizes"><span class="size active">S</span><span
+                                        class="size">M</span><span class="size">L</span></div>
+                                <a href="#" class="card-btn"><span>Add to Cart</span><svg width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 6 -->
+                    <article class="product-card" data-category="skincare">
+                        <div class="card-image-wrap">
+                            <div class="card-img-placeholder">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="3" />
+                                    <circle cx="8.5" cy="8.5" r="1.5" />
+                                    <polyline points="21 15 16 10 5 21" />
+                                </svg>
+                                <p>Add image</p>
+                            </div>
+                            <div class="card-hover-overlay"><a href="#" class="card-quick-view">Quick View</a></div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-top">
+                                <span class="card-category">Skincare</span>
+                                <div class="card-rating"><span class="stars">★★★★★</span><span
+                                        class="rating-count">(89)</span></div>
+                            </div>
+                            <h3 class="card-name">Rash Cream</h3>
+                            <p class="card-desc">Fast-relief zinc formula soothes and protects delicate skin.</p>
+                            <div class="card-footer">
+                                <div class="card-sizes"><span class="size active">50ml</span><span
+                                        class="size">100ml</span></div>
+                                <a href="#" class="card-btn"><span>Add to Cart</span><svg width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                        stroke-linecap="round">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg></a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+
+            <button class="carousel-arrow carousel-next" aria-label="Next">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="carousel-controls">
+            <div class="carousel-progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="carousel-dots" id="carouselDots">
+                <span class="dot active"></span><span class="dot"></span><span class="dot"></span>
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <span class="carousel-counter"><span id="currentNum">1</span> / <span id="totalNum">6</span></span>
+        </div>
+
+        <!-- View All Products CTA -->
+        <div class="products-footer-cta">
+            <a href="#" class="view-all-btn">
+                View All Products
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg>
+            </a>
+        </div>
+    </section> <!-- End of Products Section -->
+
+    <!-- ══ MOBILE APP PROMOTION SECTION ══ -->
+    <section class="app-promo-section">
+        <div class="app-promo-container">
+            <div class="app-promo-left">
+                <div class="app-promo-icon-large">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                        <line x1="12" y1="18" x2="12.01" y2="18" />
+                    </svg>
+                </div>
+                <div class="app-promo-content-main">
+                    <div class="eyebrow-wrap">
+                        <span class="eyebrow-line"></span>
+                        <p class="products-eyebrow">Download Our App</p>
+                        <span class="eyebrow-line"></span>
+                    </div>
+                    <h2 class="app-promo-title">Everything you need in <em>one place</em></h2>
+                    <p class="app-promo-description">Track your baby's milestones, connect with other moms, get 24/7 AI
+                        support, and enjoy exclusive app-only deals.</p>
+                    <div class="app-features-list">
+                        <div class="app-feature-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Baby Milestone Tracker</span>
+                        </div>
+                        <div class="app-feature-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Mom Community & Support</span>
+                        </div>
+                        <div class="app-feature-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>24/7 AI Assistant</span>
+                        </div>
+                        <div class="app-feature-item">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Exclusive App Offers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="app-promo-right">
+                <div class="app-store-buttons">
+                    <a href="#" class="app-store-btn apple">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                        </svg>
+                        <div>
+                            <span class="app-btn-label">Download on the</span>
+                            <span class="app-btn-store">App Store</span>
+                        </div>
+                    </a>
+                    <a href="#" class="app-store-btn google">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+                        </svg>
+                        <div>
+                            <span class="app-btn-label">GET IT ON</span>
+                            <span class="app-btn-store">Google Play</span>
+                        </div>
+                    </a>
+                </div>
+                <p class="app-promo-note">Free to download • Available on iOS & Android</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ WHY CANBEBE TRUST SECTION ══ -->
+    <section class="trust-section">
+        <div class="trust-inner">
+            <div class="eyebrow-wrap">
+                <span class="eyebrow-line"></span>
+                <p class="products-eyebrow">Why Mothers Trust Us</p>
+                <span class="eyebrow-line"></span>
+            </div>
+            <h2 class="section-title">Care you can <em>feel</em></h2>
+            <div class="trust-grid">
+                <div class="trust-card">
+                    <div class="trust-icon">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <h4>Dermatologist Tested</h4>
+                    <p>Every formula is clinically tested and approved for even the most sensitive newborn skin.</p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-icon">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <h4>98% Natural Ingredients</h4>
+                    <p>Thoughtfully sourced plant-based ingredients with zero harsh chemicals or artificial fragrances.
+                    </p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-icon">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                            <line x1="9" y1="9" x2="9.01" y2="9" />
+                            <line x1="15" y1="9" x2="15.01" y2="9" />
+                        </svg>
+                    </div>
+                    <h4>50,000+ Happy Families</h4>
+                    <p>Trusted by mothers across the country for gentle, reliable care at every stage.</p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-icon">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                        </svg>
+                    </div>
+                    <h4>24/7 AI Support</h4>
+                    <p>Our intelligent assistant answers your parenting questions any time of day or night.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FAQ SECTION ══ -->
+    <section class="faq-section" id="faq">
+        <div class="faq-orb faq-orb-1"></div>
+        <div class="faq-orb faq-orb-2"></div>
+        <div class="faq-inner">
+            <div class="eyebrow-wrap">
+                <span class="eyebrow-line"></span>
+                <p class="products-eyebrow">Got Questions?</p>
+                <span class="eyebrow-line"></span>
+            </div>
+            <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
+            <p class="section-subtitle">Everything you need to know about Canbebe products and our AI guide.</p>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Are Canbebe products safe for newborns?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes — all Canbebe products are dermatologist-tested, hypoallergenic and formulated without
+                            parabens, sulfates or artificial fragrances. They are specifically designed for the delicate
+                            skin of newborns and premature babies.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How does the AI Mama Guide work?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our AI assistant is trained on thousands of pediatric and maternal health resources. Simply
+                            type your question in the chat — whether it's about feeding schedules, sleep routines, or
+                            product recommendations — and receive personalised guidance instantly, 24 hours a day.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What diaper size should I choose?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We recommend choosing by weight: S (up to 5kg), M (5–9kg), L (9–14kg), XL (14kg+). If your
+                            baby is between sizes, go up — a slightly larger diaper is more comfortable and helps
+                            prevent leaks. Our AI assistant can also help you find the perfect fit.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Do you offer free shipping?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! Free shipping is available on all orders over 2500 DZD. Orders are delivered within 2–5
+                            business days nationwide. Express same-day delivery is available in select cities.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can I return a product if my baby has a reaction?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely. Your baby's comfort and safety is our top priority. We offer a full 30-day
+                            satisfaction guarantee. If you experience any issues, contact our support team and we will
+                            arrange a full refund or exchange — no questions asked.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How do I create an account?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Click "Sign Up" in the top navigation, enter your name, email and password. Once registered
+                            you can track orders, save favourite products and access your full chat history with the AI
+                            Mama Guide.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ CONTACT SECTION ══ -->
+    <section class="contact-section" id="contact">
+        <div class="contact-inner">
+            <div class="contact-left">
+                <div class="eyebrow-wrap" style="justify-content:flex-start;">
+                    <span class="eyebrow-line"></span>
+                    <p class="products-eyebrow">Get in Touch</p>
+                </div>
+                <h2 class="section-title" style="text-align:left;">We'd love to <em>hear</em> from you</h2>
+                <p class="section-subtitle" style="text-align:left;margin:0 0 40px;">Whether you have a question about
+                    our products, need help with your order, or just want to say hello — our team is here for you.</p>
+
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="contact-info-label">Email</span>
+                            <a href="mailto:hello@canbebe.dz" class="contact-info-value">hello@canbebe.dz</a>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.62 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.18 6.18l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="contact-info-label">Phone</span>
+                            <a href="tel:+213555000000" class="contact-info-value">+213 555 000 000</a>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                <circle cx="12" cy="10" r="3" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="contact-info-label">Location</span>
+                            <span class="contact-info-value">Algiers, Algeria</span>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>
+                        </div>
+                        <div>
+                            <span class="contact-info-label">Support Hours</span>
+                            <span class="contact-info-value">Sat–Thu, 9am – 6pm</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-socials">
+                    <a href="#" class="social-link" aria-label="Instagram">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="Facebook">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="WhatsApp">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="contact-right">
+                <div class="contact-form-card">
+                    <h3 class="form-title">Send us a message</h3>
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" placeholder="Amira" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" placeholder="Benali" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="amira@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select id="subject">
+                                <option value="">Choose a topic…</option>
+                                <option>Order question</option>
+                                <option>Product information</option>
+                                <option>AI Guide feedback</option>
+                                <option>Returns & exchanges</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="4" placeholder="How can we help you?"></textarea>
+                        </div>
+                        <button type="submit" class="form-submit-btn">
+                            Send Message
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <line x1="22" y1="2" x2="11" y2="13" />
+                                <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                            </svg>
+                        </button>
+                        <div class="form-success" id="formSuccess">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9b5fc8"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Thank you! We'll get back to you within 24 hours.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div>
+                    <img src="logo (2).svg" alt="" style="height: 50px; width: auto;">
+                </div>
+                <p class="footer-tagline">Gentle care for every little journey — backed by nature and guided by
+                    intelligence.</p>
+                <div class="footer-socials">
+                    <a href="#" class="footer-social" aria-label="Instagram">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="Facebook">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="WhatsApp">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links-group">
+                <h5>Products</h5>
+                <ul>
+                    <li><a href="#">Diapers</a></li>
+                    <li><a href="#">Wipes</a></li>
+                    <li><a href="#">Skincare</a></li>
+                    <li><a href="#">Bath</a></li>
+                    <li><a href="#">Bundles</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-group">
+                <h5>Company</h5>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-group">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="#faq">FAQ</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-newsletter">
+                <h5>Stay in the loop</h5>
+                <p>Get parenting tips, product launches and exclusive offers.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="your@email.com" class="newsletter-input">
+                    <button class="newsletter-btn" aria-label="Subscribe">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="newsletter-note">No spam, unsubscribe anytime.</p>
+            </div>
+        </div>
+        <!-- Add this right before <div class="footer-bottom"> -->
+
+        <!-- Mobile App Promotion in Footer -->
+        <!-- Mobile App Promotion in Footer -->
+        <div class="footer-app-section">
+            <div class="footer-app-stores">
+                <a href="#" class="footer-store-btn app-store">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                    </svg>
+                    <div>
+                        <span class="footer-badge-label">Download on the</span>
+                        <span class="footer-badge-store">App Store</span>
+                    </div>
+                </a>
+                <a href="#" class="footer-store-btn google-play">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M3,20.5V3.5C3,2.91 3.34,2.39 3.84,2.15L13.69,12L3.84,21.85C3.34,21.6 3,21.09 3,20.5M16.81,15.12L6.05,21.34L14.54,12.85L16.81,15.12M20.16,10.81C20.5,11.08 20.75,11.5 20.75,12C20.75,12.5 20.53,12.9 20.18,13.18L17.89,14.5L15.39,12L17.89,9.5L20.16,10.81M6.05,2.66L16.81,8.88L14.54,11.15L6.05,2.66Z" />
+                    </svg>
+                    <div>
+                        <span class="footer-badge-label">GET IT ON</span>
+                        <span class="footer-badge-store">Google Play</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2025 Canbebe. All rights reserved.</span>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <span>·</span>
+                <a href="#">Terms of Use</a>
+                <span>·</span>
+                <a href="#">Cookie Settings</a>
+            </div>
+            <div class="footer-badges">
+                <span class="footer-badge-pill">🔒 Secure Payments</span>
+                <span class="footer-badge-pill">🌿 Eco Certified</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Chat CTA -->
+    <a href="#ai-assistant" class="fab-cta">
+        <span class="fab-label">Chat with AI</span>
+        <span class="fab-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+        </span>
+        <div class="fab-ring"></div>
+    </a>
+
+    <script>
+        // ── Navbar scroll effect ──
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // ── Mobile hamburger ──
+        const hamburger = document.getElementById('hamburger');
+        const drawer = document.getElementById('mobileDrawer');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            drawer.classList.toggle('open');
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                drawer.classList.remove('open');
+            });
+        });
+
+        // ── Carousel ──
+        const track = document.getElementById('carouselTrack');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.querySelector('.carousel-prev');
+        const nextBtn = document.querySelector('.carousel-next');
+        const progressBar = document.getElementById('progressBar');
+        const currentNum = document.getElementById('currentNum');
+        let current = 0;
+
+        function getVisible() { return window.innerWidth < 700 ? 1 : window.innerWidth < 1080 ? 2 : 3; }
+        function getTotal() { return track.children.length; }
+
+        function goTo(index) {
+            const vis = getVisible();
+            const max = getTotal() - vis;
+            current = Math.max(0, Math.min(index, max));
+            const gap = 28;
+            const cardW = track.children[0].offsetWidth + gap;
+            track.style.transform = `translateX(-${current * cardW}px)`;
+            dots.forEach((d, i) => d.classList.toggle('active', i === current));
+            progressBar.style.width = `${(current / max) * 100}%`;
+            currentNum.textContent = current + 1;
+        }
+
+        prevBtn.addEventListener('click', () => goTo(current - 1));
+        nextBtn.addEventListener('click', () => goTo(current + 1));
+        dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+        window.addEventListener('resize', () => goTo(current));
+        document.getElementById('totalNum').textContent = getTotal();
+
+        // Touch swipe
+        let startX = 0;
+        track.addEventListener('touchstart', e => startX = e.touches[0].clientX, { passive: true });
+        track.addEventListener('touchend', e => {
+            const diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+        });
+
+        // ── Size selector ──
+        document.querySelectorAll('.card-sizes').forEach(group => {
+            group.querySelectorAll('.size').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    group.querySelectorAll('.size').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+        });
+
+        // ── Filter tabs ──
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const filter = tab.dataset.filter;
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const match = filter === 'all' || card.dataset.category === filter;
+                    card.style.opacity = match ? '1' : '0.3';
+                    card.style.transform = match ? '' : 'scale(0.96)';
+                    card.style.pointerEvents = match ? '' : 'none';
+                });
+            });
+        });
+
+        // ── FAQ accordion ──
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                // close all
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('open');
+                    i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
+                if (!expanded) {
+                    item.classList.add('open');
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        // ── Contact form ──
+        document.getElementById('contactForm').addEventListener('submit', e => {
+            e.preventDefault();
+            document.getElementById('formSuccess').classList.add('visible');
+            e.target.reset();
+            setTimeout(() => document.getElementById('formSuccess').classList.remove('visible'), 5000);
+        });
+
+        // ── Scroll reveal ──
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${i * 0.08}s`;
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.product-card, .trust-card, .faq-item').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+
+</html>

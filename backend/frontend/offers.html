@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offers — Canbebe</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="offer.css">
+</head>
+
+<body>
+
+    <!-- ══ NAVBAR ══ -->
+    <header id="mainHeader">
+        <nav>
+            <!-- Logo at the beginning -->
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="logo (2).svg" alt="Canbebe" style="height: 50px; width: auto;">
+                </a>
+            </div>
+
+            <!-- Navigation links in the middle -->
+            <ul class="nav-menu">
+                <li><a href="products.html"><span data-i18n="nav.products">Products</span></a></li>
+                <li><a href="offers.html" class="active"><span data-i18n="nav.offers">Offers</span></a></li>
+                <li><a href="index.html#faq"><span data-i18n="nav.faq">FAQ</span></a></li>
+                <li><a href="index.html#contact"><span data-i18n="nav.contact">Contact</span></a></li>
+            </ul>
+
+            <!-- Language selector, Login and Signup at the end -->
+            <div class="nav-auth">
+                <div class="lang-selector">
+                    <button class="lang-btn" id="current-lang" onclick="toggleLanguageDropdown()">
+                        English
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <div class="lang-option active" data-lang="en"
+                            onclick="setLanguage('en'); toggleLanguageDropdown();">
+                            English
+                        </div>
+                        <div class="lang-option" data-lang="fr" onclick="setLanguage('fr'); toggleLanguageDropdown();">
+                            Français
+                        </div>
+                        <div class="lang-option" data-lang="ar" onclick="setLanguage('ar'); toggleLanguageDropdown();">
+                            العربية
+                        </div>
+                    </div>
+                </div>
+                <a href="login.html" class="nav-login" data-i18n="nav.login">Login</a>
+                <a href="signup.html" class="nav-signup" data-i18n="nav.signup">Sign Up</a>
+            </div>
+
+            <!-- Mobile hamburger -->
+            <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+        </nav>
+
+        <!-- Mobile drawer -->
+        <div class="mobile-drawer" id="mobileDrawer">
+            <ul class="mobile-menu">
+                <li><a href="products.html" class="mobile-link">Products</a></li>
+                <li><a href="offers.html" class="mobile-link">Offers</a></li>
+                <li><a href="index.html#faq" class="mobile-link">FAQ</a></li>
+                <li><a href="index.html#contact" class="mobile-link">Contact</a></li>
+            </ul>
+            <div class="mobile-auth">
+                <a href="login.html" class="nav-login">Login</a>
+                <a href="signup.html" class="nav-signup">Sign Up</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ══ OFFERS HERO ══ -->
+    <section class="offers-hero">
+        <div class="hero-orb hero-orb-1"></div>
+        <div class="hero-orb hero-orb-2"></div>
+        <div class="offers-hero-content">
+            <div class="eyebrow-wrap">
+                <span class="eyebrow-line"></span>
+                <p class="products-eyebrow">AI Mama Guide Plans</p>
+                <span class="eyebrow-line"></span>
+            </div>
+            <h1 class="offers-hero-title">Choose Your <em>Perfect Plan</em></h1>
+            <p class="offers-hero-subtitle">Get personalized parenting support with our AI-powered assistant. From free
+                basics to unlimited premium features.</p>
+        </div>
+    </section>
+
+    <!-- ══ PRICING CARDS ══ -->
+    <section class="pricing-section">
+        <div class="pricing-container">
+
+            <!-- FREE PLAN -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="plan-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 6v6l4 2" />
+                        </svg>
+                    </div>
+                    <h3 class="plan-name">Free</h3>
+                    <p class="plan-tagline">Perfect for trying out</p>
+                    <div class="plan-price">
+                        <span class="price-amount">0</span>
+                        <span class="price-currency">DZD</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                </div>
+
+                <div class="pricing-body">
+                    <ul class="features-list">
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span><strong>10 AI questions</strong> per day</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span><strong>3 urgent questions</strong> per day</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span><strong>2 community posts</strong> per week</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Access to product catalog</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Basic parenting tips</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pricing-footer">
+                    <a href="signup.html?plan=free" class="pricing-btn pricing-btn-secondary">
+                        Get Started Free
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </a>
+                    <p class="plan-note">No credit card required</p>
+                </div>
+            </div>
+
+            <!-- PRO PLAN -->
+            <div class="pricing-card pricing-card-featured">
+                <div class="popular-badge">Most Popular</div>
+                <div class="pricing-header">
+                    <div class="plan-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <path
+                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="plan-name">Pro</h3>
+                    <p class="plan-tagline">For active parents</p>
+                    <div class="plan-price">
+                        <span class="price-amount">1,999</span>
+                        <span class="price-currency">DZD</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                </div>
+
+                <div class="pricing-body">
+                    <ul class="features-list">
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span><strong>Unlimited AI questions</strong></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span><strong>Unlimited community posts</strong></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Priority AI response time</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Personalized content feed</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Milestone tracking & reminders</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Product recommendations</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Monthly parenting webinars</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pricing-footer">
+                    <a href="signup.html?plan=pro" class="pricing-btn pricing-btn-primary">
+                        Start Pro Trial
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </a>
+                    <p class="plan-note">7-day free trial included</p>
+                </div>
+            </div>
+
+            <!-- PREMIUM PLAN -->
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="plan-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                        </svg>
+                    </div>
+                    <h3 class="plan-name">Premium</h3>
+                    <p class="plan-tagline">Complete parenting suite</p>
+                    <div class="plan-price">
+                        <span class="price-amount">3,999</span>
+                        <span class="price-currency">DZD</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                </div>
+
+                <div class="pricing-body">
+                    <ul class="features-list">
+                        <li class="feature-item feature-premium">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span><strong>Everything in Pro, plus:</strong></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span><strong>Advanced analytics dashboard</strong></span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Detailed growth tracking & reports</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Sleep & feeding pattern analysis</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Development milestone predictions</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>1-on-1 expert consultations (monthly)</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Priority customer support</span>
+                        </li>
+                        <li class="feature-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            <span>Exclusive product discounts</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="pricing-footer">
+                    <a href="signup.html?plan=premium" class="pricing-btn pricing-btn-secondary">
+                        Start Premium Trial
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </a>
+                    <p class="plan-note">14-day free trial included</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ══ COMPARISON TABLE ══ -->
+    <section class="comparison-section">
+        <div class="comparison-container">
+            <h2 class="comparison-title">Compare <em>Features</em></h2>
+            <p class="comparison-subtitle">Find the plan that fits your parenting journey</p>
+
+            <div class="comparison-table-wrap">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Free</th>
+                            <th class="featured-col">Pro</th>
+                            <th>Premium</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AI Questions per Month</td>
+                            <td>10</td>
+                            <td class="featured-col">Unlimited</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Urgent Questions</td>
+                            <td>3/month</td>
+                            <td class="featured-col">Unlimited</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Community Posts</td>
+                            <td>2/week</td>
+                            <td class="featured-col">Unlimited</td>
+                            <td>Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td>Milestone Tracking</td>
+                            <td><span class="check-no">—</span></td>
+                            <td class="featured-col"><span class="check-yes">✓</span></td>
+                            <td><span class="check-yes">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Advanced Analytics</td>
+                            <td><span class="check-no">—</span></td>
+                            <td class="featured-col"><span class="check-no">—</span></td>
+                            <td><span class="check-yes">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Expert Consultations</td>
+                            <td><span class="check-no">—</span></td>
+                            <td class="featured-col"><span class="check-no">—</span></td>
+                            <td><span class="check-yes">✓</span></td>
+                        </tr>
+                        <tr>
+                            <td>Priority Support</td>
+                            <td><span class="check-no">—</span></td>
+                            <td class="featured-col"><span class="check-no">—</span></td>
+                            <td><span class="check-yes">✓</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FAQ SECTION ══ -->
+    <section class="pricing-faq-section">
+        <div class="pricing-faq-container">
+            <h2 class="section-title">Pricing <em>Questions?</em></h2>
+            <p class="section-subtitle">Everything you need to know about our plans</p>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can I upgrade or downgrade my plan anytime?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and
+                            we'll prorate the charges based on your billing cycle.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>What happens when I reach my monthly limits on the Free plan?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>When you reach your limits, you'll be notified and given the option to upgrade to Pro or
+                            Premium for unlimited access. Your limits reset at the start of each month.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Is there a refund policy?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, we offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, just
+                            contact our support team for a full refund.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can I cancel my subscription anytime?</span>
+                        <span class="faq-chevron">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg>
+                        </span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely. You can cancel your subscription at any time from your account settings. You'll
+                            retain access until the end of your current billing period.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ FOOTER ══ -->
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div>
+                    <img src="logo (2).svg" alt="" style="height: 50px; width: auto;">
+                </div>
+                <p class="footer-tagline">Gentle care for every little journey — backed by nature and guided by
+                    intelligence.</p>
+                <div class="footer-socials">
+                    <a href="#" class="footer-social" aria-label="Instagram">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" />
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="Facebook">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="footer-social" aria-label="WhatsApp">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links-group">
+                <h5>Products</h5>
+                <ul>
+                    <li><a href="products.html">All Products</a></li>
+                    <li><a href="products.html?category=couches">Diapers</a></li>
+                    <li><a href="products.html?category=wipes">Wipes</a></li>
+                    <li><a href="products.html?category=skincare">Skincare</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-group">
+                <h5>Company</h5>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="offers.html">Offers</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-group">
+                <h5>Support</h5>
+                <ul>
+                    <li><a href="index.html#faq">FAQ</a></li>
+                    <li><a href="index.html#contact">Contact Us</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">Track Order</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-newsletter">
+                <h5>Stay in the loop</h5>
+                <p>Get parenting tips, product launches and exclusive offers.</p>
+                <div class="newsletter-form">
+                    <input type="email" placeholder="your@email.com" class="newsletter-input">
+                    <button class="newsletter-btn" aria-label="Subscribe">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </button>
+                </div>
+                <p class="newsletter-note">No spam, unsubscribe anytime.</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <span class="footer-copy">© 2025 Canbebe. All rights reserved.</span>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <span>·</span>
+                <a href="#">Terms of Use</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language dropdown toggle
+        function toggleLanguageDropdown() {
+            const dropdown = document.getElementById('lang-dropdown');
+            if (dropdown) {
+                dropdown.classList.toggle('show');
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const langSelector = document.querySelector('.lang-selector');
+            const dropdown = document.getElementById('lang-dropdown');
+            if (dropdown && langSelector && !langSelector.contains(e.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // ── Navbar scroll effect ──
+        const header = document.getElementById('mainHeader');
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // ── Mobile hamburger ──
+        const hamburger = document.getElementById('hamburger');
+        const drawer = document.getElementById('mobileDrawer');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('open');
+            drawer.classList.toggle('open');
+        });
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('open');
+                drawer.classList.remove('open');
+            });
+        });
+
+        // ── FAQ accordion ──
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.parentElement;
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                // close all
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('open');
+                    i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+                });
+                if (!expanded) {
+                    item.classList.add('open');
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

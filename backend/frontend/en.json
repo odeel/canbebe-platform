@@ -1,0 +1,198 @@
+{
+  "nav": {
+    "products": "Products",
+    "faq": "FAQ",
+    "contact": "Contact",
+    "login": "Login",
+    "signup": "Sign Up"
+  },
+  "hero": {
+    "badge": "AI-Powered Maternal Care",
+    "title": "Your baby's journey starts with love",
+    "subtitle": "Gentle, dermatologist-tested products and an intelligent AI companion guiding mothers through every precious stage.",
+    "exploreProducts": "Explore Products",
+    "chatWithAI": "Chat with AI",
+    "stats": {
+      "happyMoms": "Happy Moms",
+      "naturalIngredients": "Natural Ingredients",
+      "aiSupport": "AI Support"
+    },
+    "trustBadge": {
+      "title": "Dermatologist Tested",
+      "subtitle": "Safe for newborns"
+    }
+  },
+  "aiStrip": {
+    "title": "Your <em>24/7 Parenting Partner</em>",
+    "subtitle": "Real-time guidance powered by AI — from midnight feedings to milestone moments.",
+    "features": {
+      "instantAnswers": "Instant Answers",
+      "personalizedTips": "Personalized Tips",
+      "alwaysAvailable": "Always Available",
+      "expertBacked": "Expert-Backed"
+    },
+    "cta": "Try AI Guide Free"
+  },
+  "products": {
+    "eyebrow": "Crafted for your little one",
+    "title": "Our <em>Collections</em>",
+    "subtitle": "Gentle, dermatologist-tested products made with love for every stage of baby's journey.",
+    "filters": {
+      "all": "All",
+      "diapers": "Diapers",
+      "skincare": "Skincare",
+      "bath": "Bath",
+      "wipes": "Wipes"
+    },
+    "badges": {
+      "new": "New",
+      "bestseller": "Bestseller"
+    },
+    "addToCart": "Add to Cart",
+    "quickView": "Quick View",
+    "viewAll": "View All Products"
+  },
+  "appPromo": {
+    "eyebrow": "Download Our App",
+    "title": "Everything you need in <em>one place</em>",
+    "description": "Track your baby's milestones, connect with other moms, get 24/7 AI support, and enjoy exclusive app-only deals.",
+    "features": {
+      "tracker": "Baby Milestone Tracker",
+      "community": "Mom Community & Support",
+      "aiAssistant": "24/7 AI Assistant",
+      "offers": "Exclusive App Offers"
+    },
+    "badges": {
+      "appStore": "Download on the",
+      "googlePlay": "GET IT ON"
+    },
+    "note": "Free to download • Available on iOS & Android"
+  },
+  "trust": {
+    "eyebrow": "Why Mothers Trust Us",
+    "title": "Care you can <em>feel</em>",
+    "cards": {
+      "dermatologist": {
+        "title": "Dermatologist Tested",
+        "description": "Every formula is clinically tested and approved for even the most sensitive newborn skin."
+      },
+      "natural": {
+        "title": "98% Natural Ingredients",
+        "description": "Thoughtfully sourced plant-based ingredients with zero harsh chemicals or artificial fragrances."
+      },
+      "families": {
+        "title": "50,000+ Happy Families",
+        "description": "Trusted by mothers across the country for gentle, reliable care at every stage."
+      },
+      "support": {
+        "title": "24/7 AI Support",
+        "description": "Our intelligent assistant answers your parenting questions any time of day or night."
+      }
+    }
+  },
+  "faq": {
+    "eyebrow": "Got Questions?",
+    "title": "Frequently Asked <em>Questions</em>",
+    "subtitle": "Everything you need to know about Canbebe products and our AI guide.",
+    "questions": {
+      "q1": {
+        "q": "Are Canbebe products safe for newborns?",
+        "a": "Yes — all Canbebe products are dermatologist-tested, hypoallergenic and formulated without parabens, sulfates or artificial fragrances. They are specifically designed for the delicate skin of newborns and premature babies."
+      },
+      "q2": {
+        "q": "How does the AI Mama Guide work?",
+        "a": "Our AI assistant is trained on thousands of pediatric and maternal health resources. Simply type your question in the chat — whether it's about feeding schedules, sleep routines, or product recommendations — and receive personalised guidance instantly, 24 hours a day."
+      },
+      "q3": {
+        "q": "What diaper size should I choose?",
+        "a": "We recommend choosing by weight: S (up to 5kg), M (5–9kg), L (9–14kg), XL (14kg+). If your baby is between sizes, go up — a slightly larger diaper is more comfortable and helps prevent leaks. Our AI assistant can also help you find the perfect fit."
+      },
+      "q4": {
+        "q": "Do you offer free shipping?",
+        "a": "Yes! Free shipping is available on all orders over 2500 DZD. Orders are delivered within 2–5 business days nationwide. Express same-day delivery is available in select cities."
+      },
+      "q5": {
+        "q": "Can I return a product if my baby has a reaction?",
+        "a": "Absolutely. Your baby's comfort and safety is our top priority. We offer a full 30-day satisfaction guarantee. If you experience any issues, contact our support team and we will arrange a full refund or exchange — no questions asked."
+      },
+      "q6": {
+        "q": "How do I create an account?",
+        "a": "Click \"Sign Up\" in the top navigation, enter your name, email and password. Once registered you can track orders, save favourite products and access your full chat history with the AI Mama Guide."
+      }
+    }
+  },
+  "contact": {
+    "eyebrow": "Get in Touch",
+    "title": "We'd love to <em>hear</em> from you",
+    "subtitle": "Whether you have a question about our products, need help with your order, or just want to say hello — our team is here for you.",
+    "info": {
+      "email": "Email",
+      "phone": "Phone",
+      "location": "Location",
+      "hours": "Support Hours",
+      "hoursValue": "Sat–Thu, 9am – 6pm"
+    },
+    "form": {
+      "title": "Send us a message",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "subject": "Subject",
+      "subjectPlaceholder": "Choose a topic…",
+      "subjectOptions": {
+        "order": "Order question",
+        "product": "Product information",
+        "ai": "AI Guide feedback",
+        "returns": "Returns & exchanges",
+        "other": "Other"
+      },
+      "message": "Message",
+      "messagePlaceholder": "How can we help you?",
+      "submit": "Send Message",
+      "success": "Thank you! We'll get back to you within 24 hours."
+    }
+  },
+  "footer": {
+    "tagline": "Gentle care for every little journey — backed by nature and guided by intelligence.",
+    "newsletter": {
+      "title": "Stay in the loop",
+      "description": "Get parenting tips, product launches and exclusive offers.",
+      "placeholder": "your@email.com",
+      "note": "No spam, unsubscribe anytime."
+    },
+    "sections": {
+      "products": "Products",
+      "company": "Company",
+      "support": "Support"
+    },
+    "links": {
+      "diapers": "Diapers",
+      "wipes": "Wipes",
+      "skincare": "Skincare",
+      "bath": "Bath",
+      "bundles": "Bundles",
+      "about": "About Us",
+      "story": "Our Story",
+      "blog": "Blog",
+      "careers": "Careers",
+      "press": "Press",
+      "contactUs": "Contact Us",
+      "shipping": "Shipping Info",
+      "returns": "Returns",
+      "trackOrder": "Track Order"
+    },
+    "legal": {
+      "copyright": "© 2025 Canbebe. All rights reserved.",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use",
+      "cookies": "Cookie Settings"
+    },
+    "badges": {
+      "secure": "🔒 Secure Payments",
+      "eco": "🌿 Eco Certified"
+    }
+  },
+  "fab": {
+    "label": "Chat with AI"
+  }
+}

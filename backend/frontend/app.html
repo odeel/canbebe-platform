@@ -1,0 +1,1824 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BabyMind — App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="app.css">
+    <style>
+        /* ── Toast ── */
+        .toast-wrap {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: var(--gray-dark, #2d2435);
+            color: #fff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+            animation: slideIn .25s ease;
+            max-width: 300px;
+        }
+
+        .toast.error {
+            background: #c0392b;
+        }
+
+        .toast.success {
+            background: var(--sage, #7A9E7E);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1
+            }
+        }
+
+        /* ── Feed Modal ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, .4);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 20px;
+            padding: 28px;
+            width: 340px;
+            max-width: 92vw;
+        }
+
+        .modal-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: var(--purple-900);
+        }
+
+        .modal-box label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .modal-box select,
+        .modal-box input {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 14px;
+            outline: none;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .modal-box select:focus,
+        .modal-box input:focus {
+            border-color: var(--purple-500);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 4px;
+        }
+
+        .modal-actions button {
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .btn-cancel {
+            background: #f1f5f9;
+            color: #374151;
+        }
+
+        .btn-save {
+            background: var(--gradient-primary);
+            color: #fff;
+        }
+
+        /* ══════════════════════════════════
+           FAQ TAB STYLES
+        ══════════════════════════════════ */
+        .faq-root {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .faq-hero {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-xl);
+            padding: 48px 52px;
+            margin-bottom: 36px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .faq-hero::before {
+            content: '';
+            position: absolute;
+            width: 340px;
+            height: 340px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -140px;
+            right: -60px;
+            pointer-events: none;
+        }
+
+        .faq-hero::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -80px;
+            left: 80px;
+            pointer-events: none;
+        }
+
+        .faq-hero-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .faq-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 18px;
+        }
+
+        .faq-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            font-weight: 600;
+            color: white;
+            line-height: 1.15;
+            margin-bottom: 12px;
+        }
+
+        .faq-hero h1 em {
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .faq-hero p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 520px;
+            line-height: 1.65;
+            margin-bottom: 28px;
+        }
+
+        /* Search inside FAQ hero */
+        .faq-search-wrap {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: var(--radius-pill);
+            padding: 14px 22px;
+            max-width: 480px;
+            transition: all 0.3s ease;
+        }
+
+        .faq-search-wrap:focus-within {
+            background: rgba(255, 255, 255, 0.22);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-search-wrap svg {
+            color: rgba(255, 255, 255, 0.7);
+            flex-shrink: 0;
+        }
+
+        .faq-search-wrap input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .faq-search-wrap input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Category chips */
+        .faq-cats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .faq-cat {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 18px;
+            background: white;
+            color: var(--purple-600);
+            border: 1.5px solid rgba(139, 69, 192, 0.18);
+            border-radius: var(--radius-pill);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .faq-cat:hover {
+            background: var(--purple-50);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-cat.active {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+
+        .faq-cat-count {
+            padding: 2px 8px;
+            background: rgba(139, 69, 192, 0.12);
+            color: var(--purple-600);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .faq-cat.active .faq-cat-count {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Results info */
+        .faq-results-info {
+            font-size: 14px;
+            color: var(--gray-med);
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .faq-results-info span {
+            color: var(--purple-600);
+            font-weight: 700;
+        }
+
+        /* FAQ sections */
+        .faq-section {
+            margin-bottom: 36px;
+        }
+
+        .faq-section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--purple-900);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(139, 69, 192, 0.1);
+        }
+
+        .faq-section-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--gradient-soft);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Accordion item */
+        .faq-item {
+            background: white;
+            border: 1.5px solid rgba(139, 69, 192, 0.1);
+            border-radius: var(--radius-md);
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-item:hover {
+            border-color: rgba(139, 69, 192, 0.25);
+            box-shadow: var(--shadow-md);
+        }
+
+        .faq-item.open {
+            border-color: rgba(139, 69, 192, 0.35);
+            box-shadow: var(--shadow-md);
+        }
+
+        .faq-q {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px 24px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .faq-q-text {
+            flex: 1;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            line-height: 1.4;
+        }
+
+        .faq-item.open .faq-q-text {
+            color: var(--purple-700);
+        }
+
+        .faq-chevron {
+            width: 32px;
+            height: 32px;
+            background: var(--purple-50);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--purple-500);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.open .faq-chevron {
+            background: var(--gradient-primary);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            display: none;
+            padding: 0 24px 22px 24px;
+            border-top: 1px solid rgba(139, 69, 192, 0.08);
+        }
+
+        .faq-item.open .faq-a {
+            display: block;
+        }
+
+        .faq-a-inner {
+            padding-top: 18px;
+            font-size: 15px;
+            color: var(--gray-med);
+            line-height: 1.75;
+        }
+
+        .faq-a-inner p {
+            margin-bottom: 12px;
+        }
+
+        .faq-a-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-a-inner strong {
+            color: var(--gray-dark);
+            font-weight: 600;
+        }
+
+        .faq-a-inner ul {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .faq-a-inner ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .faq-a-inner ul li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--purple-400);
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Ask Nana CTA inside FAQ */
+        .faq-nana-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 10px 18px;
+            background: var(--gradient-soft);
+            color: var(--purple-600);
+            border: 1px solid rgba(139, 69, 192, 0.2);
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .faq-nana-cta:hover {
+            background: var(--purple-100);
+            transform: translateY(-1px);
+        }
+
+        /* Helpful row */
+        .faq-helpful {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(139, 69, 192, 0.08);
+        }
+
+        .faq-helpful-label {
+            font-size: 13px;
+            color: var(--gray-light);
+            font-weight: 500;
+        }
+
+        .faq-helpful-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            background: transparent;
+            border: 1.5px solid rgba(139, 69, 192, 0.15);
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-med);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .faq-helpful-btn:hover {
+            background: var(--purple-50);
+            color: var(--purple-600);
+            border-color: rgba(139, 69, 192, 0.3);
+        }
+
+        .faq-helpful-btn.yes.voted {
+            background: rgba(79, 157, 107, 0.1);
+            color: var(--success);
+            border-color: var(--success);
+        }
+
+        .faq-helpful-btn.no.voted {
+            background: rgba(217, 79, 79, 0.1);
+            color: var(--error);
+            border-color: var(--error);
+        }
+
+        /* No results */
+        .faq-empty {
+            text-align: center;
+            padding: 64px 24px;
+            color: var(--gray-med);
+        }
+
+        .faq-empty svg {
+            color: var(--purple-200);
+            margin-bottom: 16px;
+        }
+
+        .faq-empty h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--purple-900);
+            margin-bottom: 8px;
+        }
+
+        .faq-empty p {
+            font-size: 15px;
+            color: var(--gray-med);
+            margin-bottom: 20px;
+        }
+
+        .faq-empty-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-pill);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .faq-empty-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Still need help card */
+        .faq-help-card {
+            background: var(--gradient-primary);
+            border-radius: var(--radius-xl);
+            padding: 40px 48px;
+            margin-top: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 32px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .faq-help-card::before {
+            content: '';
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -120px;
+            right: 80px;
+            pointer-events: none;
+        }
+
+        .faq-help-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .faq-help-text h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .faq-help-text p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .faq-help-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: white;
+            color: var(--purple-600);
+            border: none;
+            border-radius: var(--radius-pill);
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            white-space: nowrap;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .faq-help-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .faq-hero {
+                padding: 36px 28px;
+            }
+
+            .faq-hero h1 {
+                font-size: 32px;
+            }
+
+            .faq-help-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 32px 28px;
+            }
+        }
+
+        /* Highlight matched text */
+        mark {
+            background: rgba(196, 155, 224, 0.35);
+            color: var(--purple-800);
+            border-radius: 3px;
+            padding: 0 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-root">
+        <!-- ── SIDEBAR ── -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner">
+                <div class="sidebar-logo">
+                    <div class="sidebar-logo-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" />
+                            <path
+                                d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4" />
+                            <path d="M12 3C9 3 6.5 5 5.4 7.4" />
+                        </svg>
+                    </div>
+                    <span class="sidebar-logo-text">BabyMind</span>
+                </div>
+                <div class="user-card">
+                    <div class="user-avatar" id="sidebar-avatar">S</div>
+                    <div>
+                        <div class="user-name" id="sidebar-name">Sarah</div>
+                        <div class="user-role" id="sidebar-role">Mother</div>
+                    </div>
+                </div>
+                <nav class="sidebar-nav">
+                    <button class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect width="7" height="9" x="3" y="3" rx="1" />
+                            <rect width="7" height="5" x="14" y="3" rx="1" />
+                            <rect width="7" height="9" x="14" y="12" rx="1" />
+                            <rect width="7" height="5" x="3" y="16" rx="1" />
+                        </svg>
+                        <span>Dashboard</span>
+                        <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="m9 18 6-6-6-6" />
+                        </svg>
+                    </button>
+                    <button class="nav-item" id="nav-chatbot" onclick="switchTab('chatbot')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                        </svg>
+                        <span>AI Assistant</span>
+                    </button>
+                    <button class="nav-item" id="nav-community" onclick="switchTab('community')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                        </svg>
+                        <span>Community</span>
+                    </button>
+                    <button class="nav-item" id="nav-faq" onclick="switchTab('faq')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                            <path d="M12 17h.01" />
+                        </svg>
+                        <span>Help & FAQ</span>
+                    </button>
+                </nav>
+                <div class="sidebar-bottom">
+                    <button class="nav-item">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        <span>Settings</span>
+                    </button>
+                    <button class="nav-item nav-logout" onclick="handleLogout()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" x2="9" y1="12" y2="12" />
+                        </svg>
+                        <span>Sign Out</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+        <!-- ── MAIN ── -->
+        <div class="main-area">
+            <header class="topbar">
+                <button class="menu-btn" onclick="toggleSidebar()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="4" x2="20" y1="12" y2="12" />
+                        <line x1="4" x2="20" y1="6" y2="6" />
+                        <line x1="4" x2="20" y1="18" y2="18" />
+                    </svg>
+                </button>
+                <div class="topbar-title" id="topbar-title">Dashboard</div>
+                <div class="topbar-right">
+                    <button class="icon-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                            <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                        </svg>
+                    </button>
+                    <div class="topbar-avatar" id="topbar-avatar">S</div>
+                </div>
+            </header>
+
+            <!-- ══════════════ DASHBOARD TAB ══════════════ -->
+            <div class="page-content" id="tab-dashboard">
+                <div class="db-root">
+                    <div class="banner">
+                        <div>
+                            <div class="banner-badge">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="4" />
+                                    <path
+                                        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                                </svg>
+                                Good morning
+                            </div>
+                            <h1 class="banner-title" id="banner-title">Hello, Sarah</h1>
+                            <p class="banner-sub" id="banner-sub">Loading baby data...</p>
+                            <button class="banner-btn" onclick="switchTab('chatbot')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                                </svg>
+                                Ask Nana a question
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="m9 18 6-6-6-6" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="baby-bubble">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" />
+                                <path
+                                    d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4" />
+                                <path d="M12 3C9 3 6.5 5 5.4 7.4" />
+                            </svg>
+                            <div class="age-chip" id="age-chip">—</div>
+                        </div>
+                    </div>
+                    <div class="stats-row">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:#7A9E7E18"><svg width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="#7A9E7E" stroke-width="2">
+                                    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                    <line x1="3" x2="21" y1="6" y2="6" />
+                                    <path d="M16 10a4 4 0 0 1-8 0" />
+                                </svg></div>
+                            <div class="stat-value" id="stat-weight">—</div>
+                            <div class="stat-label">Weight</div>
+                            <div class="stat-change">kg</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:#C4714A18"><svg width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="#C4714A" stroke-width="2">
+                                    <path
+                                        d="M21.3 8.7 8.7 21.3c-1 1-2.5 1-3.4 0l-2.6-2.6c-1-1-1-2.5 0-3.4L15.3 2.7c1-1 2.5-1 3.4 0l2.6 2.6c1 1 1 2.5 0 3.4Z" />
+                                </svg></div>
+                            <div class="stat-value" id="stat-height">—</div>
+                            <div class="stat-label">Height</div>
+                            <div class="stat-change">cm</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:#9B7FB618"><svg width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="#9B7FB6" stroke-width="2">
+                                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                                </svg></div>
+                            <div class="stat-value" id="stat-sleep">—</div>
+                            <div class="stat-label">Sleep</div>
+                            <div class="stat-change">Last 24h</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background:#5B8DB818"><svg width="18" height="18"
+                                    viewBox="0 0 24 24" fill="none" stroke="#5B8DB8" stroke-width="2">
+                                    <path
+                                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                                </svg></div>
+                            <div class="stat-value" id="stat-feeds">—</div>
+                            <div class="stat-label">Feeds today</div>
+                            <div class="stat-change" id="stat-feeds-label">—</div>
+                        </div>
+                    </div>
+                    <div class="db-grid">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="var(--purple-600)" stroke-width="2">
+                                        <path d="m18 2 4 4" />
+                                        <path d="m17 7 3-3" />
+                                        <path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5" />
+                                        <path d="m9 11 4 4" />
+                                        <path d="m5 19-3 3" />
+                                        <path d="m14 4 6 6" />
+                                    </svg></div>
+                                <h2 class="card-title-sm">Vaccination Schedule</h2><span class="urgent-badge"
+                                    id="vaccine-due-badge" style="display:none">Due now</span>
+                            </div>
+                            <div class="vaccine-list" id="vaccine-list">
+                                <div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">Loading...
+                                </div>
+                            </div>
+                            <button class="card-action"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                                    <line x1="16" x2="16" y1="2" y2="6" />
+                                    <line x1="8" x2="8" y1="2" y2="6" />
+                                    <line x1="3" x2="21" y1="10" y2="10" />
+                                </svg>Schedule appointment<svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="m9 18 6-6-6-6" />
+                                </svg></button>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="var(--sage)" stroke-width="2">
+                                        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                                        <polyline points="16 7 22 7 22 13" />
+                                    </svg></div>
+                                <h2 class="card-title-sm">Developmental Milestones</h2>
+                            </div>
+                            <div class="milestone-grid">
+                                <div class="milestone achieved">
+                                    <div class="m-check done"><svg width="12" height="12" viewBox="0 0 24 24"
+                                            fill="none" stroke="white" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg></div>
+                                    <div>
+                                        <div class="m-label">Lifts head</div>
+                                        <div class="m-age">1 mo</div>
+                                    </div>
+                                </div>
+                                <div class="milestone achieved">
+                                    <div class="m-check done"><svg width="12" height="12" viewBox="0 0 24 24"
+                                            fill="none" stroke="white" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg></div>
+                                    <div>
+                                        <div class="m-label">Social smile</div>
+                                        <div class="m-age">2 mo</div>
+                                    </div>
+                                </div>
+                                <div class="milestone achieved">
+                                    <div class="m-check done"><svg width="12" height="12" viewBox="0 0 24 24"
+                                            fill="none" stroke="white" stroke-width="3">
+                                            <polyline points="20 6 9 17 4 12" />
+                                        </svg></div>
+                                    <div>
+                                        <div class="m-label">Tracks objects</div>
+                                        <div class="m-age">2 mo</div>
+                                    </div>
+                                </div>
+                                <div class="milestone">
+                                    <div class="m-check"></div>
+                                    <div>
+                                        <div class="m-label">Laughs out loud</div>
+                                        <div class="m-age">3–4 mo</div>
+                                    </div>
+                                </div>
+                                <div class="milestone">
+                                    <div class="m-check"></div>
+                                    <div>
+                                        <div class="m-label">Holds head steady</div>
+                                        <div class="m-age">4 mo</div>
+                                    </div>
+                                </div>
+                                <div class="milestone">
+                                    <div class="m-check"></div>
+                                    <div>
+                                        <div class="m-label">Rolls over</div>
+                                        <div class="m-age">4–5 mo</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="milestone-progress">
+                                <div class="progress-label-row"><span>Progress</span><span
+                                        style="color:var(--sage);font-weight:600">3 / 6 achieved</span></div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill-bar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="#9B7FB6" stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                    </svg></div>
+                                <h2 class="card-title-sm">Today's Feeding Log</h2><button class="add-btn"
+                                    onclick="openFeedModal()">+ Add</button>
+                            </div>
+                            <div class="feed-list" id="feed-list">
+                                <div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">Loading...
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="#9B7FB6" stroke-width="2">
+                                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                                    </svg></div>
+                                <h2 class="card-title-sm">Sleep Overview</h2>
+                            </div>
+                            <div class="sleep-chart" id="sleep-chart"></div>
+                            <div class="sleep-stats">
+                                <div class="sleep-stat">
+                                    <div class="sleep-stat-val" id="sleep-longest">—</div>
+                                    <div class="sleep-stat-label">Longest stretch</div>
+                                </div>
+                                <div class="sleep-stat">
+                                    <div class="sleep-stat-val" id="sleep-night">—</div>
+                                    <div class="sleep-stat-label">Night sleep</div>
+                                </div>
+                                <div class="sleep-stat">
+                                    <div class="sleep-stat-val" id="sleep-naps">—</div>
+                                    <div class="sleep-stat-label">Naps</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════ CHATBOT TAB ══════════════ -->
+            <div id="tab-chatbot" style="display:none;flex-direction:column;height:calc(100vh - 72px)">
+                <div class="chat-header">
+                    <div class="mascot-wrap">
+                        <div class="mascot-bg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="white" stroke-width="2">
+                                <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" />
+                                <path
+                                    d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4" />
+                                <path d="M12 3C9 3 6.5 5 5.4 7.4" />
+                            </svg></div>
+                        <div class="online-dot"></div>
+                    </div>
+                    <div>
+                        <div class="nana-name">Nana <span class="ai-badge"><svg width="10" height="10"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path
+                                        d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+                                </svg> AI</span></div>
+                        <div class="nana-status">Always here for you</div>
+                    </div>
+                    <button class="reset-btn" onclick="resetChat()"><svg width="14" height="14" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                            <path d="M21 3v5h-5" />
+                            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                            <path d="M8 16H3v5" />
+                        </svg>New chat</button>
+                </div>
+                <div class="messages" id="messages"></div>
+                <div id="quick-suggestions" class="quick-wrap">
+                    <p class="quick-label">Suggested questions</p>
+                    <div class="quick-row">
+                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
+                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
+                                <path
+                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                            </svg>Baby won't sleep, what can I do?</button>
+                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
+                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>Is it normal for baby to have hiccups?</button>
+                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
+                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 16v-4M12 8h.01" />
+                            </svg>When is the next vaccination due?</button>
+                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
+                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 16 14" />
+                            </svg>How often should I feed a 2-month-old?</button>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <button class="attach-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path
+                                d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                        </svg></button>
+                    <input class="chat-input" id="chat-input" placeholder="Ask Nana anything about your baby..."
+                        oninput="updateSendBtn()" onkeydown="chatKeydown(event)">
+                    <button class="mic-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3Z" />
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                            <line x1="12" x2="12" y1="19" y2="22" />
+                        </svg></button>
+                    <button class="send-btn" id="send-btn" onclick="sendMessage()"><svg width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="m22 2-7 20-4-9-9-4Z" />
+                            <path d="M22 2 11 13" />
+                        </svg></button>
+                </div>
+            </div>
+
+            <!-- ══════════════ COMMUNITY TAB ══════════════ -->
+            <div class="page-content" id="tab-community" style="display:none">
+                <div class="community-root">
+                    <div class="community-main">
+                        <div class="comm-toolbar">
+                            <div class="search-wrap"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                    stroke="var(--gray-light)" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg><input placeholder="Search the community..." oninput="debouncedFilter()"
+                                    id="comm-search"></div>
+                            <button class="compose-btn" onclick="toggleCompose()"><svg width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M5 12h14" />
+                                    <path d="M12 5v14" />
+                                </svg>Post</button>
+                        </div>
+                        <div class="tag-row" id="tag-row">
+                            <button class="tag-pill active" onclick="setTag('All',this)">All</button>
+                            <button class="tag-pill" onclick="setTag('Sleep',this)">Sleep</button>
+                            <button class="tag-pill" onclick="setTag('Feeding',this)">Feeding</button>
+                            <button class="tag-pill" onclick="setTag('Health',this)">Health</button>
+                            <button class="tag-pill" onclick="setTag('Milestones',this)">Milestones</button>
+                            <button class="tag-pill" onclick="setTag('Mental Health',this)">Mental Health</button>
+                            <button class="tag-pill" onclick="setTag('Vaccines',this)">Vaccines</button>
+                        </div>
+                        <div class="compose-box" id="compose-box">
+                            <div class="compose-header"><span class="compose-title">Share with the
+                                    community</span><button class="close-btn" onclick="toggleCompose()"><svg width="16"
+                                        height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M18 6 6 18M6 6l12 12" />
+                                    </svg></button></div>
+                            <button class="anon-btn" id="anon-btn" onclick="toggleAnon()"><svg width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>Post as yourself</button>
+                            <div class="tag-picker" id="compose-tags">
+                                <button class="tag-pick" onclick="selectComposeTag('Sleep',this)">Sleep</button>
+                                <button class="tag-pick" onclick="selectComposeTag('Feeding',this)">Feeding</button>
+                                <button class="tag-pick" onclick="selectComposeTag('Health',this)">Health</button>
+                                <button class="tag-pick"
+                                    onclick="selectComposeTag('Milestones',this)">Milestones</button>
+                                <button class="tag-pick" onclick="selectComposeTag('Mental Health',this)">Mental
+                                    Health</button>
+                            </div>
+                            <input class="compose-input" id="compose-title-input"
+                                placeholder="What's your question or experience?">
+                            <textarea class="compose-textarea" id="compose-body-input" rows="4"
+                                placeholder="Share more details..."></textarea>
+                            <div class="compose-actions"><button class="img-btn"><svg width="15" height="15"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                                        <circle cx="9" cy="9" r="2" />
+                                        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                                    </svg> Photo</button><button class="submit-btn" id="post-submit-btn"
+                                    onclick="submitPost()">Publish Post</button></div>
+                        </div>
+                        <div class="posts-list" id="posts-list">
+                            <div style="padding:40px;text-align:center;color:#9ca3af">Loading posts...</div>
+                        </div>
+                    </div>
+                    <aside class="comm-sidebar">
+                        <div class="side-card">
+                            <div class="side-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                                    <polyline points="16 7 22 7 22 13" />
+                                </svg> Trending topics</div>
+                            <div class="trend-row"><span class="trend-num">#1</span><span class="trend-text">Sleep
+                                    regression</span></div>
+                            <div class="trend-row"><span class="trend-num">#2</span><span
+                                    class="trend-text">Breastfeeding tips</span></div>
+                            <div class="trend-row"><span class="trend-num">#3</span><span class="trend-text">4-month
+                                    vaccines</span></div>
+                            <div class="trend-row"><span class="trend-num">#4</span><span class="trend-text">Postpartum
+                                    feelings</span></div>
+                            <div class="trend-row"><span class="trend-num">#5</span><span class="trend-text">Tummy
+                                    time</span></div>
+                        </div>
+                        <div class="side-card">
+                            <div class="side-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+                                </svg> Community rules</div>
+                            <div class="rule-row">
+                                <div class="rule-dot"></div>Be kind and supportive
+                            </div>
+                            <div class="rule-row">
+                                <div class="rule-dot"></div>No medical diagnoses
+                            </div>
+                            <div class="rule-row">
+                                <div class="rule-dot"></div>Respect anonymity
+                            </div>
+                            <div class="rule-row">
+                                <div class="rule-dot"></div>No spam or promotion
+                            </div>
+                        </div>
+                        <div class="side-card green">
+                            <div class="side-title"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                    stroke="white" stroke-width="2">
+                                    <path
+                                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                                </svg> You're not alone</div>
+                            <p>12,400+ parents are in this community. Whatever you're going through, someone here
+                                understands.</p>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <!-- ══════════════ FAQ TAB ══════════════ -->
+            <div class="page-content" id="tab-faq" style="display:none">
+                <div class="faq-root">
+
+                    <!-- Hero -->
+                    <div class="faq-hero">
+                        <div class="faq-hero-inner">
+                            <div class="faq-eyebrow">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                    <path d="M12 17h.01" />
+                                </svg>
+                                Help Center
+                            </div>
+                            <h1>Got <em>questions?</em><br>We've got answers.</h1>
+                            <p>Everything you need to know about BabyMind, your baby's care, and how Nana can help you
+                                through every stage.</p>
+                            <div class="faq-search-wrap">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>
+                                <input id="faq-search" placeholder="Search questions..." oninput="filterFAQ()"
+                                    autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category chips -->
+                    <div class="faq-cats" id="faq-cats">
+                        <button class="faq-cat active" onclick="setFaqCat('all', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect width="7" height="9" x="3" y="3" rx="1" />
+                                <rect width="7" height="5" x="14" y="3" rx="1" />
+                                <rect width="7" height="9" x="14" y="12" rx="1" />
+                                <rect width="7" height="5" x="3" y="16" rx="1" />
+                            </svg>
+                            All Topics <span class="faq-cat-count" id="count-all">20</span>
+                        </button>
+                        <button class="faq-cat" onclick="setFaqCat('app', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect width="14" height="20" x="5" y="2" rx="2" />
+                                <path d="M12 18h.01" />
+                            </svg>
+                            Using the App <span class="faq-cat-count" id="count-app">5</span>
+                        </button>
+                        <button class="faq-cat" onclick="setFaqCat('feeding', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />
+                            </svg>
+                            Feeding <span class="faq-cat-count" id="count-feeding">4</span>
+                        </button>
+                        <button class="faq-cat" onclick="setFaqCat('sleep', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                            </svg>
+                            Sleep <span class="faq-cat-count" id="count-sleep">4</span>
+                        </button>
+                        <button class="faq-cat" onclick="setFaqCat('vaccines', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="m18 2 4 4" />
+                                <path d="m17 7 3-3" />
+                                <path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5" />
+                                <path d="m9 11 4 4" />
+                            </svg>
+                            Vaccines <span class="faq-cat-count" id="count-vaccines">4</span>
+                        </button>
+                        <button class="faq-cat" onclick="setFaqCat('ai', this)">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                            </svg>
+                            Nana AI <span class="faq-cat-count" id="count-ai">3</span>
+                        </button>
+                    </div>
+
+                    <!-- Results info -->
+                    <div class="faq-results-info" id="faq-results-info">Showing <span id="faq-count">20</span> questions
+                    </div>
+
+                    <!-- FAQ content rendered by JS -->
+                    <div id="faq-content"></div>
+
+                    <!-- Still need help -->
+                    <div class="faq-help-card">
+                        <div class="faq-help-text">
+                            <h3>Still have questions?</h3>
+                            <p>Nana is available 24/7 to answer anything about your baby — from feeding schedules to
+                                developmental milestones and beyond.</p>
+                        </div>
+                        <button class="faq-help-btn" onclick="switchTab('chatbot')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                            </svg>
+                            Ask Nana Now
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Feed Modal -->
+    <div class="modal-overlay" id="feed-modal">
+        <div class="modal-box">
+            <h3>Log a Feed</h3>
+            <label>Type</label>
+            <select id="feed-type-input">
+                <option value="breast">Breastfeed</option>
+                <option value="formula">Formula</option>
+                <option value="breast">Pumped milk</option>
+                <option value="solid">Solids</option>
+            </select>
+            <label>Duration / Amount</label>
+            <input id="feed-amount-input" placeholder="e.g. 15 min or 120 ml">
+            <label>Time</label>
+            <input id="feed-time-input" type="time">
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeFeedModal()">Cancel</button>
+                <button class="btn-save" id="feed-save-btn" onclick="saveFeedLog()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-wrap" id="toast-wrap"></div>
+
+    <script>
+        // ════════════════════════════════════════
+        // CONFIG & AUTH
+        // ════════════════════════════════════════
+        const API = '';
+        let appUser = null, authToken = null;
+
+        function loadAuth() {
+            const raw = sessionStorage.getItem('bm_user');
+            const tok = sessionStorage.getItem('bm_token');
+            if (!raw || !tok) { location.href = 'login.html'; return false; }
+            appUser = JSON.parse(raw);
+            authToken = tok;
+            return true;
+        }
+        function getHeaders() { return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}` }; }
+        function handleLogout() { sessionStorage.removeItem('bm_user'); sessionStorage.removeItem('bm_token'); location.href = 'login.html'; }
+
+        function toast(msg, type = '') {
+            const wrap = document.getElementById('toast-wrap');
+            const el = document.createElement('div');
+            el.className = `toast ${type}`; el.textContent = msg;
+            wrap.appendChild(el); setTimeout(() => el.remove(), 3500);
+        }
+
+        async function apiFetch(path, opts = {}) {
+            const res = await fetch(API + path, { ...opts, headers: { ...getHeaders(), ...(opts.headers || {}) } });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || data.message || 'Server error');
+            return data;
+        }
+
+        // ════════════════════════════════════════
+        // INIT
+        // ════════════════════════════════════════
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!loadAuth()) return;
+            console.log('TOKEN:', sessionStorage.getItem('bm_token')); // ← add this
+            console.log('USER:', sessionStorage.getItem('bm_user'));
+            updateUserUI();
+
+            // Load baby FIRST, then everything that depends on it
+            await loadBabyData();
+            await Promise.all([loadFeedLogs(), loadSleepLogs(), loadVaccinations()]);
+
+            initChat();
+            loadCommunityPosts();
+            renderFAQ();
+            const now = new Date();
+            document.getElementById('feed-time-input').value =
+                now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+        });
+
+        function updateUserUI() {
+            const name = appUser.firstName ? appUser.firstName + ' ' + appUser.lastName : (appUser.name || 'User');
+            const initial = name[0].toUpperCase();
+            document.getElementById('sidebar-avatar').textContent = initial;
+            document.getElementById('sidebar-name').textContent = name;
+            document.getElementById('sidebar-role').textContent = appUser.role || 'Parent';
+            document.getElementById('topbar-avatar').textContent = initial;
+            document.getElementById('banner-title').textContent = 'Hello, ' + (appUser.firstName || name.split(' ')[0]);
+        }
+
+        function calcAge(dob) {
+            const d = new Date(dob), now = new Date(), ms = now - d;
+            const months = Math.floor(ms / (1000 * 60 * 60 * 24 * 30.44));
+            const days = Math.floor((ms % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
+            return months + ' months, ' + days + ' days';
+        }
+
+        // ════════════════════════════════════════
+        // BABY + LOGS + VACCINES (same as before)
+        // ════════════════════════════════════════
+        let currentBaby = null;
+
+        async function loadBabyData() {
+            try {
+                const data = await apiFetch('/api/baby');
+                console.log('BABY DATA:', JSON.stringify(data));
+                currentBaby = data.babies?.[0] || data.baby || null;
+                console.log('currentBaby:', currentBaby);
+                if (currentBaby) {
+                    document.getElementById('age-chip').textContent = calcAge(currentBaby.birthDate);
+                    document.getElementById('stat-weight').textContent = currentBaby.weight ? currentBaby.weight + ' kg' : '—';
+                    document.getElementById('stat-height').textContent = currentBaby.height ? currentBaby.height + ' cm' : '—';
+                    document.getElementById('banner-sub').textContent = currentBaby.name + ' is doing great. Check logs below.';
+                }
+            } catch { document.getElementById('age-chip').textContent = 'No baby added'; document.getElementById('banner-sub').textContent = 'Add your baby to get started.'; }
+        }
+
+        let feedLogs = [];
+        async function loadFeedLogs() {
+            const list = document.getElementById('feed-list');
+            if (!currentBaby) { list.innerHTML = '<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">No baby found.</div>'; return; }
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const data = await apiFetch(`/api/logs/${currentBaby._id}?type=feeding&date=${today}`);
+                feedLogs = data.logs || [];
+                renderFeedLogs();
+            } catch { list.innerHTML = '<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">Could not load feeds.</div>'; }
+        }
+
+        function renderFeedLogs() {
+            const list = document.getElementById('feed-list');
+            document.getElementById('stat-feeds').textContent = feedLogs.length;
+            document.getElementById('stat-feeds-label').textContent = feedLogs.length > 0 ? 'On track' : 'None logged';
+            if (!feedLogs.length) { list.innerHTML = '<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">No feeds logged today.</div>'; return; }
+            list.innerHTML = feedLogs.map(log => {
+                const t = log.time ? new Date(log.time) : new Date(log.createdAt);
+                const timeStr = t.getHours().toString().padStart(2, '0') + ':' + t.getMinutes().toString().padStart(2, '0');
+                const detail = log.durationMinutes ? log.durationMinutes + ' min' : (log.quantity ? log.quantity + ' ml' : '');
+                const label = log.type === 'breast' ? 'Breastfeed' : log.type === 'formula' ? 'Formula' : log.type === 'solid' ? 'Solids' : log.type || 'Feed';
+                return `<div class="feed-row"><div class="feed-time">${timeStr}</div><div class="feed-dot"></div><div class="feed-card"><div class="feed-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="2"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg></div><div><div class="feed-type">${label}</div><div class="feed-duration">${detail}</div></div></div></div>`;
+            }).join('');
+        }
+
+        function openFeedModal() { document.getElementById('feed-modal').classList.add('show'); }
+        function closeFeedModal() { document.getElementById('feed-modal').classList.remove('show'); }
+
+        async function saveFeedLog() {
+            if (!currentBaby) { toast('No baby found', 'error'); return; }
+            const type = document.getElementById('feed-type-input').value;
+            const raw = document.getElementById('feed-amount-input').value.trim();
+            const timeVal = document.getElementById('feed-time-input').value;
+            const amount = raw.toLowerCase().includes('ml') ? parseInt(raw) : null;
+            const duration = (!amount && raw) ? parseInt(raw) : null;
+            const btn = document.getElementById('feed-save-btn');
+            btn.textContent = 'Saving...'; btn.disabled = true;
+            try {
+                const timeDate = new Date();
+                if (timeVal) { const [h, m] = timeVal.split(':'); timeDate.setHours(parseInt(h), parseInt(m), 0, 0); }
+                await apiFetch('/api/logs/feeding', { method: 'POST', body: JSON.stringify({ babyId: currentBaby._id, type, durationMinutes: duration || null, quantity: amount || null, time: timeDate.toISOString() }) });
+                closeFeedModal(); toast('Feed logged!', 'success'); await loadFeedLogs();
+            } catch (err) { toast(err.message, 'error'); }
+            finally { btn.textContent = 'Save'; btn.disabled = false; }
+        }
+
+        async function loadSleepLogs() {
+            if (!currentBaby) return;
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const data = await apiFetch(`/api/logs/${currentBaby._id}?type=sleep&date=${today}`);
+                renderSleepChart(data.logs || []);
+            } catch { renderSleepChart([]); }
+        }
+
+        function renderSleepChart(logs) {
+            const hours = ['12a', '2a', '4a', '6a', '8a', '10a', '12p', '2p', '4p', '6p', '8p', '10p'];
+            const chart = document.getElementById('sleep-chart');
+            const asleepHours = new Set();
+            logs.forEach(log => { if (log.startTime) { const s = new Date(log.startTime).getHours(), e = log.endTime ? new Date(log.endTime).getHours() : s + 1; for (let h = s; h < e; h++) asleepHours.add(h % 24); } });
+            const slotHours = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22];
+            chart.innerHTML = slotHours.map((h, i) => `<div class="sleep-col"><div class="sleep-bar ${asleepHours.has(h) || asleepHours.has(h + 1) ? 'asleep' : 'awake'}"></div><div class="sleep-hour">${hours[i]}</div></div>`).join('');
+            let totalSleep = 0, longestStretch = 0, naps = 0;
+            logs.forEach(log => { if (log.startTime && log.endTime) { const dur = (new Date(log.endTime) - new Date(log.startTime)) / 3600000; totalSleep += dur; if (dur > longestStretch) longestStretch = dur; if (new Date(log.startTime).getHours() >= 6 && new Date(log.startTime).getHours() < 20) naps++; } });
+            document.getElementById('sleep-longest').textContent = longestStretch ? fmtH(longestStretch) : '—';
+            document.getElementById('sleep-night').textContent = totalSleep ? fmtH(totalSleep * .6) : '—';
+            document.getElementById('sleep-naps').textContent = naps ? naps + ' nap' + (naps > 1 ? 's' : '') : '—';
+            document.getElementById('stat-sleep').textContent = totalSleep ? fmtH(totalSleep) : '—';
+        }
+
+        function fmtH(h) { const hrs = Math.floor(h), mins = Math.round((h - hrs) * 60); return mins ? `${hrs}h ${mins}m` : `${hrs}h`; }
+
+        async function loadVaccinations() {
+            const list = document.getElementById('vaccine-list');
+            if (!currentBaby) { list.innerHTML = '<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">No baby found.</div>'; return; }
+            try {
+                const data = await apiFetch(`/api/vaccination/${currentBaby._id}`);
+                renderVaccines(data.vaccination?.vaccines || []);
+            } catch { list.innerHTML = '<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">Could not load vaccines.</div>'; }
+        }
+
+        function renderVaccines(vaccines) {
+            const list = document.getElementById('vaccine-list');
+            const dueCount = vaccines.filter(v => !v.done).length;
+            if (dueCount > 0) { const b = document.getElementById('vaccine-due-badge'); b.textContent = `${dueCount} due now`; b.style.display = ''; }
+            if (!vaccines.length) { list.innerHTML = '<div style="padding:20px;text-align:center;color:#9ca3af;font-size:13px">No vaccine data.</div>'; return; }
+            list.innerHTML = vaccines.slice(0, 5).map(v => {
+                const isDue = !v.done && v.dueAgeMonths !== undefined;
+                const sc = v.done ? 'var(--success)' : isDue ? 'var(--error)' : 'var(--sage)';
+                const st = v.done ? 'Completed' : isDue ? 'Due now' : 'Upcoming';
+                const ip = v.done ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>' : '<circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/>';
+                const sbg = v.done ? 'rgba(79,157,107,.1)' : isDue ? 'rgba(217,79,79,.1)' : 'rgba(122,158,126,.1)';
+                return `<div class="vaccine-row"><div class="vaccine-status" style="background:${sbg}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="${sc}" stroke-width="2">${ip}</svg></div><div style="flex:1"><div class="vaccine-name">${v.name}</div><div class="vaccine-due" style="color:${sc}">${st}</div></div><div class="vaccine-date">${v.dueAgeMonths !== undefined ? '@ ' + v.dueAgeMonths + ' mo' : ''}</div></div>`;
+            }).join('');
+        }
+
+        // ════════════════════════════════════════
+        // NAV
+        // ════════════════════════════════════════
+        function switchTab(tab) {
+            ['dashboard', 'chatbot', 'community', 'faq'].forEach(t => {
+                const el = document.getElementById('tab-' + t);
+                if (el) el.style.display = 'none';
+                document.getElementById('nav-' + t)?.classList.remove('active');
+            });
+            const el = document.getElementById('tab-' + tab);
+            if (el) el.style.display = tab === 'chatbot' ? 'flex' : 'block';
+            document.getElementById('nav-' + tab)?.classList.add('active');
+            document.getElementById('topbar-title').textContent = { dashboard: 'Dashboard', chatbot: 'AI Assistant', community: 'Community', faq: 'Help & FAQ' }[tab];
+            closeSidebar();
+            if (tab === 'community') loadCommunityPosts();
+        }
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+        function closeSidebar() { document.getElementById('sidebar')?.classList.remove('open'); document.getElementById('overlay')?.classList.remove('show'); }
+
+        // ════════════════════════════════════════
+        // CHAT
+        // ════════════════════════════════════════
+        let conversationId = null;
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+        const BOT_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4"/><path d="M12 3C9 3 6.5 5 5.4 7.4"/></svg>`;
+
+        function initChat() {
+            document.getElementById('messages').innerHTML = '';
+            conversationId = null;
+            appendBotMsg("Hello " + (appUser.firstName || 'there') + "! I'm Nana, your AI parenting assistant. What's on your mind today?");
+            document.getElementById('quick-suggestions').style.display = 'block';
+        }
+
+        function appendBotMsg(text) {
+            const c = document.getElementById('messages'), now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const row = document.createElement('div'); row.className = 'msg-row';
+            row.innerHTML = `<div class="bot-avatar">${BOT_ICON}</div><div><div class="bubble bot">${text}</div><div class="msg-time">${now}</div></div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
+        }
+
+        function appendUserMsg(text) {
+            const c = document.getElementById('messages'), now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const row = document.createElement('div'); row.className = 'msg-row user';
+            row.innerHTML = `<div><div class="bubble user">${text}</div><div class="msg-time right">${now}</div></div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
+        }
+
+        function showTyping() {
+            const c = document.getElementById('messages'); const row = document.createElement('div');
+            row.className = 'msg-row'; row.id = 'typing-indicator';
+            row.innerHTML = `<div class="bot-avatar">${BOT_ICON}</div><div class="bubble bot"><div class="typing-dots"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
+        }
+        function removeTyping() { document.getElementById('typing-indicator')?.remove(); }
+
+        async function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim(); if (!text) return;
+            input.value = ''; updateSendBtn();
+            document.getElementById('quick-suggestions').style.display = 'none';
+            appendUserMsg(text); showTyping();
+            try {
+                const data = await apiFetch('/api/chat', { method: 'POST', body: JSON.stringify({ message: text, conversationId, babyId: currentBaby?._id, userId: appUser._id }) });
+                removeTyping(); conversationId = data.conversationId; appendBotMsg(data.reply);
+            } catch { removeTyping(); appendBotMsg("Sorry, I'm having trouble connecting. Please try again."); }
+        }
+
+        function sendQuick(btn) { const text = btn.textContent.trim(); document.getElementById('quick-suggestions').style.display = 'none'; document.getElementById('chat-input').value = text; sendMessage(); }
+        function updateSendBtn() { document.getElementById('send-btn').classList.toggle('active', !!document.getElementById('chat-input').value.trim()); }
+        function chatKeydown(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
+        function resetChat() { initChat(); document.getElementById('quick-suggestions').style.display = 'block'; }
+
+        // ════════════════════════════════════════
+        // COMMUNITY
+        // ════════════════════════════════════════
+        let communityPosts = [], currentTag = 'All', isAnon = false, composeTag = '', filterTimer = null;
+
+        function debouncedFilter() { clearTimeout(filterTimer); filterTimer = setTimeout(loadCommunityPosts, 350); }
+
+        async function loadCommunityPosts() {
+            const container = document.getElementById('posts-list');
+            const search = document.getElementById('comm-search')?.value || '';
+            const tagParam = currentTag !== 'All' ? `tag=${encodeURIComponent(currentTag)}&` : '';
+            const searchParam = search ? `search=${encodeURIComponent(search)}` : '';
+            try {
+                const data = await apiFetch(`/api/community?${tagParam}${searchParam}`);
+                communityPosts = data.posts || []; renderPosts();
+            } catch { container.innerHTML = '<div style="padding:40px;text-align:center;color:#9ca3af">Could not load posts.</div>'; }
+        }
+
+        function renderPosts() {
+            const container = document.getElementById('posts-list');
+            if (!communityPosts.length) { container.innerHTML = '<div class="empty-state"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg><p>No posts found. Be the first to share!</p></div>'; return; }
+            container.innerHTML = communityPosts.map(post => `
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-avatar ${post.anonymous ? 'anon' : ''}">${post.anonymous ? '?' : (post.author?.firstName || 'U')[0].toUpperCase()}</div>
+            <div style="flex:1"><div class="author-row"><span class="author-name">${post.anonymous ? 'Anonymous' : (post.author?.firstName ? post.author.firstName + ' ' + post.author.lastName : 'User')}</span>${post.anonymous ? '<span class="anon-badge">Anonymous</span>' : ''}<span class="post-tag">${(post.tags || ['general'])[0]}</span></div><div class="post-meta">${post.authorRole || ''} · ${timeAgo(post.createdAt)}</div></div>
+          </div>
+          <p class="post-body">${post.content?.slice(0, 280)}${post.content?.length > 280 ? '...' : ''}</p>
+          <div class="post-footer">
+            <button class="action-btn ${post._liked ? 'liked' : ''}" onclick="toggleLike('${post._id}',this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="${post._liked ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>${Array.isArray(post.likes) ? post.likes.length : post.likes || 0}</button>
+            <button class="action-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>${post.comments?.length || 0}</button>
+            <button class="action-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="22"/></svg>Share</button>
+          </div>
+        </div>`).join('');
+        }
+
+        async function toggleLike(postId) { try { const data = await apiFetch(`/api/community/${postId}/like`, { method: 'PUT', body: JSON.stringify({ guestId: appUser._id || 'guest' }) }); const post = communityPosts.find(p => p._id === postId); if (post) { post.likes = data.likes; post._liked = data.liked; renderPosts(); } } catch { toast('Could not like post', 'error'); } }
+        function timeAgo(iso) { if (!iso) return ''; const d = (Date.now() - new Date(iso)) / 1000; if (d < 60) return 'just now'; if (d < 3600) return Math.floor(d / 60) + 'm ago'; if (d < 86400) return Math.floor(d / 3600) + 'h ago'; return Math.floor(d / 86400) + 'd ago'; }
+        function setTag(tag, btn) { currentTag = tag; document.querySelectorAll('.tag-pill').forEach(p => p.classList.remove('active')); btn.classList.add('active'); loadCommunityPosts(); }
+        function toggleCompose() { document.getElementById('compose-box').classList.toggle('show'); }
+        function toggleAnon() { isAnon = !isAnon; const btn = document.getElementById('anon-btn'); btn.classList.toggle('active', isAnon); btn.innerHTML = isAnon ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/></svg> Posting anonymously' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg> Post as yourself'; }
+        function selectComposeTag(tag, btn) { composeTag = tag; document.querySelectorAll('.tag-pick').forEach(b => b.classList.remove('active')); btn.classList.add('active'); }
+        async function submitPost() { const title = document.getElementById('compose-title-input').value.trim(); const body = document.getElementById('compose-body-input').value.trim(); if (!title || !body) { toast('Title and body required', 'error'); return; } const btn = document.getElementById('post-submit-btn'); btn.textContent = 'Publishing...'; btn.disabled = true; try { await apiFetch('/api/community', { method: 'POST', body: JSON.stringify({ content: title + (body ? '\n\n' + body : ''), tags: composeTag ? [composeTag.toLowerCase()] : ['general'], anonymous: isAnon }) }); document.getElementById('compose-title-input').value = ''; document.getElementById('compose-body-input').value = ''; document.getElementById('compose-box').classList.remove('show'); toast('Post submitted for review!', 'success'); await loadCommunityPosts(); } catch (err) { toast(err.message, 'error'); } finally { btn.textContent = 'Publish Post'; btn.disabled = false; } }
+
+        // ════════════════════════════════════════
+        // FAQ DATA
+        // ════════════════════════════════════════
+        const FAQ_DATA = [
+            // ── Using the App ──
+            { id: 1, cat: 'app', q: 'How do I add my baby to BabyMind?', a: `<p>After logging in, go to your <strong>Dashboard</strong> and tap the profile icon or navigate to Settings. From there you can add your baby's name, birth date, gender, and measurements.</p><p>Once added, all features — feeding logs, sleep tracker, vaccination schedule, and Nana AI — will be personalized for your baby.</p>` },
+            { id: 2, cat: 'app', q: 'Can I share my baby\'s profile with my partner or family?', a: `<p>Yes! You can share your baby's profile with your partner, grandparents, or babysitter. Go to <strong>Baby Settings → Share Access</strong> and enter their email. They'll receive an invitation to join.</p><p>You can control permissions — whether they can only view data, or also add logs.</p>` },
+            { id: 3, cat: 'app', q: 'How do I log a feeding, diaper change, or sleep session?', a: `<p>On the Dashboard, each card has a <strong>+ Add</strong> button. Tap it to quickly log a new entry with the time, type, and any notes.</p><ul><li>Feeding: choose breast, formula, solid, or water — add duration or amount</li><li>Sleep: set start and end time, plus quality rating</li><li>Diaper: select wet, dirty, both, or dry — optionally note color</li></ul>` },
+            { id: 4, cat: 'app', q: 'Is my data private and secure?', a: `<p>Absolutely. All data is encrypted in transit (HTTPS) and at rest. Your baby's health data is never sold or shared with third parties.</p><p>You can delete your account and all associated data at any time from <strong>Settings → Privacy → Delete Account</strong>.</p>` },
+            { id: 5, cat: 'app', q: 'Does BabyMind work offline?', a: `<p>The app requires an internet connection for AI features, syncing, and the community. However, basic logging is cached locally and will sync the next time you're connected.</p>` },
+
+            // ── Feeding ──
+            { id: 6, cat: 'feeding', q: 'How often should I feed my newborn?', a: `<p>Newborns (0–4 weeks) should feed <strong>8–12 times per day</strong> — roughly every 2–3 hours. Watch for hunger cues rather than strictly following the clock:</p><ul><li>Rooting (turning head, opening mouth)</li><li>Sucking on hands or fingers</li><li>Fussiness or restlessness</li></ul><p>Crying is a late hunger cue — try to feed before that point.</p><button class="faq-nana-cta" onclick="askNana('How often should I feed my newborn?')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Ask Nana for personalized advice</button>` },
+            { id: 7, cat: 'feeding', q: 'My baby seems hungry right after feeding — is that normal?', a: `<p>This is very common, especially in the first weeks. Babies have tiny stomachs and breastmilk digests quickly. It could also be a <strong>growth spurt</strong> — periods when your baby needs more milk to support rapid development.</p><p>If you're concerned about weight gain, track feeds in BabyMind and share the log with your pediatrician.</p>` },
+            { id: 8, cat: 'feeding', q: 'How do I know if my baby is getting enough milk?', a: `<p>Good signs your baby is feeding well:</p><ul><li>6+ wet diapers per day after day 4</li><li>Regular weight gain (your pediatrician will monitor this)</li><li>Baby seems content and settles after feeds</li><li>You can hear swallowing during feeds</li></ul><p>If you're breastfeeding and concerned, a lactation consultant can help enormously.</p>` },
+            { id: 9, cat: 'feeding', q: 'When can I start introducing solid foods?', a: `<p>Most babies are ready for solids between <strong>4–6 months</strong>, but the WHO recommends waiting until 6 months if possible. Signs of readiness:</p><ul><li>Sits up with minimal support</li><li>Shows interest in food (watching you eat, reaching for food)</li><li>Has lost the tongue-thrust reflex</li></ul><p>Always start with single-ingredient purees and introduce one new food every 3–5 days to watch for reactions.</p>` },
+
+            // ── Sleep ──
+            { id: 10, cat: 'sleep', q: 'How much should my baby sleep?', a: `<p>Sleep needs by age:</p><ul><li><strong>0–3 months:</strong> 14–17 hours/day (in short stretches)</li><li><strong>4–6 months:</strong> 12–16 hours/day</li><li><strong>6–12 months:</strong> 12–15 hours/day</li><li><strong>1–2 years:</strong> 11–14 hours/day</li></ul><p>All babies are different — track sleep in BabyMind to see your baby's personal patterns over time.</p>` },
+            { id: 11, cat: 'sleep', q: 'My baby won\'t sleep unless held — what can I do?', a: `<p>This is completely normal — babies are comforted by warmth and closeness. A few gentle strategies:</p><ul><li>Try a <strong>swaddle</strong> to simulate being held</li><li>Use <strong>white noise</strong> which mimics womb sounds</li><li>Transfer to the cot during <strong>light sleep</strong> (after 20 minutes, when eyes flutter)</li><li>Try a <strong>warm cot</strong> — place a warm water bottle briefly, then remove before placing baby</li></ul>` },
+            { id: 12, cat: 'sleep', q: 'What is sleep regression and when does it happen?', a: `<p>Sleep regression is a period when a baby who was sleeping well suddenly starts waking more frequently. Common regressions happen at:</p><ul><li><strong>4 months</strong> — the most significant, due to a permanent change in sleep cycles</li><li><strong>8–10 months</strong></li><li><strong>12 months</strong></li><li><strong>18 months & 2 years</strong></li></ul><p>They typically last 2–6 weeks. Stay consistent with your routine and know it will pass.</p>` },
+            { id: 13, cat: 'sleep', q: 'Is it safe for my baby to sleep on their stomach?', a: `<p><strong>No.</strong> Always place your baby on their <strong>back</strong> to sleep until their first birthday — this significantly reduces the risk of SIDS (Sudden Infant Death Syndrome).</p><p>Once your baby can roll from back to front and back again independently, they can find their own sleep position. You don't need to reposition them.</p>` },
+
+            // ── Vaccines ──
+            { id: 14, cat: 'vaccines', q: 'What is the vaccination schedule for babies in Algeria?', a: `<p>BabyMind follows the <strong>Algerian national vaccination calendar</strong>. Key vaccines and timing:</p><ul><li><strong>Birth:</strong> BCG, Hepatitis B</li><li><strong>2 months:</strong> DTP, Polio (OPV), Hib, Pneumococcique</li><li><strong>9 months:</strong> ROR (measles, mumps, rubella)</li><li><strong>18 months:</strong> Rappel rougeole (measles booster)</li></ul><p>Your baby's vaccination schedule is tracked automatically in the Dashboard based on their birth date.</p>` },
+            { id: 15, cat: 'vaccines', q: 'What should I do if my baby misses a vaccine?', a: `<p>Don't panic — vaccines can be given late. Contact your pediatrician as soon as possible to reschedule. Most vaccines can still be given after the scheduled age, though the exact catch-up schedule depends on the specific vaccine.</p><p>BabyMind will mark overdue vaccines clearly and you can log the administered date once caught up.</p>` },
+            { id: 16, cat: 'vaccines', q: 'What side effects are normal after vaccination?', a: `<p>Common and expected reactions:</p><ul><li>Mild fever (under 38.5°C) for 1–2 days</li><li>Redness, swelling, or tenderness at the injection site</li><li>Fussiness, crying, or sleeping more than usual</li></ul><p>These are signs the immune system is responding — not causes for concern. You can give infant paracetamol (following dosage for weight) for comfort if your doctor advises it.</p><p><strong>See a doctor immediately</strong> if your baby has a fever over 40°C, difficulty breathing, or an allergic reaction (hives, facial swelling).</p>` },
+            { id: 17, cat: 'vaccines', q: 'How do I mark a vaccine as completed in BabyMind?', a: `<p>In the <strong>Dashboard</strong>, tap on the vaccination card and then select the vaccine. Press <strong>"Mark as done"</strong> and enter the date it was administered. You can also add notes from the nurse or clinic.</p><p>BabyMind will automatically update your schedule and show the next upcoming vaccine.</p>` },
+
+            // ── Nana AI ──
+            { id: 18, cat: 'ai', q: 'What can I ask Nana?', a: `<p>Nana is trained on infant care, parenting guidance, and your baby's specific data. You can ask her about:</p><ul><li>Feeding amounts and schedules for your baby's age</li><li>Sleep strategies and routines</li><li>Developmental milestones and what to expect</li><li>Vaccine information and when the next one is due</li><li>General health questions and when to see a doctor</li><li>Emotional support during the challenging early months</li></ul><p>Nana remembers the context of your conversation and can reference your baby's profile for personalized answers.</p>` },
+            { id: 19, cat: 'ai', q: 'Can Nana replace my pediatrician?', a: `<p><strong>No</strong> — and she'll be the first to tell you that. Nana provides general guidance and information to support you between doctor visits. She always recommends consulting your pediatrician for:</p><ul><li>Any fever in a baby under 3 months</li><li>Concerns about weight or growth</li><li>Medical symptoms or diagnoses</li><li>Medication decisions</li></ul><p>Think of Nana as a knowledgeable friend available at 3am — not a medical professional.</p>` },
+            { id: 20, cat: 'ai', q: 'Is my conversation with Nana private?', a: `<p>Yes. Conversations with Nana are private to your account and are not shared with third parties. Anonymized, aggregated data may be used to improve Nana's responses, but never individual conversations.</p><p>You can clear your conversation history at any time by tapping <strong>New chat</strong> in the AI Assistant tab.</p>` },
+        ];
+
+        // ════════════════════════════════════════
+        // FAQ LOGIC
+        // ════════════════════════════════════════
+        let activeFaqCat = 'all';
+        let faqSearch = '';
+
+        const CAT_META = {
+            app: { label: 'Using the App', icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg>' },
+            feeding: { label: 'Feeding', icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/></svg>' },
+            sleep: { label: 'Sleep', icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>' },
+            vaccines: { label: 'Vaccines', icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/></svg>' },
+            ai: { label: 'Nana AI', icon: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>' },
+        };
+
+        function highlight(text, query) {
+            if (!query) return text;
+            const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+        }
+
+        function renderFAQ() {
+            const q = faqSearch.toLowerCase().trim();
+            const filtered = FAQ_DATA.filter(item => {
+                const catMatch = activeFaqCat === 'all' || item.cat === activeFaqCat;
+                const searchMatch = !q || item.q.toLowerCase().includes(q) || item.a.toLowerCase().includes(q);
+                return catMatch && searchMatch;
+            });
+
+            // Update counts
+            const allCount = FAQ_DATA.filter(i => !q || i.q.toLowerCase().includes(q) || i.a.toLowerCase().includes(q)).length;
+            document.getElementById('count-all').textContent = allCount;
+            ['app', 'feeding', 'sleep', 'vaccines', 'ai'].forEach(cat => {
+                const count = FAQ_DATA.filter(i => i.cat === cat && (!q || i.q.toLowerCase().includes(q) || i.a.toLowerCase().includes(q))).length;
+                document.getElementById('count-' + cat).textContent = count;
+            });
+
+            // Results info
+            document.getElementById('faq-count').textContent = filtered.length;
+            document.getElementById('faq-results-info').innerHTML = q
+                ? `Showing <span>${filtered.length}</span> result${filtered.length !== 1 ? 's' : ''} for "<span>${q}</span>"`
+                : `Showing <span>${filtered.length}</span> question${filtered.length !== 1 ? 's' : ''}`;
+
+            const container = document.getElementById('faq-content');
+
+            if (!filtered.length) {
+                container.innerHTML = `<div class="faq-empty"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No results found</h3><p>Try a different search term, or ask Nana directly.</p><button class="faq-empty-btn" onclick="switchTab('chatbot')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Ask Nana</button></div>`;
+                return;
+            }
+
+            // Group by category
+            const cats = activeFaqCat === 'all'
+                ? [...new Set(filtered.map(i => i.cat))]
+                : [activeFaqCat];
+
+            container.innerHTML = cats.map(cat => {
+                const items = filtered.filter(i => i.cat === cat);
+                const meta = CAT_META[cat];
+                return `
+            <div class="faq-section">
+                <div class="faq-section-title">
+                    <div class="faq-section-icon">${meta.icon}</div>
+                    ${meta.label}
+                </div>
+                ${items.map(item => `
+                <div class="faq-item" id="faq-${item.id}">
+                    <div class="faq-q" onclick="toggleFaq(${item.id})">
+                        <div class="faq-q-text">${highlight(item.q, q)}</div>
+                        <div class="faq-chevron"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+                    </div>
+                    <div class="faq-a">
+                        <div class="faq-a-inner">${item.a}
+                            <div class="faq-helpful">
+                                <span class="faq-helpful-label">Was this helpful?</span>
+                                <button class="faq-helpful-btn yes" onclick="voteHelpful(${item.id},'yes',this)">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v12"/><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"/></svg>
+                                    Yes
+                                </button>
+                                <button class="faq-helpful-btn no" onclick="voteHelpful(${item.id},'no',this)">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 14V2"/><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h0a3.13 3.13 0 0 1-3-3.88Z"/></svg>
+                                    No
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`).join('')}
+            </div>`;
+            }).join('');
+        }
+
+        function toggleFaq(id) {
+            const el = document.getElementById('faq-' + id);
+            const wasOpen = el.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            // Open this one if it was closed
+            if (!wasOpen) {
+                el.classList.add('open');
+                el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function setFaqCat(cat, btn) {
+            activeFaqCat = cat;
+            document.querySelectorAll('.faq-cat').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderFAQ();
+        }
+
+        function filterFAQ() {
+            faqSearch = document.getElementById('faq-search').value;
+            renderFAQ();
+        }
+
+        function voteHelpful(id, vote, btn) {
+            const parent = btn.closest('.faq-helpful');
+            parent.querySelectorAll('.faq-helpful-btn').forEach(b => b.classList.remove('voted'));
+            btn.classList.add('voted');
+            toast(vote === 'yes' ? '👍 Thanks for the feedback!' : '👎 We\'ll work to improve this answer.', vote === 'yes' ? 'success' : '');
+        }
+
+        function askNana(question) {
+            switchTab('chatbot');
+            setTimeout(() => {
+                document.getElementById('chat-input').value = question;
+                updateSendBtn();
+                sendMessage();
+            }, 300);
+        }
+    </script>
+</body>
+
+</html>

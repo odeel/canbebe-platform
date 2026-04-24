@@ -1,14 +1,16 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-
+const { protect } = require('../middleware/Auth');
 const {
   addSleepLog,
   addFeedingLog,
   addDiaperLog,
-} = require("../controllers/logController");
+  getLogs,
+} = require('../controllers/logController');
 
-router.post("/sleep", addSleepLog);
-router.post("/feeding", addFeedingLog);
-router.post("/diaper", addDiaperLog);
+router.get('/:babyId', protect, getLogs);
+router.post('/sleep', protect, addSleepLog);
+router.post('/feeding', protect, addFeedingLog);
+router.post('/diaper', protect, addDiaperLog);
 
 module.exports = router;
