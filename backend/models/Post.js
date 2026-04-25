@@ -32,7 +32,7 @@ const postSchema = new mongoose.Schema(
     // Denormalized role for faster display (matches User.role)
     authorRole: {
       type: String,
-      enum: ['mother', 'father', 'grandmother', 'babysitter', 'pregnant'],
+      enum: ['mother', 'father', 'grandmother', 'babysitter', 'pregnant', 'admin'],
     },
     content: {
       type: String,
@@ -54,14 +54,15 @@ const postSchema = new mongoose.Schema(
       },
     ],
     comments: [commentSchema],
-    // Searchable tags
+    // Searchable tags — accepts English or French values
     tags: {
       type: [String],
-      enum: [
-        'sommeil', 'alimentation', 'hygiene', 'vaccins',
-        'sante', 'emotions', 'developpement', 'produits', 'general',
-      ],
       default: ['general'],
+    },
+    // Whether the author chose to post anonymously
+    anonymous: {
+      type: Boolean,
+      default: false,
     },
     // Soft-delete
     deleted: {

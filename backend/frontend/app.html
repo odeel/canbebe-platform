@@ -687,6 +687,167 @@
             border-radius: 3px;
             padding: 0 2px;
         }
+
+        /* ══════════════════════════════════
+           CHAT HISTORY SIDEBAR
+        ══════════════════════════════════ */
+        .chat-history-sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background: #faf8fd;
+            border-right: 1px solid rgba(139,69,192,.1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: width .25s ease, opacity .25s ease;
+        }
+        .chat-history-sidebar.collapsed {
+            width: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .chs-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 16px 14px;
+            border-bottom: 1px solid rgba(139,69,192,.08);
+            flex-shrink: 0;
+        }
+        .chs-title {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--purple-700);
+            letter-spacing: .03em;
+        }
+        .chs-new-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: var(--gradient-primary);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: opacity .2s;
+        }
+        .chs-new-btn:hover { opacity: .85; }
+
+        .chs-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 8px;
+        }
+        .chs-list::-webkit-scrollbar { width: 4px; }
+        .chs-list::-webkit-scrollbar-thumb { background: rgba(139,69,192,.15); border-radius: 4px; }
+
+        .chs-section-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--gray-light);
+            padding: 8px 10px 4px;
+        }
+        .chs-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background .18s;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            position: relative;
+        }
+        .chs-item:hover { background: rgba(139,69,192,.07); }
+        .chs-item.active {
+            background: rgba(139,69,192,.12);
+        }
+        .chs-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--gradient-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--purple-500);
+        }
+        .chs-item.active .chs-item-icon {
+            background: var(--gradient-primary);
+            color: #fff;
+        }
+        .chs-item-text {
+            flex: 1;
+            min-width: 0;
+        }
+        .chs-item-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.3;
+        }
+        .chs-item.active .chs-item-title { color: var(--purple-700); }
+        .chs-item-time {
+            font-size: 11px;
+            color: var(--gray-light);
+            margin-top: 2px;
+        }
+        .chs-item-del {
+            opacity: 0;
+            background: none;
+            border: none;
+            color: var(--gray-light);
+            cursor: pointer;
+            padding: 3px;
+            border-radius: 4px;
+            transition: all .15s;
+            flex-shrink: 0;
+        }
+        .chs-item:hover .chs-item-del { opacity: 1; }
+        .chs-item-del:hover { color: #e53e3e; background: rgba(229,62,62,.1); }
+
+        .chs-empty {
+            text-align: center;
+            padding: 40px 16px;
+            color: var(--gray-light);
+            font-size: 13px;
+        }
+
+        /* chat-main takes remaining width */
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+        .chs-toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray-med);
+            padding: 6px;
+            border-radius: 8px;
+            transition: background .18s;
+            flex-shrink: 0;
+        }
+        .chs-toggle-btn:hover { background: var(--purple-50); color: var(--purple-600); }
     </style>
 </head>
 
@@ -713,7 +874,7 @@
                         <div class="user-role" id="sidebar-role">Mother</div>
                     </div>
                 </div>
-                <nav class="sidebar-nav">
+                <nav class="sidebar-nav" style="overflow-y:auto;overflow-x:hidden;">
                     <button class="nav-item active" id="nav-dashboard" onclick="switchTab('dashboard')">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
@@ -745,6 +906,16 @@
                         </svg>
                         <span>Community</span>
                     </button>
+                    <button class="nav-item" id="nav-family" onclick="switchTab('family')" style="display:none">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            <path d="M21 21v-2a4 4 0 0 0-3-3.87"/>
+                        </svg>
+                        <span>Family</span>
+                    </button>
                     <button class="nav-item" id="nav-faq" onclick="switchTab('faq')">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
@@ -753,6 +924,15 @@
                             <path d="M12 17h.01" />
                         </svg>
                         <span>Help & FAQ</span>
+                    </button>
+                    <button class="nav-item" id="nav-advices" onclick="switchTab('advices')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg>
+                        <span>Advices</span>
                     </button>
                 </nav>
                 <div class="sidebar-bottom">
@@ -1025,82 +1205,123 @@
             </div>
 
             <!-- ══════════════ CHATBOT TAB ══════════════ -->
-            <div id="tab-chatbot" style="display:none;flex-direction:column;height:calc(100vh - 72px)">
-                <div class="chat-header">
-                    <div class="mascot-wrap">
-                        <div class="mascot-bg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                stroke="white" stroke-width="2">
-                                <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5" />
-                                <path
-                                    d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4" />
-                                <path d="M12 3C9 3 6.5 5 5.4 7.4" />
+            <div id="tab-chatbot" style="display:none;flex-direction:row;height:calc(100vh - 72px);overflow:hidden">
+
+                <!-- ── HISTORY SIDEBAR ── -->
+                <div class="chat-history-sidebar" id="chat-history-sidebar">
+                    <div class="chs-top">
+                        <div class="chs-title">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+                            </svg>
+                            Conversations
+                        </div>
+                        <button class="chs-new-btn" onclick="startNewChat()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14"/><path d="M12 5v14"/>
+                            </svg>
+                            New
+                        </button>
+                    </div>
+                    <div class="chs-list" id="chs-list">
+                        <div class="chs-empty">No conversations yet</div>
+                    </div>
+                </div>
+
+                <!-- ── CHAT MAIN AREA ── -->
+                <div class="chat-main" id="chat-main">
+                    <div class="chat-header">
+                        <button class="chs-toggle-btn" onclick="toggleHistorySidebar()" title="Toggle history">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+                            </svg>
+                        </button>
+                        <div class="mascot-wrap">
+                            <div class="mascot-bg"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                                <path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/>
+                                <path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4"/>
+                                <path d="M12 3C9 3 6.5 5 5.4 7.4"/>
                             </svg></div>
-                        <div class="online-dot"></div>
+                            <div class="online-dot"></div>
+                        </div>
+                        <div style="flex:1">
+                            <div class="nana-name">Nour <span class="ai-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg> AI</span></div>
+                            <div class="nana-status" id="chat-status-label">Toujours là pour toi 🌸</div>
+                        </div>
+                        <button class="reset-btn" onclick="startNewChat()">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M5 12h14"/><path d="M12 5v14"/>
+                            </svg>
+                            New chat
+                        </button>
                     </div>
-                    <div>
-                        <div class="nana-name">Nour <span class="ai-badge"><svg width="10" height="10"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path
-                                        d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-                                </svg> AI</span></div>
-                        <div class="nana-status">Toujours là pour toi 🌸</div>
+
+                    <div class="messages" id="messages"></div>
+
+                    <div id="quick-suggestions" class="quick-wrap">
+                        <p class="quick-label">Suggested questions</p>
+                        <div class="quick-row">
+                            <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Baby won't sleep, what can I do?</button>
+                            <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Is it normal for baby to have hiccups?</button>
+                            <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>When is the next vaccination due?</button>
+                            <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>How often should I feed a 2-month-old?</button>
+                        </div>
                     </div>
-                    <button class="reset-btn" onclick="resetChat()"><svg width="14" height="14" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-                            <path d="M21 3v5h-5" />
-                            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-                            <path d="M8 16H3v5" />
-                        </svg>New chat</button>
-                </div>
-                <div class="messages" id="messages"></div>
-                <div id="quick-suggestions" class="quick-wrap">
-                    <p class="quick-label">Suggested questions</p>
-                    <div class="quick-row">
-                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
-                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
-                                <path
-                                    d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                            </svg>Baby won't sleep, what can I do?</button>
-                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
-                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                            </svg>Is it normal for baby to have hiccups?</button>
-                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
-                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M12 16v-4M12 8h.01" />
-                            </svg>When is the next vaccination due?</button>
-                        <button class="quick-btn" onclick="sendQuick(this)"><svg width="13" height="13"
-                                viewBox="0 0 24 24" fill="none" stroke="var(--purple-600)" stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 16 14" />
-                            </svg>How often should I feed a 2-month-old?</button>
+
+                    <div class="chat-input-area">
+                        <button class="attach-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+                        <input class="chat-input" id="chat-input" placeholder="Demande à Nour..." oninput="updateSendBtn()" onkeydown="chatKeydown(event)">
+                        <button class="mic-btn" onclick="toggleMic()" title="Voice message"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></button>
+                        <button class="send-btn" id="send-btn" onclick="sendMessage()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
                     </div>
-                </div>
-                <div class="chat-input-area">
-                    <button class="attach-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path
-                                d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-                        </svg></button>
-                    <input class="chat-input" id="chat-input" placeholder="Demande à Nour..."
-                        oninput="updateSendBtn()" onkeydown="chatKeydown(event)">
-                    <button class="mic-btn" onclick="toggleMic()" title="Voice message"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3Z" />
-                            <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
-                            <line x1="12" x2="12" y1="19" y2="22" />
-                        </svg></button>
-                    <button class="send-btn" id="send-btn" onclick="sendMessage()"><svg width="16" height="16"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="m22 2-7 20-4-9-9-4Z" />
-                            <path d="M22 2 11 13" />
-                        </svg></button>
                 </div>
             </div>
 
             <!-- ══════════════ COMMUNITY TAB ══════════════ -->
+            <!-- ══════════════ FAMILY TAB ══════════════ -->
+            <div class="page-content" id="tab-family" style="display:none">
+                <div class="faq-root">
+                    <div class="faq-hero">
+                        <div class="faq-hero-inner">
+                            <div class="faq-eyebrow">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                                Family &amp; Caretakers
+                            </div>
+                            <h1>Manage your <em>family circle</em></h1>
+                            <p id="family-hero-desc">Add the other parent or a babysitter — they'll get full access to your baby's data.</p>
+                        </div>
+                    </div>
+
+                    <!-- Search -->
+                    <div style="max-width:680px;margin:0 auto 32px">
+                        <div class="faq-search-wrap" style="margin-bottom:12px">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                            </svg>
+                            <input id="family-search-input" type="text" placeholder="Search by name or email…" oninput="familySearchDebounce()" />
+                        </div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap" id="family-role-filters"></div>
+                    </div>
+
+                    <!-- Search results -->
+                    <div id="family-search-results" style="max-width:680px;margin:0 auto 40px;display:none">
+                        <div style="font-size:13px;font-weight:600;color:#9ca3af;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px">Search Results</div>
+                        <div id="family-results-list"></div>
+                    </div>
+
+                    <!-- Current caretakers -->
+                    <div style="max-width:680px;margin:0 auto">
+                        <div style="font-size:13px;font-weight:600;color:#9ca3af;letter-spacing:.05em;text-transform:uppercase;margin-bottom:12px">Your Family Circle</div>
+                        <div id="family-caretakers-list">
+                            <div style="text-align:center;padding:40px 20px;color:#9ca3af;font-size:14px">Loading…</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="page-content" id="tab-community" style="display:none">
                 <div class="community-root">
                     <div class="community-main">
@@ -1324,6 +1545,59 @@
                 </div>
             </div>
 
+            <!-- ══════════════ ADVICES TAB ══════════════ -->
+            <div class="page-content" id="tab-advices" style="display:none">
+                <div class="faq-root">
+
+                    <!-- Hero (same style as FAQ hero) -->
+                    <div class="faq-hero">
+                        <div class="faq-hero-inner">
+                            <div class="faq-eyebrow">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="8" x2="12" y2="12"/>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                                </svg>
+                                Parenting Advices
+                            </div>
+                            <h1>Expert tips &amp; <em>video guides</em></h1>
+                            <p>Curated advice for every stage of your parenting journey, with helpful video resources.</p>
+                            <div class="faq-search-wrap">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+                                </svg>
+                                <input id="advice-search" placeholder="Search advices..." oninput="filterAdvices()" type="text" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category chips (same style as faq-cats) -->
+                    <div class="faq-cats" id="advice-cats"></div>
+
+                    <!-- Results info -->
+                    <div class="faq-results-info" id="advice-results-info" style="margin-bottom:16px;font-size:13px;color:#6b7280"></div>
+
+                    <!-- Cards grid -->
+                    <div id="advice-content" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;"></div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ── Video Modal for Advices ── -->
+    <div class="modal-overlay" id="advice-video-modal" style="z-index:2000">
+        <div class="modal-box" style="width:640px;max-width:95vw;padding:0;overflow:hidden;border-radius:20px">
+            <iframe id="advice-video-frame" src="" allowfullscreen style="width:100%;aspect-ratio:16/9;border:none;display:block"></iframe>
+            <div style="padding:20px 24px 24px">
+                <h3 id="advice-video-title" style="font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:8px;color:var(--purple-900)"></h3>
+                <p id="advice-video-desc" style="font-size:14px;color:#6b7280;line-height:1.6;margin-bottom:16px"></p>
+                <div style="display:flex;justify-content:flex-end;gap:10px">
+                    <a id="advice-video-yt" href="#" target="_blank" rel="noopener" style="padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;background:#f1f5f9;color:#374151;text-decoration:none;font-family:'Nunito',sans-serif">Open on YouTube ↗</a>
+                    <button onclick="closeAdviceVideo()" style="padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;background:var(--gradient-primary);color:#fff;border:none;cursor:pointer;font-family:'Nunito',sans-serif">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1412,6 +1686,11 @@
             document.getElementById('sidebar-role').textContent = appUser.role || 'Parent';
             document.getElementById('topbar-avatar').textContent = initial;
             document.getElementById('banner-title').textContent = 'Hello, ' + (appUser.firstName || name.split(' ')[0]);
+
+            // Show Family tab only for mother and father
+            if (['mother', 'father'].includes(appUser.role)) {
+                document.getElementById('nav-family').style.display = '';
+            }
         }
 
         function calcAge(dob) {
@@ -1615,7 +1894,7 @@
         // NAV
         // ════════════════════════════════════════
         function switchTab(tab) {
-            ['dashboard', 'chatbot', 'community', 'faq'].forEach(t => {
+            ['dashboard', 'chatbot', 'community', 'faq', 'advices', 'family'].forEach(t => {
                 const el = document.getElementById('tab-' + t);
                 if (el) el.style.display = 'none';
                 document.getElementById('nav-' + t)?.classList.remove('active');
@@ -1623,9 +1902,12 @@
             const el = document.getElementById('tab-' + tab);
             if (el) el.style.display = tab === 'chatbot' ? 'flex' : 'block';
             document.getElementById('nav-' + tab)?.classList.add('active');
-            document.getElementById('topbar-title').textContent = { dashboard: 'Dashboard', chatbot: 'AI Assistant', community: 'Community', faq: 'Help & FAQ' }[tab];
+            document.getElementById('topbar-title').textContent = { dashboard: 'Dashboard', chatbot: 'AI Assistant', community: 'Community', faq: 'Help & FAQ', advices: 'Advices', family: 'Family' }[tab];
             closeSidebar();
             if (tab === 'community') loadCommunityPosts();
+            if (tab === 'advices') initAdvices();
+            if (tab === 'family') initFamily();
+            if (tab === 'chatbot') loadChatHistory();
         }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
@@ -1635,15 +1917,136 @@
         // CHAT
         // ════════════════════════════════════════
         let conversationId = null;
+        let chatHistorySidebarOpen = true;
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
         const BOT_ICON = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9 12h.01M15 12h.01M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5.5 4.5 1.4"/><path d="M12 3C9 3 6.5 5 5.4 7.4"/></svg>`;
 
-        function initChat() {
+        function toggleHistorySidebar() {
+            chatHistorySidebarOpen = !chatHistorySidebarOpen;
+            document.getElementById('chat-history-sidebar').classList.toggle('collapsed', !chatHistorySidebarOpen);
+        }
+
+        // ── History sidebar ──
+        async function loadChatHistory() {
+            try {
+                const data = await apiFetch('/api/chat/history');
+                renderChatHistory(data.conversations || []);
+            } catch { /* silent */ }
+        }
+
+        function timeAgoChat(iso) {
+            if (!iso) return '';
+            const d = (Date.now() - new Date(iso)) / 1000;
+            if (d < 60) return 'just now';
+            if (d < 3600) return Math.floor(d / 60) + 'm ago';
+            if (d < 86400) return Math.floor(d / 3600) + 'h ago';
+            if (d < 86400 * 7) return Math.floor(d / 86400) + 'd ago';
+            return new Date(iso).toLocaleDateString([], { month: 'short', day: 'numeric' });
+        }
+
+        function groupByDate(conversations) {
+            const today = new Date(); today.setHours(0,0,0,0);
+            const yesterday = new Date(today); yesterday.setDate(yesterday.getDate()-1);
+            const week = new Date(today); week.setDate(week.getDate()-7);
+            const groups = { Today:[], Yesterday:[], 'This week':[], Older:[] };
+            conversations.forEach(c => {
+                const d = new Date(c.lastMessageAt || c.updatedAt || c.createdAt);
+                d.setHours(0,0,0,0);
+                if (d >= today) groups['Today'].push(c);
+                else if (d >= yesterday) groups['Yesterday'].push(c);
+                else if (d >= week) groups['This week'].push(c);
+                else groups['Older'].push(c);
+            });
+            return groups;
+        }
+
+        function renderChatHistory(conversations) {
+            const el = document.getElementById('chs-list');
+            if (!conversations.length) {
+                el.innerHTML = '<div class="chs-empty">No conversations yet.<br>Start a new chat!</div>';
+                return;
+            }
+            const groups = groupByDate(conversations);
+            let html = '';
+            Object.entries(groups).forEach(([label, items]) => {
+                if (!items.length) return;
+                html += `<div class="chs-section-label">${label}</div>`;
+                items.forEach(c => {
+                    const isActive = c._id === conversationId;
+                    html += `
+                    <button class="chs-item${isActive ? ' active' : ''}" onclick="loadConversation('${c._id}')">
+                        <div class="chs-item-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>
+                            </svg>
+                        </div>
+                        <div class="chs-item-text">
+                            <div class="chs-item-title">${c.title || 'Conversation'}</div>
+                            <div class="chs-item-time">${timeAgoChat(c.lastMessageAt || c.updatedAt)}</div>
+                        </div>
+                        <button class="chs-item-del" onclick="deleteConversation(event,'${c._id}')" title="Delete">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6 6 18M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </button>`;
+                });
+            });
+            el.innerHTML = html;
+        }
+
+        async function loadConversation(id) {
+            conversationId = id;
             document.getElementById('messages').innerHTML = '';
+            document.getElementById('quick-suggestions').style.display = 'none';
+            document.getElementById('chat-status-label').textContent = 'Loading…';
+            // Highlight active item
+            document.querySelectorAll('.chs-item').forEach(el => el.classList.toggle('active', el.onclick?.toString().includes(id)));
+            renderChatHistory((await apiFetch('/api/chat/history').catch(() => ({ conversations: [] }))).conversations || []);
+            try {
+                const data = await apiFetch(`/api/chat/${id}/messages`);
+                const messages = data.messages || [];
+                const container = document.getElementById('messages');
+                container.innerHTML = '';
+                messages.forEach(m => {
+                    if (m.sender === 'user') appendUserMsg(m.content);
+                    else appendBotMsgWithSpeak(m.content, []);
+                });
+                document.getElementById('chat-status-label').textContent = 'Toujours là pour toi 🌸';
+            } catch {
+                document.getElementById('chat-status-label').textContent = 'Toujours là pour toi 🌸';
+                appendBotMsg('Could not load this conversation. Try starting a new one.');
+            }
+        }
+
+        async function deleteConversation(e, id) {
+            e.stopPropagation();
+            try {
+                // optimistic remove
+                if (conversationId === id) { conversationId = null; startNewChat(); }
+                const data = await apiFetch('/api/chat/history');
+                const filtered = (data.conversations || []).filter(c => c._id !== id);
+                renderChatHistory(filtered);
+            } catch { /* silent */ }
+        }
+
+        function initChat() {
+            startNewChat();
+            loadChatHistory();
+        }
+
+        function startNewChat() {
             conversationId = null;
+            document.getElementById('messages').innerHTML = '';
+            document.getElementById('chat-status-label').textContent = 'Toujours là pour toi 🌸';
             appendBotMsg("Hello " + (appUser.firstName || 'there') + "! Je suis Nour, ton assistante Can Bébé 🌸. What's on your mind today?");
             document.getElementById('quick-suggestions').style.display = 'block';
+            // Deactivate all history items
+            document.querySelectorAll('.chs-item').forEach(el => el.classList.remove('active'));
         }
+
+        // keep old name working (called from switchTab)
+        function resetChat() { startNewChat(); }
 
         function appendBotMsg(text) {
             const c = document.getElementById('messages'), now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -1677,7 +2080,7 @@
                 })
                 .catch(() => {});
             // Use raw fetch for binary response
-            const token = localStorage.getItem('token');
+            const token = sessionStorage.getItem('bm_token');
             fetch('/api/chat/speak', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -1733,7 +2136,7 @@
                     const blob = new Blob(audioChunks, { type: 'audio/webm' });
                     showTyping();
                     try {
-                        const token = localStorage.getItem('token');
+                        const token = sessionStorage.getItem('bm_token');
                         const form = new FormData(); form.append('audio', blob, 'audio.webm');
                         const res = await fetch('/api/chat/transcribe', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: form });
                         const data = await res.json();
@@ -1760,8 +2163,11 @@
             try {
                 const data = await apiFetch('/api/chat', { method: 'POST', body: JSON.stringify({ message: text, conversationId, babyId: currentBaby?._id }) });
                 removeTyping();
+                const isNewConv = !conversationId;
                 conversationId = data.conversationId;
                 appendBotMsgWithSpeak(data.reply, data.products);
+                // Refresh history sidebar (new conv or title update)
+                if (isNewConv) loadChatHistory();
             } catch { removeTyping(); appendBotMsg("Désolé, j'ai un souci de connexion. Réessaie dans quelques secondes 🌸"); }
         }
 
@@ -1977,6 +2383,318 @@
                 sendMessage();
             }, 300);
         }
+
+        // ════════════════════════════════════════
+        // FAMILY
+        // ════════════════════════════════════════
+
+        const FAMILY_CAN_ADD = {
+            mother: ['father', 'babysitter'],
+            father: ['mother', 'babysitter'],
+        };
+        const ROLE_LABELS = { father:'Father', mother:'Mother', babysitter:'Babysitter', grandmother:'Grandmother', pregnant:'Pregnant' };
+
+        let familySearchTimer = null;
+
+        function initFamily() {
+            const role = appUser?.role;
+            if (!FAMILY_CAN_ADD[role]) return; // guard — shouldn't be visible anyway
+
+            // Update hero desc
+            const allowed = FAMILY_CAN_ADD[role];
+            document.getElementById('family-hero-desc').textContent =
+                `As a ${role}, you can add ${allowed.map(r => ROLE_LABELS[r]).join(' or ')} — they'll get full access to your baby's data.`;
+
+            // Render role filter chips
+            const filtersEl = document.getElementById('family-role-filters');
+            filtersEl.innerHTML = ['all', ...allowed].map(r =>
+                `<button class="faq-cat${r === 'all' ? ' active' : ''}" data-role="${r}" onclick="setFamilyRoleFilter('${r}', this)">
+                    ${r === 'all' ? 'All' : ROLE_LABELS[r]}
+                </button>`
+            ).join('');
+
+            loadCaretakers();
+        }
+
+        let familyRoleFilter = 'all';
+        function setFamilyRoleFilter(role, btn) {
+            familyRoleFilter = role;
+            document.querySelectorAll('#family-role-filters .faq-cat').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const q = document.getElementById('family-search-input').value.trim();
+            if (q.length >= 2) doFamilySearch(q);
+        }
+
+        function familySearchDebounce() {
+            clearTimeout(familySearchTimer);
+            familySearchTimer = setTimeout(() => {
+                const q = document.getElementById('family-search-input').value.trim();
+                if (q.length >= 2) doFamilySearch(q);
+                else {
+                    document.getElementById('family-search-results').style.display = 'none';
+                    document.getElementById('family-results-list').innerHTML = '';
+                }
+            }, 350);
+        }
+
+        async function doFamilySearch(q) {
+            const roleParam = familyRoleFilter !== 'all' ? `&role=${familyRoleFilter}` : '';
+            try {
+                const data = await apiFetch(`/api/family/search?q=${encodeURIComponent(q)}${roleParam}`);
+                renderSearchResults(data.users || []);
+                document.getElementById('family-search-results').style.display = 'block';
+            } catch (err) {
+                document.getElementById('family-results-list').innerHTML =
+                    `<div style="color:#ef4444;font-size:13px;padding:12px">${err.message}</div>`;
+                document.getElementById('family-search-results').style.display = 'block';
+            }
+        }
+
+        function renderSearchResults(users) {
+            const el = document.getElementById('family-results-list');
+            if (!users.length) {
+                el.innerHTML = `<div style="text-align:center;padding:24px;color:#9ca3af;font-size:14px">No users found. Try a different name or email.</div>`;
+                return;
+            }
+            el.innerHTML = users.map(u => `
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.06)">
+                    <div style="width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0">
+                        ${u.firstName?.[0]?.toUpperCase() || '?'}
+                    </div>
+                    <div style="flex:1;min-width:0">
+                        <div style="font-weight:600;font-size:14px;color:var(--purple-900)">${u.firstName} ${u.lastName}</div>
+                        <div style="font-size:12px;color:#9ca3af">${u.email} · ${ROLE_LABELS[u.role] || u.role}</div>
+                    </div>
+                    <button onclick="addCaretaker('${u._id}', this)" style="padding:8px 16px;background:var(--gradient-primary);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Nunito',sans-serif;white-space:nowrap">
+                        Add
+                    </button>
+                </div>`).join('');
+        }
+
+        async function addCaretaker(userId, btn) {
+            btn.disabled = true;
+            btn.textContent = 'Adding…';
+            try {
+                const data = await apiFetch('/api/family/add', {
+                    method: 'POST',
+                    body: JSON.stringify({ userId, permissions: ['view', 'log'] }),
+                });
+                toast(data.message || 'Added successfully!', 'success');
+                btn.textContent = '✓ Added';
+                btn.style.background = '#22c55e';
+                loadCaretakers();
+            } catch (err) {
+                toast(err.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Add';
+            }
+        }
+
+        async function loadCaretakers() {
+            const el = document.getElementById('family-caretakers-list');
+            try {
+                const data = await apiFetch('/api/family/my');
+                renderCaretakers(data.caretakers || []);
+            } catch (err) {
+                el.innerHTML = `<div style="color:#ef4444;font-size:13px;padding:12px">${err.message}</div>`;
+            }
+        }
+
+        function renderCaretakers(list) {
+            const el = document.getElementById('family-caretakers-list');
+            if (!list.length) {
+                el.innerHTML = `
+                    <div style="text-align:center;padding:48px 20px;color:#9ca3af">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 12px;display:block;opacity:.4">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <div style="font-size:14px">No one added yet.<br>Search above to add a caretaker.</div>
+                    </div>`;
+                return;
+            }
+            el.innerHTML = list.map(c => `
+                <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.06)">
+                    <div style="width:44px;height:44px;border-radius:50%;background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:16px;flex-shrink:0">
+                        ${c.firstName?.[0]?.toUpperCase() || '?'}
+                    </div>
+                    <div style="flex:1;min-width:0">
+                        <div style="font-weight:600;font-size:14px;color:var(--purple-900)">${c.firstName} ${c.lastName}</div>
+                        <div style="font-size:12px;color:#9ca3af">${c.email} · ${ROLE_LABELS[c.role] || c.role}</div>
+                        <div style="font-size:11px;color:#c4b5d4;margin-top:2px">
+                            Access to: ${c.babies.map(b => b.name).join(', ')}
+                        </div>
+                    </div>
+                    <button onclick="removeCaretaker('${c.id}', this)" style="padding:8px 14px;background:none;border:1.5px solid #fca5a5;color:#ef4444;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Nunito',sans-serif">
+                        Remove
+                    </button>
+                </div>`).join('');
+        }
+
+        async function removeCaretaker(userId, btn) {
+            if (!confirm("Remove this person's access to your baby data?")) return;
+            btn.disabled = true;
+            btn.textContent = 'Removing…';
+            try {
+                await apiFetch(`/api/family/remove/${userId}`, { method: 'DELETE' });
+                toast('Access removed.', 'success');
+                loadCaretakers();
+            } catch (err) {
+                toast(err.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Remove';
+            }
+        }
+
+        // ════════════════════════════════════════
+        // ADVICES
+        // ════════════════════════════════════════
+
+        const ALL_ADVICES = [
+            // ── Applicable to ALL roles ──
+            { id:1,  roles:['mother','father','grandmother','babysitter','pregnant'], category:'Sleep',       title:'Safe Sleep Practices',             summary:'Create a safe sleep environment that protects your baby every night.',                      content:'Always place your baby on their back to sleep. Use a firm, flat mattress with no soft bedding, pillows, or bumpers. Keep the room at 18–20 °C. A pacifier at bedtime can reduce SIDS risk.', youtubeId:'TnD_3El5GWM' },
+            { id:2,  roles:['mother','father','grandmother','babysitter','pregnant'], category:'Development', title:'Tummy Time Tips',                  summary:'Build neck and core strength with daily tummy time sessions.',                              content:'Start tummy time from day one for 3–5 minutes several times a day. Gradually increase as baby grows stronger. Use colorful toys to keep them engaged. Always supervise tummy time.', youtubeId:'k7VE8NWzRYI' },
+            { id:3,  roles:['mother','father','grandmother','babysitter','pregnant'], category:'Health',      title:'Vaccination Schedule Guide',        summary:"Stay on top of your baby's vaccination milestones and what to expect.",                    content:"Follow your pediatrician's recommended schedule. Keep a vaccination record. After each shot, watch for mild reactions like fever or fussiness. A cool compress helps soothe injection-site soreness.", youtubeId:'V5IjjUMJQsE' },
+            { id:4,  roles:['mother','father','grandmother','babysitter','pregnant'], category:'Bonding',     title:'Building a Strong Parent-Baby Bond', summary:'Simple daily habits that deepen your connection with your baby.',                          content:"Talk, sing, and read to your baby every day. Respond promptly to crying — you cannot spoil a newborn. Maintain eye contact during feeding and play. Skin-to-skin contact regulates baby's temperature and heart rate.", youtubeId:'ph6FqUUwV8Q' },
+
+            // ── Mother / Father ──
+            { id:5,  roles:['mother','father'], category:'Feeding',     title:'Breastfeeding Basics',          summary:'Essential tips for a comfortable and successful breastfeeding journey.',               content:'Breastfeed on demand, typically every 2–3 hours. Ensure a proper latch to avoid nipple pain. Stay hydrated and maintain a balanced diet. Seek help from a lactation consultant if needed.', youtubeId:'3OqPFPT5OFU' },
+            { id:6,  roles:['mother','father'], category:'Nutrition',   title:'Starting Solid Foods',           summary:'When and how to introduce solids safely to your growing baby.',                       content:"Introduce solids around 6 months when your baby shows readiness signs. Start with single-ingredient purees. Introduce one new food every 3–5 days to watch for allergies. Avoid honey, cow's milk, and choking hazards.", youtubeId:'qJw0xIDN-LQ' },
+            { id:7,  roles:['mother','father'], category:'Sleep',       title:'Establishing a Sleep Routine',  summary:'Consistent bedtime routines help babies sleep longer and better.',                      content:'Start a calming pre-sleep routine: bath, feed, story, song. Keep bedtime between 18:30 and 20:00. Dim lights and reduce noise 30 minutes before bed. Be consistent — babies thrive on predictability.', youtubeId:'UkPmLMgDXhs' },
+            { id:8,  roles:['mother','father'], category:'Development', title:'Baby Milestones 0–12 Months',   summary:'Track your baby\'s key developmental milestones in the first year.',                    content:'At 2 months: smiling. At 4 months: rolling. At 6 months: sitting with support. At 9 months: crawling. At 12 months: first words and steps. Consult your pediatrician if milestones are significantly delayed.', youtubeId:'0Ox3jVMZmwk' },
+
+            // ── Pregnant ──
+            { id:9,  roles:['pregnant'], category:'Pregnancy',   title:'Third Trimester Essentials',     summary:'What to expect and how to prepare during the last three months of pregnancy.',         content:'Attend all prenatal appointments. Pack your hospital bag by week 36. Practice breathing exercises for labor. Rest as much as possible and stay hydrated. Know the signs of labor.', youtubeId:'6DxZsHoBIGI' },
+            { id:10, roles:['pregnant'], category:'Pregnancy',   title:'Nutrition During Pregnancy',     summary:'Key nutrients and foods to support a healthy pregnancy.',                              content:'Increase folic acid, iron, and calcium intake. Eat small, frequent meals to manage nausea. Avoid raw fish, unpasteurized cheese, and deli meats. Stay hydrated with 8–10 glasses of water daily.', youtubeId:'8HslUiu8p1M' },
+            { id:11, roles:['pregnant'], category:'Pregnancy',   title:'Preparing for Breastfeeding',   summary:'Get ready before birth to give breastfeeding the best start.',                         content:'Attend a breastfeeding class before delivery. Learn about proper latch and positioning. Talk to a lactation consultant early. Know that some discomfort at the start is normal — ask for help.', youtubeId:'3OqPFPT5OFU' },
+            { id:12, roles:['pregnant'], category:'Bonding',     title:'Bonding with Your Baby Before Birth', summary:'Simple ways to connect with your baby during pregnancy.',                       content:'Talk and sing to your baby — they can hear you from 18 weeks. Play music gently on your belly. Share the experience with your partner. Visualizing your baby and journaling strengthens the prenatal bond.', youtubeId:'ph6FqUUwV8Q' },
+
+            // ── Grandmother / Babysitter ──
+            { id:13, roles:['grandmother','babysitter'], category:'Safety',    title:'Baby-Proofing the Home',       summary:'Essential safety checks before a baby comes to your home.',                          content:'Cover electrical outlets. Secure heavy furniture to walls. Install stair gates. Keep small objects, plastic bags, and cleaning products out of reach. Ensure window guards are in place above ground floor.', youtubeId:'2xFQ3M62-Kk' },
+            { id:14, roles:['grandmother','babysitter'], category:'Safety',    title:'Safe Feeding When Caregiving',  summary:'What to know about feeding a baby when you\'re the caregiver.',                     content:"Always check expressed milk temperature on your wrist before feeding. Never microwave breast milk or formula. Sit baby upright during feeds. Don't leave baby unattended with a bottle. Burp baby after every feed.", youtubeId:'3OqPFPT5OFU' },
+            { id:15, roles:['grandmother','babysitter'], category:'Health',    title:'Recognising When Baby Is Unwell', summary:'Signs that a baby needs medical attention and what to do.',                       content:'Contact a doctor if baby has a temperature above 38 °C (under 3 months: any fever), is unusually lethargic, refuses feeds for more than 8 hours, has difficulty breathing, or has a rash with fever.', youtubeId:'V5IjjUMJQsE' },
+            { id:16, roles:['grandmother','babysitter'], category:'Bonding',   title:'Playing and Stimulating Baby',  summary:'Age-appropriate activities to support a baby\'s development during your care.',     content:'0–3 months: high-contrast cards, gentle rocking, talking. 3–6 months: rattles, mirrors, tummy time. 6–9 months: peek-a-boo, stacking cups. 9–12 months: push-pull toys, simple picture books.', youtubeId:'k7VE8NWzRYI' },
+        ];
+
+        let adviceActiveCat = 'All', adviceSearch = '', advicesInited = false;
+
+        function getAdvicesForUser() {
+            const role = (appUser && appUser.role) ? appUser.role : 'mother';
+            return ALL_ADVICES.filter(a => a.roles.includes(role));
+        }
+
+        function initAdvices() {
+            renderAdviceCats();
+            renderAdvices();
+        }
+
+        function renderAdviceCats() {
+            const advices = getAdvicesForUser();
+            const cats = ['All', ...new Set(advices.map(a => a.category))];
+            document.getElementById('advice-cats').innerHTML = cats.map((c, i) =>
+                `<button class="faq-cat${c === adviceActiveCat ? ' active' : ''}" onclick="setAdviceCat('${c}',this)">${c}</button>`
+            ).join('');
+        }
+
+        function setAdviceCat(cat, btn) {
+            adviceActiveCat = cat;
+            document.querySelectorAll('#advice-cats .faq-cat').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderAdvices();
+        }
+
+        function filterAdvices() {
+            adviceSearch = document.getElementById('advice-search').value;
+            renderAdvices();
+        }
+
+        function getMergedAdvices() {
+            try {
+                const saved = localStorage.getItem('bm_advices');
+                return saved ? JSON.parse(saved) : ALL_ADVICES;
+            } catch(e) { return ALL_ADVICES; }
+        }
+
+        function renderAdvices() {
+            let items = getMergedAdvices().filter(a => a.roles.includes((appUser && appUser.role) ? appUser.role : 'mother'));
+            if (adviceActiveCat !== 'All') items = items.filter(a => a.category === adviceActiveCat);
+            if (adviceSearch) {
+                const q = adviceSearch.toLowerCase();
+                items = items.filter(a => a.title.toLowerCase().includes(q) || a.summary.toLowerCase().includes(q) || a.category.toLowerCase().includes(q));
+            }
+            const info = document.getElementById('advice-results-info');
+            info.textContent = `Showing ${items.length} advice${items.length !== 1 ? 's' : ''}`;
+
+            const container = document.getElementById('advice-content');
+            if (!items.length) {
+                container.innerHTML = `<div class="faq-empty" style="grid-column:1/-1"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No results found</h3><p>Try a different search term or category.</p></div>`;
+                return;
+            }
+
+            const CAT_COLORS = { Sleep:'#7ab0cc', Development:'#8aab8a', Health:'#b495b4', Bonding:'#e07a5f', Feeding:'#e07a5f', Nutrition:'#d4a853', Pregnancy:'#a8a4cc', Safety:'#c4917a' };
+
+            container.innerHTML = items.map(a => {
+                const color = CAT_COLORS[a.category] || '#a78bfa';
+                return `<div class="advice-user-card" style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.08);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s">
+                    <div style="position:relative;height:170px;overflow:hidden;cursor:pointer" onclick="openAdviceVideo(${a.id})">
+                        <img src="https://img.youtube.com/vi/${a.youtubeId}/hqdefault.jpg" alt="${a.title}" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy" onerror="this.style.background='#e5e7eb'" />
+                        <div class="advice-play-overlay" style="position:absolute;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;pointer-events:none">
+                            <div style="width:50px;height:50px;background:rgba(255,255,255,.93);border-radius:50%;display:flex;align-items:center;justify-content:center">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="${color}"><polygon points="5,3 19,12 5,21"/></svg>
+                            </div>
+                        </div>
+                        <span style="position:absolute;top:10px;left:10px;background:${color};color:#fff;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 12px;border-radius:100px">${a.category}</span>
+                    </div>
+                    <div style="padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1">
+                        <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;line-height:1.3;color:var(--purple-900)">${a.title}</div>
+                        <div style="font-size:13px;color:#6b7280;line-height:1.6">${a.summary}</div>
+                        <div style="margin-top:auto;padding-top:8px;display:flex;gap:8px">
+                            <button onclick="openAdviceVideo(${a.id})" style="flex:1;padding:9px 14px;background:var(--gradient-primary);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Nunito',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+                                Watch Video
+                            </button>
+                            <button onclick="toggleAdviceContent(${a.id},this)" style="padding:9px 14px;background:#f1f5f9;color:#374151;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Nunito',sans-serif">Read</button>
+                        </div>
+                        <div id="adv-content-${a.id}" style="display:none;font-size:13px;color:#6b7280;line-height:1.65;background:rgba(139,69,192,.06);border-left:3px solid var(--purple-400,#a78bfa);padding:10px 12px;border-radius:0 8px 8px 0;margin-top:2px">${a.content}</div>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // attach hover for play overlay via JS (avoids inline onmouseover conflicts)
+            document.querySelectorAll('.advice-user-card').forEach(card => {
+                const overlay = card.querySelector('.advice-play-overlay');
+                card.addEventListener('mouseenter', () => { overlay.style.opacity = '1'; card.style.transform = 'translateY(-3px)'; card.style.boxShadow = '0 8px 32px rgba(0,0,0,.13)'; });
+                card.addEventListener('mouseleave', () => { overlay.style.opacity = '0'; card.style.transform = ''; card.style.boxShadow = '0 2px 16px rgba(0,0,0,.08)'; });
+            });
+        }
+
+        function toggleAdviceContent(id, btn) {
+            const el = document.getElementById('adv-content-' + id);
+            const open = el.style.display === 'block';
+            el.style.display = open ? 'none' : 'block';
+            btn.textContent = open ? 'Read' : 'Less';
+        }
+
+        function openAdviceVideo(id) {
+            const a = getMergedAdvices().find(x => x.id === id);
+            if (!a) return;
+            document.getElementById('advice-video-frame').src = `https://www.youtube.com/embed/${a.youtubeId}?autoplay=1`;
+            document.getElementById('advice-video-title').textContent = a.title;
+            document.getElementById('advice-video-desc').textContent = a.content;
+            document.getElementById('advice-video-yt').href = `https://www.youtube.com/watch?v=${a.youtubeId}`;
+            document.getElementById('advice-video-modal').classList.add('show');
+        }
+
+        function closeAdviceVideo() {
+            document.getElementById('advice-video-modal').classList.remove('show');
+            document.getElementById('advice-video-frame').src = '';
+        }
+
+        document.getElementById('advice-video-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeAdviceVideo();
+        });
     </script>
 </body>
 

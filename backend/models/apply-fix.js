@@ -1,4 +1,42 @@
-const Post = require('../models/Post');
+/**
+ * Run this from your backend folder:
+ *   node apply-fix.js
+ *
+ * It patches Post.js and postController.js in-place.
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+// ─── 1. Patch models/Post.js ─────────────────────────────────────────────────
+const postModelPath = path.join(__dirname, 'models', 'Post.js');
+let postModel = fs.readFileSync(postModelPath, 'utf8');
+
+// Fix 1a: remove strict tag enum → accept any string
+postModel = postModel.replace(
+  /\/\/ Searchable tags[\s\S]*?tags:\s*\{[\s\S]*?enum:\s*\[[\s\S]*?\],[\s\S]*?default:\s*\['general'\],\s*\},/,
+  `// Searchable tags — accepts any string (English or French)
+    tags: {
+      type: [String],
+      default: ['general'],
+    },`
+);
+
+// Fix 1b: add 'admin' to authorRole enum if missing
+if (!postModel.includes("'admin'")) {
+  postModel = postModel.replace(
+    "enum: ['mother', 'father', 'grandmother', 'babysitter', 'pregnant']",
+    "enum: ['mother', 'father', 'grandmother', 'babysitter', 'pregnant', 'admin']"
+  );
+}
+
+fs.writeFileSync(postModelPath, postModel, 'utf8');
+console.log('✅ models/Post.js patched');
+
+// ─── 2. Replace controllers/postController.js entirely ───────────────────────
+const postControllerPath = path.join(__dirname, 'controllers', 'postController.js');
+
+const newController = `const Post = require('../models/Post');
 
 // GET /api/community
 exports.getPosts = async (req, res, next) => {
@@ -6,7 +44,7 @@ exports.getPosts = async (req, res, next) => {
     const { tag, search, status, page = 1, limit = 20 } = req.query;
 
     const filter = status === 'all' ? {} : { deleted: false };
-    if (tag && tag !== 'All') filter.tags = { $regex: new RegExp(`^${tag}$`, 'i') };
+    if (tag && tag !== 'All') filter.tags = { $regex: new RegExp('^' + tag + '$', 'i') };
     if (search) filter.$or = [{ content: { $regex: search, $options: 'i' } }];
 
     const [posts, total] = await Promise.all([
@@ -18,13 +56,7 @@ exports.getPosts = async (req, res, next) => {
       Post.countDocuments(filter),
     ]);
 
-    // For public feed: hide author info on anonymous posts
-    const mapped = posts.map(p => {
-      const obj = p.toJSON();
-      if (obj.anonymous) { obj.author = null; obj.authorRole = null; }
-      return obj;
-    });
-    res.json({ success: true, posts: mapped, total });
+    res.json({ success: true, posts, total });
   } catch (err) { next(err); }
 };
 
@@ -41,16 +73,11 @@ exports.createPost = async (req, res, next) => {
       authorRole: VALID_ROLES.includes(req.user.role) ? req.user.role : undefined,
       content,
       tags: (Array.isArray(tags) && tags.length) ? tags : ['general'],
-      anonymous: !!anonymous,
     });
 
     await post.populate('author', 'firstName lastName role profileImage');
     const out = post.toJSON();
-    // Respect anonymous: hide author info if posted anonymously
-    if (out.anonymous) {
-      out.author = null;
-      out.authorRole = null;
-    }
+    out.anonymous = !!anonymous;
     res.status(201).json({ success: true, post: out });
   } catch (err) { next(err); }
 };
@@ -136,3 +163,9 @@ exports.deletePost = async (req, res, next) => {
     res.json({ success: true });
   } catch (err) { next(err); }
 };
+`;
+
+fs.writeFileSync(postControllerPath, newController, 'utf8');
+console.log('✅ controllers/postController.js replaced');
+console.log('');
+console.log('Now restart your server: npm start');

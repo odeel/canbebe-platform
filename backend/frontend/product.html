@@ -360,6 +360,13 @@
             });
         }
 
+        
+        function proxyImg(url) {
+            if (!url) return '';
+            if (url.startsWith('/uploads/')) return url;
+            return '/api/image-proxy?url=' + encodeURIComponent(url);
+        }
+
         function createProductCard(product) {
             const categoryMap = {
                 'couches': 'Diapers',
@@ -369,7 +376,7 @@
             };
 
             const category = categoryMap[product.categoryName] || product.categoryName;
-            const imageUrl = product.imageUrl || 'placeholder-image.jpg';
+            const imageUrl = product.imageUrl ? proxyImg(product.imageUrl) : 'placeholder-image.jpg';
             const productUrl = product.productUrl || '#';
             const size = typeof product.size === 'number' ? `Size ${product.size}` : product.size;
             const price = product.price ? `${product.price.toLocaleString()} DZD` : 'Price on request';
@@ -377,7 +384,7 @@
             return `
                 <article class="product-card" data-category="${product.categoryName}">
                     <div class="card-image-wrap">
-                        ${product.imageUrl ? `<img src="${imageUrl}" alt="${product.name}" loading="lazy">` : `
+                        ${product.imageUrl ? `<img src="${imageUrl}" alt="${product.name}" loading="lazy" onerror="this.style.display='none'">` : `
                         <div class="card-img-placeholder">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                 <rect x="3" y="3" width="18" height="18" rx="3" />

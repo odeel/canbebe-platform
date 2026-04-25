@@ -32,6 +32,11 @@ const API_ENDPOINTS = {
     // FAQ
     getFAQ: `${API_BASE_URL}/faq`,
 
+    // Users (admin)
+    getUsers: `${API_BASE_URL}/auth/users`,
+    toggleUserStatus: (id) => `${API_BASE_URL}/auth/users/${id}/status`,
+    deleteUser: (id) => `${API_BASE_URL}/auth/users/${id}`,
+
     // Products
     getProducts: `${API_BASE_URL}/products`,
 

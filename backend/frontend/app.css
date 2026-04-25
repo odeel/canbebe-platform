@@ -1815,3 +1815,87 @@ em {
     line-height: 1.6;
     opacity: 0.95;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   ADDITIONAL RESPONSIVE - MOBILE FIXES
+═══════════════════════════════════════════════════════════ */
+
+/* Sleep stats: 3-col → 1-col on small screens */
+@media (max-width: 480px) {
+    .sleep-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Chat: reduce padding on mobile */
+@media (max-width: 600px) {
+    .chat-header {
+        padding: 16px 20px;
+        gap: 12px;
+    }
+
+    .chat-input-area {
+        padding: 14px 16px;
+        gap: 8px;
+    }
+
+    .attach-btn,
+    .mic-btn,
+    .send-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .mascot-bg {
+        width: 44px;
+        height: 44px;
+    }
+
+    /* Toolbar: stack compose button on very small screens */
+    .comm-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .compose-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Banner title on mobile */
+    .banner {
+        padding: 28px 20px;
+        gap: 24px;
+    }
+
+    .banner-title {
+        font-size: 28px;
+    }
+
+    /* Topbar: shrink title */
+    .topbar-title {
+        font-size: 18px;
+    }
+
+    .topbar {
+        padding: 0 16px;
+        gap: 12px;
+    }
+
+    /* Page content */
+    .page-content {
+        padding: 16px;
+    }
+}
+
+/* Stats row: prevent too-narrow cards */
+@media (max-width: 480px) {
+    .stats-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 360px) {
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+}

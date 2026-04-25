@@ -1,11 +1,18 @@
 const express = require('express');
-const router = express.Router();
+const router  = express.Router();
 const { protect, canAccessBaby } = require('../middleware/Auth');
-const { createBaby, getBabies, getBaby, updateBaby } = require('../controllers/babyController');
+const {
+    createBaby,
+    getBabies,
+    getBaby,
+    updateBaby,
+} = require('../controllers/babyController');
 
-router.post('/', protect, createBaby);
-router.get('/', protect, getBabies);
-router.get('/:babyId', protect, canAccessBaby('view'), getBaby);
-router.put('/:babyId', protect, canAccessBaby('edit'), updateBaby);
+router.use(protect);
+
+router.get('/',          getBabies);
+router.post('/',         createBaby);
+router.get('/:babyId',   canAccessBaby('view'), getBaby);
+router.put('/:babyId',   canAccessBaby('edit'), updateBaby);
 
 module.exports = router;

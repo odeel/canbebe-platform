@@ -660,3 +660,14 @@ body {
 .onboard-card {
     animation: fadeIn 0.4s ease;
 }
+
+/* ── MOBILE ADDITIONS ── */
+@media (max-width: 400px) {
+    .gender-row {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 32px 18px;
+    }
+}

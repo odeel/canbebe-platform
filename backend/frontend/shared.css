@@ -2360,3 +2360,45 @@ a {
     align-items: center;
     gap: 12px
 }
+
+/* ═══════════════════════════════════════
+   RESPONSIVE ADDITIONS - MOBILE FIXES
+═══════════════════════════════════════ */
+
+/* Topbar title shrinks on very small screens */
+@media (max-width: 480px) {
+    .topbar-title {
+        font-size: 15px;
+    }
+
+    .topbar {
+        padding: 0 14px;
+        gap: 10px;
+    }
+
+    .page-content {
+        padding: 16px 14px;
+    }
+
+    .banner {
+        padding: 24px 18px;
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .banner-title {
+        font-size: 26px;
+    }
+
+    .stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 360px) {
+    .stats-row {
+        grid-template-columns: 1fr;
+    }
+}

@@ -9,6 +9,34 @@
         href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Nunito:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        .video-section {
+            background: var(--white, #fff);
+            padding: 110px 56px;
+            position: relative;
+        }
+        .video-embed-wrap {
+            position: relative;
+            max-width: 860px;
+            margin: 48px auto 0;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 24px 80px rgba(139, 69, 192, 0.15), 0 4px 24px rgba(0,0,0,0.1);
+            aspect-ratio: 16 / 9;
+            background: #000;
+        }
+        .video-embed-wrap iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .video-section { padding: 72px 24px; }
+        }
+    </style>
 </head>
 
 <body>
@@ -177,6 +205,7 @@
             <div class="ellipse ellipse-1"></div>
             <div class="ellipse ellipse-2"></div>
             <div class="ellipse ellipse-3"></div>
+            <div class="hero-left-inner">
             <div class="hero-content">
                 <div class="hero-eyebrow">
                     <span class="eyebrow-dot"></span>
@@ -191,22 +220,29 @@
                     Gentle, dermatologist-tested products and an intelligent AI companion guiding mothers through every
                     precious stage.
                 </p>
-                <div class="hero-actions">
-                    <a href="#products" class="hero-btn-primary">
-                        <span>Explore Products</span>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                            <polyline points="12 5 19 12 12 19" />
-                        </svg>
-                    </a>
-                    <a href="#ai-assistant" class="hero-btn-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                        </svg>
-                        <span>Chat with AI</span>
-                    </a>
+                <!-- Mobile: buttons + image side by side -->
+                <div class="hero-actions-row">
+                    <div class="hero-actions">
+                        <a href="#products" class="hero-btn-primary">
+                            <span>Explore Products</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </a>
+                        <a href="#ai-assistant" class="hero-btn-secondary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                            </svg>
+                            <span>Chat with AI</span>
+                        </a>
+                    </div>
+                    <!-- Mobile-only image: right of buttons -->
+                    <div class="hero-mobile-image">
+                        <img src="f.png" alt="Happy baby">
+                    </div>
                 </div>
                 <div class="hero-stats">
                     <div class="stat">
@@ -225,6 +261,7 @@
                     </div>
                 </div>
             </div>
+            </div><!-- end hero-left-inner -->
         </div>
 
         <div class="hero-image">
@@ -733,6 +770,28 @@
                     <h4>24/7 AI Support</h4>
                     <p>Our intelligent assistant answers your parenting questions any time of day or night.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ══ VIDEO SECTION ══ -->
+    <section class="video-section">
+        <div class="faq-inner">
+            <div class="eyebrow-wrap">
+                <span class="eyebrow-line"></span>
+                <p class="products-eyebrow">See It in Action</p>
+                <span class="eyebrow-line"></span>
+            </div>
+            <h2 class="section-title">Watch &amp; <em>Learn</em></h2>
+            <p class="section-subtitle">A quick look at how Canbebe helps you every step of the way.</p>
+            <div class="video-embed-wrap">
+                <iframe
+                    src="https://www.youtube.com/embed/Q3CxX34i-mg"
+                    title="Canbebe Video"
+                    allowfullscreen
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                </iframe>
             </div>
         </div>
     </section>
@@ -1257,6 +1316,65 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.product-card, .trust-card, .faq-item').forEach(el => observer.observe(el));
+    </script>
+
+    <!-- ── Product image loader ── -->
+    <script>
+        (async function loadProductImages() {
+            try {
+                const res = await fetch('/api/products?activeOnly=true');
+                const data = await res.json();
+                if (!data.success || !data.products.length) return;
+
+                const cards = document.querySelectorAll('#carouselTrack .product-card');
+                data.products.forEach((product, i) => {
+                    if (!product.imageUrl || !cards[i]) return;
+                    const wrap = cards[i].querySelector('.card-image-wrap');
+                    const placeholder = wrap.querySelector('.card-img-placeholder');
+                    if (!placeholder) return;
+
+                    const img = document.createElement('img');
+                    img.src = product.imageUrl;
+                    img.alt = product.name;
+                    img.loading = 'lazy';
+                    img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;';
+                    img.onerror = function() { this.style.display = 'none'; };
+                    img.onload = function() { placeholder.style.display = 'none'; };
+
+                    wrap.insertBefore(img, placeholder);
+                });
+            } catch (e) {
+                // Silently fail — static placeholders remain visible
+            }
+        })();
+
+        // ── Auth-aware nav: show Sign Out if logged in ──
+        (function() {
+            const user = sessionStorage.getItem('bm_user');
+            if (!user) return;
+            let name = '';
+            try { name = JSON.parse(user).firstName || ''; } catch(e) {}
+
+            function makeSignOut(extraStyle) {
+                const btn = document.createElement('button');
+                btn.textContent = (name ? name + ' · ' : '') + 'Sign Out';
+                btn.onclick = function() {
+                    sessionStorage.removeItem('bm_user');
+                    sessionStorage.removeItem('bm_token');
+                    location.href = 'login.html';
+                };
+                btn.style.cssText = 'cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit;' + (extraStyle || '');
+                return btn;
+            }
+
+            // Replace all login/signup link pairs on the page
+            document.querySelectorAll('a.nav-login').forEach(loginEl => {
+                const parent = loginEl.parentElement;
+                const signupEl = parent.querySelector('a.nav-signup');
+                if (signupEl) signupEl.remove();
+                loginEl.replaceWith(makeSignOut('color:inherit;font-weight:600;padding:8px 20px;border-radius:8px;background:rgba(255,255,255,0.1);'));
+            });
+        })();
     </script>
 
 </body>

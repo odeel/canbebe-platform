@@ -30,7 +30,47 @@ app.use('/api/community', require('./routes/postRoutes'));
 app.use('/api/announcements', require('./routes/announcementRoutes'));
 app.use('/api/ratings', require('./routes/ratingRoutes'));
 app.use('/api/faq', require('./routes/faqRoutes'));  // ← add this
+app.use('/api/family', require('./routes/familyRoutes'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// ── Image proxy — serves canbebealgerie.com images through our backend ────────
+app.get('/api/image-proxy', async (req, res) => {
+  let url = req.query.url;
+  if (!url) return res.status(400).send('Missing url param');
+
+  try {
+    const allowed = ['canbebealgerie.com', 'www.canbebealgerie.com'];
+    const parsed = new URL(url);
+    if (!allowed.includes(parsed.hostname)) return res.status(403).send('Forbidden');
+
+    // Unwrap Next.js _next/image optimizer URLs to get the real file URL
+    if (parsed.pathname === '/_next/image') {
+      const inner = parsed.searchParams.get('url');
+      if (inner) {
+        url = inner.startsWith('http') ? inner : `https://www.canbebealgerie.com${inner}`;
+      }
+    }
+
+    const fetch = (...args) => import('node-fetch').then(({ default: f }) => f(...args));
+    const upstream = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Referer': 'https://www.canbebealgerie.com/',
+        'Origin': 'https://www.canbebealgerie.com',
+        'Accept': 'image/avif,image/webp,image/apng,image/*,*/*;q=0.8',
+      },
+    });
+
+    if (!upstream.ok) return res.status(upstream.status).send('Upstream error ' + upstream.status);
+
+    const contentType = upstream.headers.get('content-type') || 'image/jpeg';
+    res.set('Content-Type', contentType);
+    res.set('Cache-Control', 'public, max-age=86400');
+    upstream.body.pipe(res);
+  } catch (err) {
+    res.status(500).send('Proxy error: ' + err.message);
+  }
+});
 
 // ── Health check ──────────────────────────────────────────────────────────────
 app.get('/api/health', (_, res) => res.json({ success: true, message: 'CanBebe API running', timestamp: new Date() }));

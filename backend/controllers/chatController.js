@@ -3,6 +3,7 @@ const Conversation = require('../models/Conversation');
 const Message      = require('../models/Message');
 const Baby         = require('../models/Baby');
 const { OpenAI }   = require('openai');
+const Product      = require('../models/Product');
 const rag          = require('../rag/search');
 
 // ── GROQ CLIENT ──────────────────────────────────────────────────────
@@ -62,7 +63,7 @@ RULE 3 - TONE:
 Warm like an older sister. 2 emojis max. 3-5 sentences max. End with ONE question only. Validate feelings first.
 
 RULE 4 - TOPICS:
-ONLY: baby care, sleep, crying, feeding, diaper sizing, pregnancy, milestones, vaccinations, nutrition, postpartum mental health, Algerian parenting culture.
+ONLY: baby care, sleep, crying, feeding, diaper sizing, pregnancy, milestones, vaccinations, nutrition, postpartum mental health, Algerian parenting culture, Can Bebe products.
 OFF-TOPIC: redirect warmly in user's language.
 
 RULE 5 - MEDICAL:
@@ -71,13 +72,71 @@ EN: Warning: Please consult your pediatrician.
 FR: Ce sujet merite un avis medical. Consultez votre pediatre.
 AR: هذا الموضوع يستحق استشارة طبية. تواصلي مع طبيب الاطفال.
 
-RULE 6 - PRODUCTS:
-ONLY recommend diapers when user asks about diapers/sizing/leaking. NEVER for crying/sleep/feeding.
-Format: [PRODUIT: SIZE | RANGE | URL]
-Standard Range: MIDI=https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JRFHGRJ9PAMAE7AW7Q4W4 MAXI=https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JSHDAK0H35RD07A1CFB92 JUNIOR=https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JTA5XT5D3QM42PDQ8MD53 NEW BORN=https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JMH9F07PQV4VE5YBND3EK MINI=https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JQ6MN0KPARQ0R8THDCJQW EXTRA LARGE=https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JVKR5XJD3WFVN0MYRKVMK
-Medium Range (sensitive skin): MIDI=https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2K09Q6W5S1A4Q1ZEJXRP6J MAXI=https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2K0W6C50GSBJ2B4SCS5T1K
-L'affaire Pack (budget): MAXI=https://www.canbebealgerie.com/categories/01KJ2J9WTX3XQKKTTRF1KV7Q0W/products/01KJ2K76Q1ZFTNSTZE21X1NEBN JUNIOR=https://www.canbebealgerie.com/categories/01KJ2J9WTX3XQKKTTRF1KV7Q0W/products/01KJ2K88FARG2DAQGJ3Z7WV8RT
-Tom Jerry (gift): MAXI=https://www.canbebealgerie.com/categories/01KJ2JH2XKCBA2KST4DRSJFGRG/products/01KJ83T1926942FK2EDXQ44A67 JUNIOR=https://www.canbebealgerie.com/categories/01KJ2JH2XKCBA2KST4DRSJFGRG/products/01KJ83V8GRRGHC19WB1TB80BVR
+RULE 6 - PRODUCTS (ABSOLUTE — NEVER BREAK):
+⛔ FORBIDDEN: Pampers, Huggies, Dodot, Molfix, or ANY brand that is not "Can Bébé". Never mention them.
+⛔ FORBIDDEN: Inventing any URL. Only use URLs from the catalog below.
+⛔ FORBIDDEN: Recommending any product not listed in the catalog below.
+✅ ONLY recommend Can Bébé products from this exact catalog.
+✅ Match the baby's current size and age to the right product.
+✅ When recommending, output EXACTLY: [PRODUIT: NAME | CATEGORY | URL]
+✅ Max 3 products. Always explain why each fits the baby's size/age.
+✅ If no matching product exists, say: "Je n'ai pas de produit Can Bébé correspondant pour l'instant."
+
+== CAN BÉBÉ COMPLETE PRODUCT CATALOG ==
+All products brand: Can Bébé, Algeria. Store: https://www.canbebealgerie.com
+
+[STANDARD RANGE]
+• Can Bébé NEW BORN | Size 1 | 2-5kg | https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JMH9F07PQV4VE5YBND3EK
+• Can Bébé MINI | Size 2 | 3-6kg | https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JQ6MN0KPARQ0R8THDCJQW
+• Can Bébé MIDI | Size 3 | 4-9kg | https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JRFHGRJ9PAMAE7AW7Q4W4
+• Can Bébé MAXI | Size 4 | 7-18kg | https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JSHDAK0H35RD07A1CFB92
+• Can Bébé JUNIOR | Size 5 | 11-25kg | https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JTA5XT5D3QM42PDQ8MD53
+• Can Bébé EXTRA LARGE | Size 6 | 16-30kg | https://www.canbebealgerie.com/categories/01KJ2J0RHNNZBP55ZQ27B50KBK/products/01KJ2JVKR5XJD3WFVN0MYRKVMK
+
+[MEDIUM RANGE — sensitive skin]
+• Can Bébé NEW BORN | Size 1 | 2-5kg | https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2JYGG9JSQ8XBTQZZ3HKMXZ
+• Can Bébé MINI | Size 2 | 3-6kg | https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2JZHRVHFQXPX0EYG1VJNQ6
+• Can Bébé MIDI | Size 3 | 4-9kg | https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2K09Q6W5S1A4Q1ZEJXRP6J
+• Can Bébé MAXI | Size 4 | 7-18kg | https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2K0W6C50GSBJ2B4SCS5T1K
+• Can Bébé JUNIOR | Size 5 | 11-25kg | https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2K1CWHTC385ZWP74M0TR4G
+• Can Bébé EXTRA LARGE | Size 6 | 16-30kg | https://www.canbebealgerie.com/categories/01KJ2J20R280HQPJJD4Z2K07SJ/products/01KJ2K23ETFZA959SDW8TM5M65
+
+[L'AFFAIRE PACK — best value bulk]
+• Can Bébé MIDI | Size 3 | 4-9kg | https://www.canbebealgerie.com/categories/01KJ2J9WTX3XQKKTTRF1KV7Q0W/products/01KJ2K6EKF5CEYCV5E65KE1KV1
+• Can Bébé MAXI | Size 4 | 7-18kg | https://www.canbebealgerie.com/categories/01KJ2J9WTX3XQKKTTRF1KV7Q0W/products/01KJ2K76Q1ZFTNSTZE21X1NEBN
+• Can Bébé JUNIOR | Size 5 | 11-25kg | https://www.canbebealgerie.com/categories/01KJ2J9WTX3XQKKTTRF1KV7Q0W/products/01KJ2K88FARG2DAQGJ3Z7WV8RT
+• Can Bébé EXTRA LARGE | Size 6 | 16-30kg | https://www.canbebealgerie.com/categories/01KJ2J9WTX3XQKKTTRF1KV7Q0W/products/01KJ2KEWH2PFMXQVPQN7BWS2G8
+
+[BONUS PACK]
+• Can Bébé MAXI | Size 4 | 7-18kg | https://www.canbebealgerie.com/categories/01KJ2JB5H44RQW62GWPHDQG349/products/01KJ2KG77HND4KYR4MFVFHBP56
+• Can Bébé JUNIOR | Size 5 | 11-25kg | https://www.canbebealgerie.com/categories/01KJ2JB5H44RQW62GWPHDQG349/products/01KJ2KH1A78K160Q02ZTZ93JJQ
+
+[TOM & JERRY — limited edition]
+• Can Bébé MIDI | Size 3 | 4-9kg | https://www.canbebealgerie.com/categories/01KJ2JH2XKCBA2KST4DRSJFGRG/products/01KJ83S33RRC0QY8MM4R0A3NB2
+• Can Bébé MAXI | Size 4 | 7-18kg | https://www.canbebealgerie.com/categories/01KJ2JH2XKCBA2KST4DRSJFGRG/products/01KJ83T1926942FK2EDXQ44A67
+• Can Bébé JUNIOR | Size 5 | 11-25kg | https://www.canbebealgerie.com/categories/01KJ2JH2XKCBA2KST4DRSJFGRG/products/01KJ83V8GRRGHC19WB1TB80BVR
+• Can Bébé EXTRA LARGE | Size 6 | 16-30kg | https://www.canbebealgerie.com/categories/01KJ2JH2XKCBA2KST4DRSJFGRG/products/01KJ83WBX5NDGW6V62Z1V16GES
+
+[SUPER HEROES — limited edition]
+• Can Bébé MIDI | Size 3 | 4-9kg | https://www.canbebealgerie.com/categories/01KJ2JDQAH9Y6TA2SP2F5FPV7Q/products/01KJ2KM8JAB3HQXN23N5SF0RXP
+• Can Bébé MAXI | Size 4 | 7-18kg | https://www.canbebealgerie.com/categories/01KJ2JDQAH9Y6TA2SP2F5FPV7Q/products/01KJ2KNB7FGTD3FYTPADMA2X0G
+• Can Bébé JUNIOR | Size 5 | 11-25kg | https://www.canbebealgerie.com/categories/01KJ2JDQAH9Y6TA2SP2F5FPV7Q/products/01KJD1X4NBESP5TGB3TY4QMYJW
+• Can Bébé EXTRA LARGE | Size 6 | 16-30kg | https://www.canbebealgerie.com/categories/01KJ2JDQAH9Y6TA2SP2F5FPV7Q/products/01KJD1YDAMEYCJ1Y9J5FMYZZQZ
+
+SIZE GUIDE — match baby age/weight to correct size:
+Size 1 NEW BORN: 2-5kg, 0-1 month
+Size 2 MINI: 3-6kg, 1-3 months
+Size 3 MIDI: 4-9kg, 3-8 months
+Size 4 MAXI: 7-18kg, 8-18 months
+Size 5 JUNIOR: 11-25kg, 18-36 months
+Size 6 EXTRA LARGE: 16-30kg, 3+ years
+
+RANGE GUIDE:
+Standard Range: everyday use, excellent value
+Medium Range: sensitive/delicate skin
+L'affaire Pack: best value, bulk quantity
+Bonus Pack: bonus quantity pack
+Tom & Jerry / Super Heroes: fun limited editions
 
 VACCINATION SCHEDULE ALGERIA 2023 (mandatory free):
 Birth: BCG+HBV | 2m: DTCaVPI-Hib-HBV+VPC+VPO | 4m: same | 11m: ROR | 12m: DTCaVPI-Hib-HBV+VPC+VPO | 18m: ROR | 6yrs: DTCaVPI | 11-13yrs: dT | every 10yrs: dT
@@ -379,6 +438,55 @@ exports.sendMessage = async (req, res, next) => {
       ctx += `Completed (${done.length}): ${done.map(v => v.name).join(', ') || 'none'}\n`;
       ctx += `Pending (${pending.length}): ${pending.map(v => v.name + ' (due at ' + v.dueAgeMonths + 'm)').join(', ') || 'none'}\n\n`;
     }
+
+    // ── ALWAYS INJECT FULL CANBEBE PRODUCT CATALOG ──────────────────────
+    try {
+      const allProducts = await Product.find({ isActive: true }).sort({ categoryName: 1, size: 1 }).lean();
+      if (allProducts.length) {
+        const babyAgeMonths = baby ? baby.ageInMonths : null;
+        const babySize = baby?.currentDiaperSize || null;
+
+        // Determine recommended size from age if size not set
+        let recommendedSize = babySize;
+        if (!recommendedSize && babyAgeMonths !== null) {
+          if (babyAgeMonths < 1)        recommendedSize = 1;
+          else if (babyAgeMonths < 3)   recommendedSize = 2;
+          else if (babyAgeMonths < 8)   recommendedSize = 3;
+          else if (babyAgeMonths < 18)  recommendedSize = 4;
+          else if (babyAgeMonths < 36)  recommendedSize = 5;
+          else                           recommendedSize = 6;
+        }
+
+        ctx += '== CANBEBE PRODUCT CATALOG (REAL DATA — ONLY RECOMMEND FROM THIS LIST) ==\n';
+        ctx += 'STRICT RULE: Never recommend any product not listed here. Never invent URLs or product names.\n';
+        if (recommendedSize) ctx += `Baby's recommended diaper size: ${recommendedSize}\n`;
+        ctx += '\n';
+
+        // Group by category
+        const byCategory = {};
+        allProducts.forEach(p => {
+          const cat = p.categoryName || 'General';
+          if (!byCategory[cat]) byCategory[cat] = [];
+          byCategory[cat].push(p);
+        });
+
+        Object.entries(byCategory).forEach(([cat, prods]) => {
+          ctx += `[${cat.toUpperCase()}]\n`;
+          prods.forEach(p => {
+            const weight = p.weightRangeKg?.min != null
+              ? ` | ${p.weightRangeKg.min}–${p.weightRangeKg.max}kg`
+              : '';
+            const price  = p.price ? ` | ${p.price.toLocaleString()} DZD` : '';
+            const brand  = p.brand ? ` | Brand: ${p.brand}` : '';
+            const san    = p.sanAlcool === true ? ' | Alcohol-free' : '';
+            ctx += `  • ${p.name} | Size: ${p.size}${weight}${price}${brand}${san} | URL: ${p.productUrl || 'N/A'}\n`;
+          });
+          ctx += '\n';
+        });
+      } else {
+        ctx += '== CANBEBE PRODUCT CATALOG ==\nNo products currently available in database.\n\n';
+      }
+    } catch(e) { console.error('Product catalog load error:', e.message); }
 
     // Nour memory
     const memParts = [];

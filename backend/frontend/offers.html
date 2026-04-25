@@ -55,8 +55,8 @@
                         </div>
                     </div>
                 </div>
-                <a href="login.html" class="nav-login" data-i18n="nav.login">Login</a>
-                <a href="signup.html" class="nav-signup" data-i18n="nav.signup">Sign Up</a>
+                <a href="login.html" class="nav-login" id="nav-login-btn" data-i18n="nav.login">Login</a>
+                <a href="signup.html" class="nav-signup" id="nav-signup-btn" data-i18n="nav.signup">Sign Up</a>
             </div>
 
             <!-- Mobile hamburger -->
@@ -74,8 +74,8 @@
                 <li><a href="index.html#contact" class="mobile-link">Contact</a></li>
             </ul>
             <div class="mobile-auth">
-                <a href="login.html" class="nav-login">Login</a>
-                <a href="signup.html" class="nav-signup">Sign Up</a>
+                <a href="login.html" class="nav-login" id="mobile-login-btn">Login</a>
+                <a href="signup.html" class="nav-signup" id="mobile-signup-btn">Sign Up</a>
             </div>
         </div>
     </header>
@@ -639,6 +639,49 @@
                 }
             });
         });
+
+        // ── Auth-aware nav: show Sign Out if logged in ──
+        (function() {
+            const user = sessionStorage.getItem('bm_user');
+            if (!user) return;
+            let name = '';
+            try { name = JSON.parse(user).firstName || ''; } catch(e) {}
+
+            function makeSignOut(extraStyle) {
+                const btn = document.createElement('button');
+                btn.textContent = (name ? name + ' · ' : '') + 'Sign Out';
+                btn.onclick = function() {
+                    sessionStorage.removeItem('bm_user');
+                    sessionStorage.removeItem('bm_token');
+                    location.href = 'login.html';
+                };
+                btn.style.cssText = 'cursor:pointer;border:none;background:none;font-family:inherit;font-size:inherit;' + (extraStyle || '');
+                return btn;
+            }
+
+            // Desktop nav
+            const loginBtn  = document.getElementById('nav-login-btn');
+            const signupBtn = document.getElementById('nav-signup-btn');
+            if (loginBtn && signupBtn) {
+                signupBtn.remove();
+                loginBtn.replaceWith(makeSignOut('color:inherit;font-weight:600;padding:8px 20px;border-radius:8px;background:rgba(255,255,255,0.1);'));
+            }
+
+            // Mobile drawer
+            const mLogin  = document.getElementById('mobile-login-btn');
+            const mSignup = document.getElementById('mobile-signup-btn');
+            if (mLogin && mSignup) {
+                mSignup.remove();
+                mLogin.replaceWith(makeSignOut('color:inherit;font-weight:600;font-size:15px;'));
+            }
+
+            // Also show dashboard link
+            const appLink = document.createElement('a');
+            appLink.href = 'app.html';
+            appLink.textContent = 'Dashboard';
+            appLink.style.cssText = 'margin-right:8px;font-weight:600;color:inherit;text-decoration:none;';
+            const signoutEl = document.getElementById('nav-login-btn');
+        })();
     </script>
 
 </body>

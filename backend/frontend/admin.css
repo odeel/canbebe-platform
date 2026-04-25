@@ -950,3 +950,22 @@ body {
         grid-template-columns: 1fr;
     }
 }
+/* ── User table action buttons ── */
+.action-btn-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-main);
+    margin: 2px;
+    transition: all 0.15s;
+}
+.action-btn-sm:hover { background: var(--bg-hover); }
+.action-btn-sm.delete { color: var(--red-500); border-color: rgba(239,68,68,0.3); }
+.action-btn-sm.delete:hover { background: rgba(239,68,68,0.08); }

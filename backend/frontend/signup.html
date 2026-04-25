@@ -579,6 +579,31 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+            .nav {
+                padding: 0 20px;
+            }
+
+            .main {
+                padding: 24px 16px;
+            }
+
+            .card-body {
+                padding: 28px 20px 32px;
+            }
+
+            .row-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .card-body {
+                padding: 20px 16px 24px;
+            }
+        }
     </style>
 </head>
 
