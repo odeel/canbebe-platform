@@ -472,7 +472,7 @@
             flex-shrink: 0;
         }
 
-        /* Ask Nana CTA inside FAQ */
+        /* Demander à Nour CTA inside FAQ */
         .faq-nana-cta {
             display: inline-flex;
             align-items: center;
@@ -814,7 +814,7 @@
                                     <path
                                         d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
                                 </svg>
-                                Good morning
+                                <span id="time-greeting">Good morning</span>
                             </div>
                             <h1 class="banner-title" id="banner-title">Hello, Sarah</h1>
                             <p class="banner-sub" id="banner-sub">Loading baby data...</p>
@@ -823,7 +823,7 @@
                                     stroke-width="2">
                                     <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
                                 </svg>
-                                Ask Nana a question
+                                Demander à Nour
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2">
                                     <path d="m9 18 6-6-6-6" />
@@ -1038,12 +1038,12 @@
                         <div class="online-dot"></div>
                     </div>
                     <div>
-                        <div class="nana-name">Nana <span class="ai-badge"><svg width="10" height="10"
+                        <div class="nana-name">Nour <span class="ai-badge"><svg width="10" height="10"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path
                                         d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
                                 </svg> AI</span></div>
-                        <div class="nana-status">Always here for you</div>
+                        <div class="nana-status">Toujours là pour toi 🌸</div>
                     </div>
                     <button class="reset-btn" onclick="resetChat()"><svg width="14" height="14" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2">
@@ -1084,9 +1084,9 @@
                             <path
                                 d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                         </svg></button>
-                    <input class="chat-input" id="chat-input" placeholder="Ask Nana anything about your baby..."
+                    <input class="chat-input" id="chat-input" placeholder="Demande à Nour..."
                         oninput="updateSendBtn()" onkeydown="chatKeydown(event)">
-                    <button class="mic-btn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                    <button class="mic-btn" onclick="toggleMic()" title="Voice message"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2">
                             <path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3Z" />
                             <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
@@ -1317,7 +1317,7 @@
                                 stroke-width="2">
                                 <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
                             </svg>
-                            Ask Nana Now
+                            Parler à Nour 🌸
                         </button>
                     </div>
 
@@ -1415,10 +1415,28 @@
         }
 
         function calcAge(dob) {
+            if (!dob) return '—';
             const d = new Date(dob), now = new Date(), ms = now - d;
-            const months = Math.floor(ms / (1000 * 60 * 60 * 24 * 30.44));
-            const days = Math.floor((ms % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24));
-            return months + ' months, ' + days + ' days';
+            if (ms < 0) return '—';
+            const totalDays = Math.floor(ms / (1000 * 60 * 60 * 24));
+            const months = Math.floor(totalDays / 30.44);
+            const days = Math.floor(totalDays % 30.44);
+            if (months === 0) return days + 'd old';
+            if (months < 2) return months + 'm ' + days + 'd';
+            return months + ' months';
+        }
+
+        function calcAgeMonths(dob) {
+            if (!dob) return 0;
+            const d = new Date(dob), now = new Date();
+            return Math.max(0, Math.floor((now - d) / (1000 * 60 * 60 * 24 * 30.44)));
+        }
+
+        function getTimeOfDay() {
+            const h = new Date().getHours();
+            if (h < 12) return 'Good morning';
+            if (h < 18) return 'Good afternoon';
+            return 'Good evening';
         }
 
         // ════════════════════════════════════════
@@ -1427,18 +1445,73 @@
         let currentBaby = null;
 
         async function loadBabyData() {
+            // Update time greeting
+            const greetEl = document.getElementById('time-greeting');
+            if (greetEl) greetEl.textContent = getTimeOfDay();
+
             try {
                 const data = await apiFetch('/api/baby');
-                console.log('BABY DATA:', JSON.stringify(data));
                 currentBaby = data.babies?.[0] || data.baby || null;
-                console.log('currentBaby:', currentBaby);
                 if (currentBaby) {
-                    document.getElementById('age-chip').textContent = calcAge(currentBaby.birthDate);
-                    document.getElementById('stat-weight').textContent = currentBaby.weight ? currentBaby.weight + ' kg' : '—';
-                    document.getElementById('stat-height').textContent = currentBaby.height ? currentBaby.height + ' cm' : '—';
-                    document.getElementById('banner-sub').textContent = currentBaby.name + ' is doing great. Check logs below.';
+                    const age = calcAge(currentBaby.birthDate);
+                    const ageMonths = calcAgeMonths(currentBaby.birthDate);
+
+                    // Age chip
+                    document.getElementById('age-chip').textContent = age;
+
+                    // Weight & height
+                    document.getElementById('stat-weight').textContent = currentBaby.weight ? currentBaby.weight : '—';
+                    document.getElementById('stat-height').textContent = currentBaby.height ? currentBaby.height : '—';
+
+                    // Banner
+                    const genderEmoji = currentBaby.gender === 'male' ? '👦' : currentBaby.gender === 'female' ? '👧' : '🍼';
+                    document.getElementById('banner-title').textContent = 'Hello, ' + (appUser.firstName || '');
+                    document.getElementById('banner-sub').textContent = genderEmoji + ' ' + currentBaby.name + ' · ' + age;
+
+                    // Extra info pills below stats
+                    let extraHtml = '<div style="display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px 0;">';
+                    if (currentBaby.feedingType) {
+                        const feedLabel = { breastfeeding: '🤱 Breastfeeding', formula: '🍼 Formula', mixed: '🔀 Mixed' }[currentBaby.feedingType] || currentBaby.feedingType;
+                        extraHtml += `<span style="background:var(--purple-50);color:var(--purple-600);border:1px solid var(--purple-200);border-radius:20px;padding:4px 12px;font-size:12px;">${feedLabel}</span>`;
+                    }
+                    if (currentBaby.currentDiaperSize) {
+                        extraHtml += `<span style="background:var(--purple-50);color:var(--purple-600);border:1px solid var(--purple-200);border-radius:20px;padding:4px 12px;font-size:12px;">🩲 Diaper size ${currentBaby.currentDiaperSize}</span>`;
+                    }
+                    if (currentBaby.gender && currentBaby.gender !== 'unknown') {
+                        extraHtml += `<span style="background:var(--purple-50);color:var(--purple-600);border:1px solid var(--purple-200);border-radius:20px;padding:4px 12px;font-size:12px;">${currentBaby.gender === 'male' ? '♂ Boy' : '♀ Girl'}</span>`;
+                    }
+                    // Next milestone hint
+                    let milestone = '';
+                    if (ageMonths < 2) milestone = 'Smiling & tracking faces soon!';
+                    else if (ageMonths < 4) milestone = 'Rolling over milestone coming!';
+                    else if (ageMonths < 6) milestone = 'Sitting up milestone coming!';
+                    else if (ageMonths < 9) milestone = 'Crawling milestone coming!';
+                    else if (ageMonths < 12) milestone = 'First steps coming soon!';
+                    else if (ageMonths < 18) milestone = 'First words milestone!';
+                    else if (ageMonths < 24) milestone = 'Running & talking stage!';
+                    else milestone = 'Growing beautifully!';
+                    if (milestone) extraHtml += `<span style="background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;border-radius:20px;padding:4px 12px;font-size:12px;">⭐ ${milestone}</span>`;
+                    extraHtml += '</div>';
+
+                    // Inject extra info after stats row
+                    const statsRow = document.querySelector('.stats-row');
+                    if (statsRow) {
+                        let existingExtra = document.getElementById('extra-info-row');
+                        if (existingExtra) existingExtra.remove();
+                        const extraEl = document.createElement('div');
+                        extraEl.id = 'extra-info-row';
+                        extraEl.innerHTML = extraHtml;
+                        statsRow.insertAdjacentElement('afterend', extraEl);
+                    }
+                } else {
+                    document.getElementById('age-chip').textContent = 'No baby';
+                    document.getElementById('banner-sub').textContent = 'Add your baby to get started.';
                 }
-            } catch { document.getElementById('age-chip').textContent = 'No baby added'; document.getElementById('banner-sub').textContent = 'Add your baby to get started.'; }
+            } catch(e) {
+                console.error('loadBabyData error:', e);
+                document.getElementById('age-chip').textContent = '—';
+                document.getElementById('banner-sub').textContent = 'Could not load baby data.';
+            }
         }
 
         let feedLogs = [];
@@ -1568,7 +1641,7 @@
         function initChat() {
             document.getElementById('messages').innerHTML = '';
             conversationId = null;
-            appendBotMsg("Hello " + (appUser.firstName || 'there') + "! I'm Nana, your AI parenting assistant. What's on your mind today?");
+            appendBotMsg("Hello " + (appUser.firstName || 'there') + "! Je suis Nour, ton assistante Can Bébé 🌸. What's on your mind today?");
             document.getElementById('quick-suggestions').style.display = 'block';
         }
 
@@ -1594,6 +1667,90 @@
         }
         function removeTyping() { document.getElementById('typing-indicator')?.remove(); }
 
+        // ── NOUR VOICE TTS ──
+        let currentAudio = null;
+        function speakText(text) {
+            if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+            apiFetch('/api/chat/speak', { method: 'POST', body: JSON.stringify({ text }) })
+                .then(async (data) => {
+                    // apiFetch returns JSON but speak returns audio — use raw fetch
+                })
+                .catch(() => {});
+            // Use raw fetch for binary response
+            const token = localStorage.getItem('token');
+            fetch('/api/chat/speak', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ text })
+            }).then(async r => {
+                if (!r.ok) return;
+                const blob = await r.blob();
+                const url = URL.createObjectURL(blob);
+                const audio = new Audio(url);
+                currentAudio = audio;
+                audio.play();
+                audio.onended = () => { currentAudio = null; URL.revokeObjectURL(url); };
+            }).catch(() => {
+                // fallback browser TTS
+                const utter = new SpeechSynthesisUtterance(text.slice(0,200));
+                utter.lang = /[\u0600-\u06FF]/.test(text) ? 'ar-SA' : 'fr-FR';
+                window.speechSynthesis.speak(utter);
+            });
+        }
+
+        function appendBotMsgWithSpeak(text, products) {
+            const c = document.getElementById('messages'), now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const row = document.createElement('div'); row.className = 'msg-row';
+            let productHTML = '';
+            if (products && products.length) {
+                productHTML = '<div style="margin-top:8px;display:flex;flex-direction:column;gap:4px;">' +
+                    products.map(p => `<a href="${p.url}" target="_blank" style="display:flex;align-items:center;gap:6px;background:rgba(139,69,192,0.08);border:1px solid rgba(139,69,192,0.2);border-radius:10px;padding:6px 10px;color:var(--purple-600);font-size:12px;text-decoration:none;">🛒 <strong>${p.name}</strong> — ${p.category}</a>`).join('') +
+                    '</div>';
+            }
+            row.innerHTML = `<div class="bot-avatar">${BOT_ICON}</div><div><div class="bubble bot">${text}${productHTML}</div><div class="msg-time" style="display:flex;align-items:center;gap:8px;">${now} <button onclick="speakText(this.dataset.text)" data-text="${text.replace(/"/g,'&quot;')}" style="background:none;border:none;cursor:pointer;color:var(--purple-400);font-size:11px;padding:0;">🔊</button></div></div>`;
+            c.appendChild(row); c.scrollTop = c.scrollHeight;
+        }
+
+        // ── VOICE RECORDING ──
+        let mediaRecorder = null, audioChunks = [], isRecording = false;
+
+        async function toggleMic() {
+            const micBtn = document.querySelector('.mic-btn');
+            if (isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                micBtn.style.color = '';
+                micBtn.title = 'Voice message';
+                return;
+            }
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioChunks = [];
+                mediaRecorder = new MediaRecorder(stream, { mimeType: 'audio/webm' });
+                mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+                mediaRecorder.onstop = async () => {
+                    stream.getTracks().forEach(t => t.stop());
+                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                    showTyping();
+                    try {
+                        const token = localStorage.getItem('token');
+                        const form = new FormData(); form.append('audio', blob, 'audio.webm');
+                        const res = await fetch('/api/chat/transcribe', { method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: form });
+                        const data = await res.json();
+                        removeTyping();
+                        if (data.text) {
+                            document.getElementById('chat-input').value = data.text;
+                            sendMessage();
+                        }
+                    } catch { removeTyping(); toast('Transcription failed', 'error'); }
+                };
+                mediaRecorder.start();
+                isRecording = true;
+                micBtn.style.color = 'var(--error)';
+                micBtn.title = 'Stop recording';
+            } catch { toast("Cannot access microphone", 'error'); }
+        }
+
         async function sendMessage() {
             const input = document.getElementById('chat-input');
             const text = input.value.trim(); if (!text) return;
@@ -1601,9 +1758,11 @@
             document.getElementById('quick-suggestions').style.display = 'none';
             appendUserMsg(text); showTyping();
             try {
-                const data = await apiFetch('/api/chat', { method: 'POST', body: JSON.stringify({ message: text, conversationId, babyId: currentBaby?._id, userId: appUser._id }) });
-                removeTyping(); conversationId = data.conversationId; appendBotMsg(data.reply);
-            } catch { removeTyping(); appendBotMsg("Sorry, I'm having trouble connecting. Please try again."); }
+                const data = await apiFetch('/api/chat', { method: 'POST', body: JSON.stringify({ message: text, conversationId, babyId: currentBaby?._id }) });
+                removeTyping();
+                conversationId = data.conversationId;
+                appendBotMsgWithSpeak(data.reply, data.products);
+            } catch { removeTyping(); appendBotMsg("Désolé, j'ai un souci de connexion. Réessaie dans quelques secondes 🌸"); }
         }
 
         function sendQuick(btn) { const text = btn.textContent.trim(); document.getElementById('quick-suggestions').style.display = 'none'; document.getElementById('chat-input').value = text; sendMessage(); }
@@ -1667,7 +1826,7 @@
             { id: 5, cat: 'app', q: 'Does BabyMind work offline?', a: `<p>The app requires an internet connection for AI features, syncing, and the community. However, basic logging is cached locally and will sync the next time you're connected.</p>` },
 
             // ── Feeding ──
-            { id: 6, cat: 'feeding', q: 'How often should I feed my newborn?', a: `<p>Newborns (0–4 weeks) should feed <strong>8–12 times per day</strong> — roughly every 2–3 hours. Watch for hunger cues rather than strictly following the clock:</p><ul><li>Rooting (turning head, opening mouth)</li><li>Sucking on hands or fingers</li><li>Fussiness or restlessness</li></ul><p>Crying is a late hunger cue — try to feed before that point.</p><button class="faq-nana-cta" onclick="askNana('How often should I feed my newborn?')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Ask Nana for personalized advice</button>` },
+            { id: 6, cat: 'feeding', q: 'How often should I feed my newborn?', a: `<p>Newborns (0–4 weeks) should feed <strong>8–12 times per day</strong> — roughly every 2–3 hours. Watch for hunger cues rather than strictly following the clock:</p><ul><li>Rooting (turning head, opening mouth)</li><li>Sucking on hands or fingers</li><li>Fussiness or restlessness</li></ul><p>Crying is a late hunger cue — try to feed before that point.</p><button class="faq-nana-cta" onclick="askNana('How often should I feed my newborn?')"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Demander à Nour un conseil personnalisé</button>` },
             { id: 7, cat: 'feeding', q: 'My baby seems hungry right after feeding — is that normal?', a: `<p>This is very common, especially in the first weeks. Babies have tiny stomachs and breastmilk digests quickly. It could also be a <strong>growth spurt</strong> — periods when your baby needs more milk to support rapid development.</p><p>If you're concerned about weight gain, track feeds in BabyMind and share the log with your pediatrician.</p>` },
             { id: 8, cat: 'feeding', q: 'How do I know if my baby is getting enough milk?', a: `<p>Good signs your baby is feeding well:</p><ul><li>6+ wet diapers per day after day 4</li><li>Regular weight gain (your pediatrician will monitor this)</li><li>Baby seems content and settles after feeds</li><li>You can hear swallowing during feeds</li></ul><p>If you're breastfeeding and concerned, a lactation consultant can help enormously.</p>` },
             { id: 9, cat: 'feeding', q: 'When can I start introducing solid foods?', a: `<p>Most babies are ready for solids between <strong>4–6 months</strong>, but the WHO recommends waiting until 6 months if possible. Signs of readiness:</p><ul><li>Sits up with minimal support</li><li>Shows interest in food (watching you eat, reaching for food)</li><li>Has lost the tongue-thrust reflex</li></ul><p>Always start with single-ingredient purees and introduce one new food every 3–5 days to watch for reactions.</p>` },
@@ -1735,7 +1894,7 @@
             const container = document.getElementById('faq-content');
 
             if (!filtered.length) {
-                container.innerHTML = `<div class="faq-empty"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No results found</h3><p>Try a different search term, or ask Nana directly.</p><button class="faq-empty-btn" onclick="switchTab('chatbot')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Ask Nana</button></div>`;
+                container.innerHTML = `<div class="faq-empty"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No results found</h3><p>Try a different search term, or ask Nana directly.</p><button class="faq-empty-btn" onclick="switchTab('chatbot')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Demander à Nour</button></div>`;
                 return;
             }
 
